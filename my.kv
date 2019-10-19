@@ -1,0 +1,185 @@
+#:set but_pos (10, 10)
+
+<Button>:
+    valign: 'center'
+    halign: 'center'
+    size_hint_y: None
+    height: '30dp'
+
+<ChosenCardButton@ToggleButton>:
+    height: '30dp'
+    size_hint_y: None
+    text_size: self.size
+    halign: 'center'
+
+<MyLabel@Label>:
+    valign: 'center'
+    halign: 'center'
+    size_hint_y: None
+    text_size: self.size
+    height: '30dp'
+
+<SelectCardWindow>:
+    __safe_id: [dropdown0.__self__, dropdown1.__self__]
+
+    GridLayout:
+        cols: 1
+        anchor_y: 'top'
+        size: root.width - 10, root.height - 10
+        pos: 5, 5
+
+        GridLayout:
+            rows: 1
+            size_hint_y: None
+            height: '30dp'
+
+
+            MyLabel:
+                text: "Wybrano {}/7".format('0' if root.count_cards == '' else root.count_cards)
+            MyLabel:
+                text: "Punkty: {}".format('0' if root.sum_to_display == '' else root.sum_to_display)
+
+
+
+        # Display chosen cards
+        GridLayout:
+            size_hint_y: None
+            height: '250dp'
+            cols: 2
+            rows: 8
+
+            ChosenCardButton:
+                text: '' if len(root.list_of_cards) <= 0 else root.list_of_cards[0].name
+                on_state: root.add_card(self.state, root.ElfiLucznicy)
+            MyLabel:
+                text: "card1"
+
+            ChosenCardButton:
+                text: '' if len(root.list_of_cards) <= 1 else root.list_of_cards[1].name
+                on_state: root.add_card(self.state, root.ElfiLucznicy)
+            MyLabel:
+                text: "card2"
+
+            ChosenCardButton:
+                text: '' if len(root.list_of_cards) <= 2 else root.list_of_cards[2].name
+                on_state: root.add_card(self.state, root.ElfiLucznicy)
+            MyLabel:
+                text: "card3"
+
+            ChosenCardButton:
+                text: '' if len(root.list_of_cards) <= 3 else root.list_of_cards[3].name
+                on_state: root.add_card(self.state, root.ElfiLucznicy)
+            MyLabel:
+                text: "card4"
+
+            ChosenCardButton:
+                text: '' if len(root.list_of_cards) <= 4 else root.list_of_cards[4].name
+                on_state: root.add_card(self.state, root.ElfiLucznicy)
+            MyLabel:
+                text: "card5"
+
+            ChosenCardButton:
+                text: '' if len(root.list_of_cards) <= 5 else root.list_of_cards[5].name
+                on_state: root.add_card(self.state, root.ElfiLucznicy)
+            MyLabel:
+                text: "card6"
+
+            ChosenCardButton:
+                text: '' if len(root.list_of_cards) <= 6 else root.list_of_cards[6].name
+                on_state: root.add_card(self.state, root.ElfiLucznicy)
+            MyLabel:
+                text: "card7"
+
+            ChosenCardButton:
+                text: '' if len(root.list_of_cards) <= 7 else "{} {}".format(root.list_of_cards[7].power, root.list_of_cards[7].name)
+                on_state: root.add_card(self.state, root.ElfiLucznicy)
+            MyLabel:
+                text: "card8"
+
+        #List of all cards
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            GridLayout:
+                size_hint_y: None
+                cols: 1
+
+                GridLayout:
+                    id: grid0
+                    cols: 1
+                    size_hint_y: None
+                    height: '30dp'
+
+                    Button:
+                        text: "Armia"
+                        on_release: dropdown0.open(self); self.parent.height = '185dp'
+
+                    Widget:
+                        on_parent: dropdown0.dismiss()
+
+
+
+                    DropDown:
+                        id: dropdown0
+                        on_dismiss: grid0.height = '30dp'
+
+
+                        ToggleButton:
+                            text: "{} {}".format(root.KrasnoludzkaPiechota.power, root.KrasnoludzkaPiechota.name)
+                            on_state: root.add_card(self.state, root.KrasnoludzkaPiechota)
+
+                        ToggleButton:
+                            text: root.ElfiLucznicy.name
+                            on_state: root.add_card(self.state, root.ElfiLucznicy)
+
+                        ToggleButton:
+                            text: root.Rycerze.name
+                            on_state: root.add_card(self.state, root.Rycerze)
+
+                        ToggleButton:
+                            text: root.LekkaKonnica.name
+                            on_state: root.add_card(self.state, root.LekkaKonnica)
+
+                        ToggleButton:
+                            text: root.Zwiadowcy.name
+                            on_state: root.add_card(self.state, root.Zwiadowcy)
+
+                GridLayout:
+                    id: grid1
+                    cols: 1
+                    size_hint_y: None
+                    height: '30dp'
+
+                    Button:
+                        text: "Bestia"
+                        on_release: dropdown1.open(self); self.parent.height = '185dp'
+
+                    Widget:
+                        on_parent: dropdown1.dismiss()
+
+
+
+                    DropDown:
+                        id: dropdown1
+                        on_dismiss: grid1.height = '30dp'
+
+
+                        ToggleButton:
+                            text: root.Bazyliszek.name
+                            on_state: root.add_card(self.state, root.Bazyliszek)
+
+                        ToggleButton:
+                            text: root.ElfiLucznicy.name
+                            on_state: root.add_card(self.state, root.ElfiLucznicy)
+
+                        ToggleButton:
+                            text: root.Rycerze.name
+                            on_state: root.add_card(self.state, root.Rycerze)
+
+                        ToggleButton:
+                            text: root.LekkaKonnica.name
+                            on_state: root.add_card(self.state, root.LekkaKonnica)
+
+                        ToggleButton:
+                            text: root.Zwiadowcy.name
+                            on_state: root.add_card(self.state, root.Zwiadowcy)
