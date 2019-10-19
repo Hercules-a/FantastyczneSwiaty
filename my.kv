@@ -20,7 +20,7 @@
     height: '30dp'
 
 <SelectCardWindow>:
-    __safe_id: [dropdown0.__self__, dropdown1.__self__]
+    __safe_id: [dropdown0.__self__, dropdown1.__self__, dropdown2.__self__, dropdown3.__self__]
 
     GridLayout:
         cols: 1
@@ -117,8 +117,6 @@
                     Widget:
                         on_parent: dropdown0.dismiss()
 
-
-
                     DropDown:
                         id: dropdown0
                         on_dismiss: grid0.height = '30dp'
@@ -129,19 +127,19 @@
                             on_state: root.add_card(self.state, root.KrasnoludzkaPiechota)
 
                         ToggleButton:
-                            text: root.ElfiLucznicy.name
+                            text: "{} {}".format(root.ElfiLucznicy.power, root.ElfiLucznicy.name)
                             on_state: root.add_card(self.state, root.ElfiLucznicy)
 
                         ToggleButton:
-                            text: root.Rycerze.name
+                            text: "{} {}".format(root.Rycerze.power, root.Rycerze.name)
                             on_state: root.add_card(self.state, root.Rycerze)
 
                         ToggleButton:
-                            text: root.LekkaKonnica.name
+                            text: "{} {}".format(root.LekkaKonnica.power, root.LekkaKonnica.name)
                             on_state: root.add_card(self.state, root.LekkaKonnica)
 
                         ToggleButton:
-                            text: root.Zwiadowcy.name
+                            text: "{} {}".format(root.Zwiadowcy.power, root.Zwiadowcy.name)
                             on_state: root.add_card(self.state, root.Zwiadowcy)
 
                 GridLayout:
@@ -157,29 +155,103 @@
                     Widget:
                         on_parent: dropdown1.dismiss()
 
-
-
                     DropDown:
                         id: dropdown1
                         on_dismiss: grid1.height = '30dp'
 
 
                         ToggleButton:
-                            text: root.Bazyliszek.name
+                            text: "{} {}".format(root.Bazyliszek.power, root.Bazyliszek.name)
                             on_state: root.add_card(self.state, root.Bazyliszek)
 
                         ToggleButton:
-                            text: root.ElfiLucznicy.name
-                            on_state: root.add_card(self.state, root.ElfiLucznicy)
+                            text: "{} {}".format(root.Smok.power, root.Smok.name)
+                            on_state: root.add_card(self.state, root.Smok)
 
                         ToggleButton:
-                            text: root.Rycerze.name
-                            on_state: root.add_card(self.state, root.Rycerze)
+                            text: "{} {}".format(root.Hydra.power, root.Hydra.name)
+                            on_state: root.add_card(self.state, root.Hydra)
 
                         ToggleButton:
-                            text: root.LekkaKonnica.name
-                            on_state: root.add_card(self.state, root.LekkaKonnica)
+                            text: "{} {}".format(root.Jednorozec.power, root.Jednorozec.name)
+                            on_state: root.add_card(self.state, root.Jednorozec)
 
                         ToggleButton:
-                            text: root.Zwiadowcy.name
-                            on_state: root.add_card(self.state, root.Zwiadowcy)
+                            text: "{} {}".format(root.Rumak.power, root.Rumak.name)
+                            on_state: root.add_card(self.state, root.Rumak)
+
+                GridLayout:
+                    id: grid2
+                    cols: 1
+                    size_hint_y: None
+                    height: '30dp'
+
+                    Button:
+                        text: "Płomień"
+                        on_release: dropdown2.open(self); self.parent.height = '185dp'
+
+                    Widget:
+                        on_parent: dropdown2.dismiss()
+
+                    DropDown:
+                        id: dropdown2
+                        on_dismiss: grid2.height = '30dp'
+
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Swieca.power, root.Swieca.name)
+                            on_state: root.add_card(self.state, root.Swieca)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.ZywiolakOgnia.power, root.ZywiolakOgnia.name)
+                            on_state: root.add_card(self.state, root.ZywiolakOgnia)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Kuznia.power, root.Kuznia.name)
+                            on_state: root.add_card(self.state, root.Kuznia)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Blyskawica.power, root.Blyskawica.name)
+                            on_state: root.add_card(self.state, root.Blyskawica)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Pozar.power, root.Pozar.name)
+                            on_state: root.add_card(self.state, root.Pozar)
+
+                GridLayout:
+                    id: grid3
+                    cols: 1
+                    size_hint_y: None
+                    height: '30dp'
+
+                    Button:
+                        text: "Powódź"
+                        on_release: dropdown3.open(self); self.parent.height = '185dp'
+
+                    Widget:
+                        on_parent: dropdown3.dismiss()
+
+                    DropDown:
+                        id: dropdown3
+                        on_dismiss: grid3.height = '30dp'
+
+
+                        ToggleButton:
+                            text: "{} {}".format(root.FontannaZycia.power, root.FontannaZycia.name)
+                            on_state: root.add_card(self.state, root.FontannaZycia)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Potop.power, root.Potop.name)
+                            on_state: root.add_card(self.state, root.Potop)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Kuznia.power, root.Kuznia.name)
+                            on_state: root.add_card(self.state, root.Kuznia)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Blyskawica.power, root.Blyskawica.name)
+                            on_state: root.add_card(self.state, root.Blyskawica)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Pozar.power, root.Pozar.name)
+                            on_state: root.add_card(self.state, root.Pozar)
