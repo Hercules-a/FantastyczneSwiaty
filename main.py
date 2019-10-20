@@ -48,11 +48,10 @@ class SelectCardWindow(Widget):
 
             if any(card.name in ("Zwiadowcy", "Runa ochrony") for card in list_of_cards):
                 return self.power
-
             else:
-                penalty = -2
+                penalty = 0
                 for card in list_of_cards:
-                    if card.set == "Armia" and not card.canceled_card:
+                    if card.set == self.set and not card.canceled_card and card.name != self.name:
                         penalty += 2
                 return self.power - penalty
 
@@ -77,7 +76,8 @@ class SelectCardWindow(Widget):
         description = "KARA: -8, chyba że masz przynajmniej 1 kartę Przywódcy"
 
         def card_points(self, list_of_cards):
-            if any(card.set == "Przywódca" or card.name == "Runa ochrony" for card in list_of_cards):
+            if any((card.set == "Przywódca" or card.name == "Runa ochrony") and not card.canceled_card
+                   for card in list_of_cards):
                 return self.power
             return self.power - 8
 
@@ -92,7 +92,7 @@ class SelectCardWindow(Widget):
             penalty = 0
             if not any(card.name == "Runa ochrony" for card in list_of_cards):
                 for card in list_of_cards:
-                    if card.set == "Kraina":
+                    if card.set == "Kraina" and not card.canceled_card:
                         penalty += 2
             return self.power - penalty
 
@@ -106,7 +106,7 @@ class SelectCardWindow(Widget):
         def card_points(self, list_of_cards):
             bonus = 0
             for card in list_of_cards:
-                if card.set == "Kraina":
+                if card.set == "Kraina" and not card.canceled_card:
                     bonus += 10
             return self.power + bonus
 
@@ -134,7 +134,7 @@ class SelectCardWindow(Widget):
         description = "KARA: -40, chyba że masz przynajmniej 1 kartę Czarodzieja"
 
         def card_points(self, list_of_cards):
-            if not any(card.set == "Czarodziej" for card in list_of_cards):
+            if not any(card.set == "Czarodziej" and not card.canceled_card for card in list_of_cards):
                 if not any(card.name in ("Władca bestii", "Runa ochrony") for card in list_of_cards):
                     return self.power - 40
             return self.power
@@ -199,9 +199,9 @@ class SelectCardWindow(Widget):
         description = "PREMIA: +15 za każdą inną kartę Płomienia."
 
         def card_points(self, list_of_cards):
-            bonus = -15
+            bonus = 0
             for card in list_of_cards:
-                if card.set == "Płomień":
+                if card.set == self.set and card.name != self.name:
                     bonus += 15
             return self.power + bonus
 
@@ -269,13 +269,172 @@ class SelectCardWindow(Widget):
                       "i wszystkie karty Płomienia z wyjątkiem Błyskawicy."
 
         def card_points(self, list_of_cards):
-            if not any(card.name in ("Runa ochrony", "Okręt", "Zwiadowcy") for card in list_of_cards):
+            if not any(card.name in ("Runa ochrony", "Góry", "Zwiadowcy") for card in list_of_cards):
                 for card in list_of_cards:
-                    if card.set in ("Armia", "Kraina", "Płomień"):
-                        print(card.set)
+                    if card.set == "Armia" and not any(card.name == "Okręt" and not card.canceled_card
+                                                       for card in list_of_cards):
+                        card.canceled_card = True
+                    if card.set in ("Kraina", "Płomień"):
                         if card.name not in ("Góry", "Błyskawica"):
                             card.canceled_card = True
             return self.power
+
+    class Wyspa:
+        name = "Wyspa"
+        canceled_card = False
+        power = 14
+        set = "Powódź"
+        description = "PREMIA: USUWA karę z dowolnej karty Powodzi albo Płomienia"
+
+        def card_points(self, list_of_cards):
+            return self.power
+
+    class Bagno:
+        name = "Bagno"
+        canceled_card = False
+        power = 18
+        set = "Powódź"
+        description = "KARA: -3 za każdą kartę Armii i Płomienia"
+
+        def card_points(self, list_of_cards):
+            penalty = 0
+            if not any(card.name in ("Runa ochrony", "Góry") for card in list_of_cards):
+                for card in list_of_cards:
+                    if card.set == "Armia" and not any(card.name == "Okręt" for card in list_of_cards):
+                        penalty += 3
+                    if card.set == "Płomień":
+                        penalty += 3
+                return self.power - penalty
+
+    class ZywiolakWody:
+        name = "Żywiołak wody"
+        canceled_card = False
+        power = 4
+        set = "Powódź"
+        description = "PREMIA: +15 za każdą inną kartę Powodzi."
+
+        def card_points(self, list_of_cards):
+            bonus = 0
+            for card in list_of_cards:
+                if card.set == self.set and card.name != self.name:
+                    bonus += 15
+            return self.power + bonus
+
+    class Dzwonnica:
+        name = "Dzwonnica"
+        canceled_card = False
+        power = 8
+        set = "Kraina"
+        description = "PREMIA: +15 z dowolną kartą Czarodzieja."
+
+        def card_points(self, list_of_cards):
+            if any(card.set == "Czarodziej" and not card.canceled_card for card in list_of_cards):
+                return self.power + 15
+            return self.power
+
+    class Jaskinia:
+        name = "Jaskinia"
+        canceled_card = False
+        power = 6
+        set = "Kraina"
+        description = "PREMIA: +25 z Krasnoludzką piechotą lub Smokiem. USUWA kary wszystkiech kart Pogody."
+
+        def card_points(self, list_of_cards):
+            if any(card.name in ("Krasnoludzka piechota", "Smok") and not card.canceled_card for card in list_of_cards):
+                return self.power + 25
+            return self.power
+
+    class ZywiolakZiemi:
+        name = "Żywiołak ziemi"
+        canceled_card = False
+        power = 4
+        set = "Kraina"
+        description = "PREMIA: +15 za każdą inną kartę Krainy."
+
+        def card_points(self, list_of_cards):
+            bonus = 0
+            for card in list_of_cards:
+                if card.set == self.set and card.name != self.name and not card.canceled_card:
+                    bonus += 15
+            return self.power + bonus
+
+    class Las:
+        name = "Las"
+        canceled_card = False
+        power = 7
+        set = "Kraina"
+        description = "PREMIA: +12 za każdą kartę Bestii i Elfich łuczników"
+
+        def card_points(self, list_of_cards):
+            bonus = 0
+            for card in list_of_cards:
+                if (card.set == "Bestia" or card.name == "Elfi łucznicy") and not card.canceled_card:
+                    bonus += 12
+            return self.power + bonus
+
+    class Gory:
+        name = "Góry"
+        canceled_card = False
+        power = 9
+        set = "Kraina"
+        description = "PREMIA: +50 z Dymem i Pożarem. USUWA kary z wszystkich kart Powodzi."
+
+        def card_points(self, list_of_cards):
+            bonus = 0
+            for card in list_of_cards:
+                if (card.set == "Bestia" or card.name == "Elfi łucznicy") and not card.canceled_card:
+                    bonus += 12
+            return self.power + bonus
+
+    class Cesarzowa:
+        name = "Cesarzowa"
+        canceled_card = False
+        power = 15
+        set = "Przywódca"
+        description = "PREMIA: +10 za każdą kartę Armii. KARA: -5 za każdą inną kartę Przywódcy."
+
+        def card_points(self, list_of_cards):
+            bonus, penalty = 0, 0
+            for card in list_of_cards:
+                if card.set == "Armia" and not card.canceled_card:
+                    bonus += 10
+                if not any(card.name == "Runa ochrony" for card in list_of_cards):
+                    if card.set == self.set and card.name != self.name and not card.canceled_card:
+                        penalty += 5
+            return self.power + bonus - penalty
+
+    class Krol:
+        name = "Król"
+        canceled_card = False
+        power = 8
+        set = "Przywódca"
+        description = "PREMIA: +5 za każdą kartę Armii. ALBO +20 za każdą kartę Armii, jeśli masz Królową"
+
+        def card_points(self, list_of_cards):
+            bonus = 0
+            for card in list_of_cards:
+                if any(card.name == "Królowa" and not card.canceled_card for card in list_of_cards):
+                    if card.set == "Armia":
+                        bonus += 20
+                else:
+                    if card.set== "Armia":
+                        bonus += 5
+            return self.power + bonus
+
+    class Ksiezniczka:
+        name = "Księżniczka"
+        canceled_card = False
+        power = 2
+        set = "Przywódca"
+        description = "PREMIA: +8 za każdą kartę Armii, Czarodzieja i innego Przywódcy"
+
+        def card_points(self, list_of_cards):
+            bonus = 0
+            for card in list_of_cards:
+                if card.set in ("Armia", "Czarodziej", "Przywódca") and card.name != self.name:
+                    bonus += 8
+            return self.power + bonus
+
 
 
 class MyApp(App):

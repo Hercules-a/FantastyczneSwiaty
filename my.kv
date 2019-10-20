@@ -20,7 +20,7 @@
     height: '30dp'
 
 <SelectCardWindow>:
-    __safe_id: [dropdown0.__self__, dropdown1.__self__, dropdown2.__self__, dropdown3.__self__]
+    __safe_id: [dropdown0.__self__, dropdown1.__self__, dropdown2.__self__, dropdown3.__self__, dropdown4.__self__]
 
     GridLayout:
         cols: 1
@@ -44,57 +44,41 @@
         # Display chosen cards
         GridLayout:
             size_hint_y: None
-            height: '250dp'
+            height: '130dp'
             cols: 2
-            rows: 8
+            rows: 4
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 0 else root.list_of_cards[0].name
                 on_state: root.add_card(self.state, root.ElfiLucznicy)
-            MyLabel:
-                text: "card1"
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 1 else root.list_of_cards[1].name
                 on_state: root.add_card(self.state, root.ElfiLucznicy)
-            MyLabel:
-                text: "card2"
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 2 else root.list_of_cards[2].name
                 on_state: root.add_card(self.state, root.ElfiLucznicy)
-            MyLabel:
-                text: "card3"
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 3 else root.list_of_cards[3].name
                 on_state: root.add_card(self.state, root.ElfiLucznicy)
-            MyLabel:
-                text: "card4"
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 4 else root.list_of_cards[4].name
                 on_state: root.add_card(self.state, root.ElfiLucznicy)
-            MyLabel:
-                text: "card5"
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 5 else root.list_of_cards[5].name
                 on_state: root.add_card(self.state, root.ElfiLucznicy)
-            MyLabel:
-                text: "card6"
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 6 else root.list_of_cards[6].name
                 on_state: root.add_card(self.state, root.ElfiLucznicy)
-            MyLabel:
-                text: "card7"
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 7 else "{} {}".format(root.list_of_cards[7].power, root.list_of_cards[7].name)
                 on_state: root.add_card(self.state, root.ElfiLucznicy)
-            MyLabel:
-                text: "card8"
 
         #List of all cards
         ScrollView:
@@ -245,13 +229,87 @@
                             on_state: root.add_card(self.state, root.Potop)
 
                         ToggleButton:
-                            text: "{} {}".format(root.Kuznia.power, root.Kuznia.name)
-                            on_state: root.add_card(self.state, root.Kuznia)
+                            text: "{} {}".format(root.Wyspa.power, root.Wyspa.name)
+                            on_state: root.add_card(self.state, root.Wyspa)
 
                         ToggleButton:
-                            text: "{} {}".format(root.Blyskawica.power, root.Blyskawica.name)
-                            on_state: root.add_card(self.state, root.Blyskawica)
+                            text: "{} {}".format(root.Bagno.power, root.Bagno.name)
+                            on_state: root.add_card(self.state, root.Bagno)
 
                         ToggleButton:
-                            text: "{} {}".format(root.Pozar.power, root.Pozar.name)
-                            on_state: root.add_card(self.state, root.Pozar)
+                            text: "{} {}".format(root.ZywiolakWody.power, root.ZywiolakWody.name)
+                            on_state: root.add_card(self.state, root.ZywiolakWody)
+
+                GridLayout:
+                    id: grid4
+                    cols: 1
+                    size_hint_y: None
+                    height: '30dp'
+
+                    Button:
+                        text: "Kraina"
+                        on_release: dropdown4.open(self); self.parent.height = '185dp'
+
+                    Widget:
+                        on_parent: dropdown4.dismiss()
+
+                    DropDown:
+                        id: dropdown4
+                        on_dismiss: grid4.height = '30dp'
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Dzwonnica.power, root.Dzwonnica.name)
+                            on_state: root.add_card(self.state, root.Dzwonnica)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Jaskinia.power, root.Jaskinia.name)
+                            on_state: root.add_card(self.state, root.Jaskinia)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.ZywiolakZiemi.power, root.ZywiolakZiemi.name)
+                            on_state: root.add_card(self.state, root.ZywiolakZiemi)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Las.power, root.Las.name)
+                            on_state: root.add_card(self.state, root.Las)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Gory.power, root.Gory.name)
+                            on_state: root.add_card(self.state, root.Gory)
+
+                GridLayout:
+                    id: grid5
+                    cols: 1
+                    size_hint_y: None
+                    height: '30dp'
+
+                    Button:
+                        text: "Przywódca"
+                        on_release: dropdown5.open(self); self.parent.height = '185dp'
+
+                    Widget:
+                        on_parent: dropdown5.dismiss()
+
+                    DropDown:
+                        id: dropdown5
+                        on_dismiss: grid5.height = '30dp'
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Cesarzowa.power, root.Cesarzowa.name)
+                            on_state: root.add_card(self.state, root.Cesarzowa)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Krol.power, root.Krol.name)
+                            on_state: root.add_card(self.state, root.Krol)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Ksiezniczka.power, root.Ksiezniczka.name)
+                            on_state: root.add_card(self.state, root.Ksiezniczka)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Las.power, root.Las.name)
+                            on_state: root.add_card(self.state, root.Las)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Gory.power, root.Gory.name)
+                            on_state: root.add_card(self.state, root.Gory)
