@@ -20,7 +20,7 @@
     height: '30dp'
 
 <SelectCardWindow>:
-    __safe_id: [dropdown0.__self__, dropdown1.__self__, dropdown2.__self__, dropdown3.__self__, dropdown4.__self__]
+    __safe_id: [dropdown0.__self__, dropdown1.__self__, dropdown2.__self__, dropdown3.__self__, dropdown4.__self__, dropdown5.__self__, dropdown6.__self__, dropdown7.__self__, dropdown8.__self__, dropdown9.__self__]
 
     GridLayout:
         cols: 1
@@ -307,9 +307,161 @@
                             on_state: root.add_card(self.state, root.Ksiezniczka)
 
                         ToggleButton:
-                            text: "{} {}".format(root.Las.power, root.Las.name)
-                            on_state: root.add_card(self.state, root.Las)
+                            text: "{} {}".format(root.Krolowa.power, root.Krolowa.name)
+                            on_state: root.add_card(self.state, root.Krolowa)
 
                         ToggleButton:
-                            text: "{} {}".format(root.Gory.power, root.Gory.name)
-                            on_state: root.add_card(self.state, root.Gory)
+                            text: "{} {}".format(root.WielkiWodz.power, root.WielkiWodz.name)
+                            on_state: root.add_card(self.state, root.WielkiWodz)
+
+                GridLayout:
+                    id: grid6
+                    cols: 1
+                    size_hint_y: None
+                    height: '30dp'
+
+                    Button:
+                        text: "Broń"
+                        on_release: dropdown6.open(self); self.parent.height = '185dp'
+
+                    Widget:
+                        on_parent: dropdown6.dismiss()
+
+                    DropDown:
+                        id: dropdown6
+                        on_dismiss: grid6.height = '30dp'
+
+                        ToggleButton:
+                            text: "{} {}".format(root.ElfiDlugiLuk.power, root.ElfiDlugiLuk.name)
+                            on_state: root.add_card(self.state, root.ElfiDlugiLuk)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.MagicznaRozdzka.power, root.MagicznaRozdzka.name)
+                            on_state: root.add_card(self.state, root.MagicznaRozdzka)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.MieczKetha.power, root.MieczKetha.name)
+                            on_state: root.add_card(self.state, root.MieczKetha)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.SterowiecWojenny.power, root.SterowiecWojenny.name)
+                            on_state: root.add_card(self.state, root.SterowiecWojenny)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Okret.power, root.Okret.name)
+                            on_state: root.add_card(self.state, root.Okret)
+
+                GridLayout:
+                    id: grid7
+                    cols: 1
+                    size_hint_y: None
+                    height: '30dp'
+
+                    Button:
+                        text: "Pogoda"
+                        on_release: dropdown7.open(self); self.parent.height = '185dp'
+
+                    Widget:
+                        on_parent: dropdown7.dismiss()
+
+                    DropDown:
+                        id: dropdown7
+                        on_dismiss: grid7.height = '30dp'
+
+                        ToggleButton:
+                            text: "{} {}".format(root.ZywiolakPowietrza.power, root.ZywiolakPowietrza.name)
+                            on_state: root.add_card(self.state, root.ZywiolakPowietrza)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Sniezyca.power, root.Sniezyca.name)
+                            on_state: root.add_card(self.state, root.Sniezyca)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Burza.power, root.Burza.name)
+                            on_state: root.add_card(self.state, root.Burza)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Dym.power, root.Dym.name)
+                            on_state: root.add_card(self.state, root.Dym)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Tornado.power, root.Tornado.name)
+                            on_state: root.add_card(self.state, root.Tornado)
+
+                GridLayout:
+                    id: grid8
+                    cols: 1
+                    size_hint_y: None
+                    height: '30dp'
+
+                    Button:
+                        text: "Artefakt"
+                        on_release: dropdown8.open(self); self.parent.height = '185dp'
+
+                    Widget:
+                        on_parent: dropdown8.dismiss()
+
+                    DropDown:
+                        id: dropdown8
+                        on_dismiss: grid8.height = '30dp'
+
+                        ToggleButton:
+                            text: "{} {}".format(root.KsiegaZmian.power, root.KsiegaZmian.name)
+                            on_state: root.add_card(self.state, root.KsiegaZmian)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.TarczaKetha.power, root.TarczaKetha.name)
+                            on_state: root.add_card(self.state, root.TarczaKetha)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.KlejnotPorzadku.power, root.KlejnotPorzadku.name)
+                            on_state: root.add_card(self.state, root.KlejnotPorzadku)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.DrzewoSwiata.power, root.DrzewoSwiata.name)
+                            on_state: root.add_card(self.state, root.DrzewoSwiata)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.RunaOchrony.power, root.RunaOchrony.name)
+                            on_state: root.add_card(self.state, root.RunaOchrony)
+
+                GridLayout:
+                    id: grid9
+                    cols: 1
+                    size_hint_y: None
+                    height: '30dp'
+
+                    Button:
+                        text: "Czarodziej"
+                        on_release: dropdown9.open(self); self.parent.height = '185dp'
+
+                    Widget:
+                        on_parent: dropdown9.dismiss()
+
+                    DropDown:
+                        id: dropdown9
+                        on_dismiss: grid9.height = '30dp'
+
+                        ToggleButton:
+                            text: "{} {}".format(root.WladcaBestii.power, root.WladcaBestii.name)
+                            on_state: root.add_card(self.state, root.WladcaBestii)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Kolekcjoner.power, root.Kolekcjoner.name)
+                            on_state: root.add_card(self.state, root.Kolekcjoner)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Zaklinaczka.power, root.Zaklinaczka.name)
+                            on_state: root.add_card(self.state, root.Zaklinaczka)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Nekromanta.power, root.Nekromanta.name)
+                            on_state: root.add_card(self.state, root.Nekromanta)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Czarnoksieznik.power, root.Czarnoksieznik.name)
+                            on_state: root.add_card(self.state, root.Czarnoksieznik)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Blazen.power, root.Blazen.name)
+                            on_state: root.add_card(self.state, root.Blazen)
