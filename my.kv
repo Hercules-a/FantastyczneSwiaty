@@ -1,13 +1,11 @@
-#:set but_pos (10, 10)
-
 <Button>:
     valign: 'center'
     halign: 'center'
     size_hint_y: None
-    height: '30dp'
+    height: '25dp'
 
 <ChosenCardButton@ToggleButton>:
-    height: '30dp'
+    height: '25dp'
     size_hint_y: None
     text_size: self.size
     halign: 'center'
@@ -17,10 +15,10 @@
     halign: 'center'
     size_hint_y: None
     text_size: self.size
-    height: '30dp'
+    height: '25dp'
 
 <SelectCardWindow>:
-    __safe_id: [dropdown0.__self__, dropdown1.__self__, dropdown2.__self__, dropdown3.__self__, dropdown4.__self__, dropdown5.__self__, dropdown6.__self__, dropdown7.__self__, dropdown8.__self__, dropdown9.__self__]
+    __safe_id: [dropdown0.__self__, dropdown1.__self__, dropdown2.__self__, dropdown3.__self__, dropdown4.__self__, dropdown5.__self__, dropdown6.__self__, dropdown7.__self__, dropdown8.__self__, dropdown9.__self__, dropdown10.__self__]
 
     GridLayout:
         cols: 1
@@ -31,7 +29,7 @@
         GridLayout:
             rows: 1
             size_hint_y: None
-            height: '30dp'
+            height: '26dp'
 
 
             MyLabel:
@@ -44,7 +42,7 @@
         # Display chosen cards
         GridLayout:
             size_hint_y: None
-            height: '130dp'
+            height: '115dp'
             cols: 2
             rows: 4
 
@@ -92,18 +90,18 @@
                     id: grid0
                     cols: 1
                     size_hint_y: None
-                    height: '30dp'
+                    height: '26dp'
 
                     Button:
                         text: "Armia"
-                        on_release: dropdown0.open(self); self.parent.height = '185dp'
+                        on_release: dropdown0.open(self); self.parent.height = '152dp'
 
                     Widget:
                         on_parent: dropdown0.dismiss()
 
                     DropDown:
                         id: dropdown0
-                        on_dismiss: grid0.height = '30dp'
+                        on_dismiss: grid0.height = '26dp'
 
 
                         ToggleButton:
@@ -130,18 +128,18 @@
                     id: grid1
                     cols: 1
                     size_hint_y: None
-                    height: '30dp'
+                    height: '26dp'
 
                     Button:
                         text: "Bestia"
-                        on_release: dropdown1.open(self); self.parent.height = '185dp'
+                        on_release: dropdown1.open(self); self.parent.height = '152dp'
 
                     Widget:
                         on_parent: dropdown1.dismiss()
 
                     DropDown:
                         id: dropdown1
-                        on_dismiss: grid1.height = '30dp'
+                        on_dismiss: grid1.height = '26dp'
 
 
                         ToggleButton:
@@ -168,18 +166,18 @@
                     id: grid2
                     cols: 1
                     size_hint_y: None
-                    height: '30dp'
+                    height: '26dp'
 
                     Button:
                         text: "Płomień"
-                        on_release: dropdown2.open(self); self.parent.height = '185dp'
+                        on_release: dropdown2.open(self); self.parent.height = '152dp'
 
                     Widget:
                         on_parent: dropdown2.dismiss()
 
                     DropDown:
                         id: dropdown2
-                        on_dismiss: grid2.height = '30dp'
+                        on_dismiss: grid2.height = '26dp'
 
 
                         ToggleButton:
@@ -206,18 +204,18 @@
                     id: grid3
                     cols: 1
                     size_hint_y: None
-                    height: '30dp'
+                    height: '26dp'
 
                     Button:
                         text: "Powódź"
-                        on_release: dropdown3.open(self); self.parent.height = '185dp'
+                        on_release: dropdown3.open(self); self.parent.height = '152dp'
 
                     Widget:
                         on_parent: dropdown3.dismiss()
 
                     DropDown:
                         id: dropdown3
-                        on_dismiss: grid3.height = '30dp'
+                        on_dismiss: grid3.height = '26dp'
 
 
                         ToggleButton:
@@ -244,18 +242,18 @@
                     id: grid4
                     cols: 1
                     size_hint_y: None
-                    height: '30dp'
+                    height: '26dp'
 
                     Button:
                         text: "Kraina"
-                        on_release: dropdown4.open(self); self.parent.height = '185dp'
+                        on_release: dropdown4.open(self); self.parent.height = '152dp'
 
                     Widget:
                         on_parent: dropdown4.dismiss()
 
                     DropDown:
                         id: dropdown4
-                        on_dismiss: grid4.height = '30dp'
+                        on_dismiss: grid4.height = '26dp'
 
                         ToggleButton:
                             text: "{} {}".format(root.Dzwonnica.power, root.Dzwonnica.name)
@@ -281,18 +279,18 @@
                     id: grid5
                     cols: 1
                     size_hint_y: None
-                    height: '30dp'
+                    height: '26dp'
 
                     Button:
                         text: "Przywódca"
-                        on_release: dropdown5.open(self); self.parent.height = '185dp'
+                        on_release: dropdown5.open(self); self.parent.height = '152dp'
 
                     Widget:
                         on_parent: dropdown5.dismiss()
 
                     DropDown:
                         id: dropdown5
-                        on_dismiss: grid5.height = '30dp'
+                        on_dismiss: grid5.height = '26dp'
 
                         ToggleButton:
                             text: "{} {}".format(root.Cesarzowa.power, root.Cesarzowa.name)
@@ -318,18 +316,18 @@
                     id: grid6
                     cols: 1
                     size_hint_y: None
-                    height: '30dp'
+                    height: '26dp'
 
                     Button:
                         text: "Broń"
-                        on_release: dropdown6.open(self); self.parent.height = '185dp'
+                        on_release: dropdown6.open(self); self.parent.height = '152dp'
 
                     Widget:
                         on_parent: dropdown6.dismiss()
 
                     DropDown:
                         id: dropdown6
-                        on_dismiss: grid6.height = '30dp'
+                        on_dismiss: grid6.height = '26dp'
 
                         ToggleButton:
                             text: "{} {}".format(root.ElfiDlugiLuk.power, root.ElfiDlugiLuk.name)
@@ -355,18 +353,18 @@
                     id: grid7
                     cols: 1
                     size_hint_y: None
-                    height: '30dp'
+                    height: '26dp'
 
                     Button:
                         text: "Pogoda"
-                        on_release: dropdown7.open(self); self.parent.height = '185dp'
+                        on_release: dropdown7.open(self); self.parent.height = '152dp'
 
                     Widget:
                         on_parent: dropdown7.dismiss()
 
                     DropDown:
                         id: dropdown7
-                        on_dismiss: grid7.height = '30dp'
+                        on_dismiss: grid7.height = '26dp'
 
                         ToggleButton:
                             text: "{} {}".format(root.ZywiolakPowietrza.power, root.ZywiolakPowietrza.name)
@@ -392,18 +390,18 @@
                     id: grid8
                     cols: 1
                     size_hint_y: None
-                    height: '30dp'
+                    height: '26dp'
 
                     Button:
                         text: "Artefakt"
-                        on_release: dropdown8.open(self); self.parent.height = '185dp'
+                        on_release: dropdown8.open(self); self.parent.height = '152dp'
 
                     Widget:
                         on_parent: dropdown8.dismiss()
 
                     DropDown:
                         id: dropdown8
-                        on_dismiss: grid8.height = '30dp'
+                        on_dismiss: grid8.height = '26dp'
 
                         ToggleButton:
                             text: "{} {}".format(root.KsiegaZmian.power, root.KsiegaZmian.name)
@@ -429,18 +427,18 @@
                     id: grid9
                     cols: 1
                     size_hint_y: None
-                    height: '30dp'
+                    height: '26dp'
 
                     Button:
                         text: "Czarodziej"
-                        on_release: dropdown9.open(self); self.parent.height = '185dp'
+                        on_release: dropdown9.open(self); self.parent.height = '177dp'
 
                     Widget:
                         on_parent: dropdown9.dismiss()
 
                     DropDown:
                         id: dropdown9
-                        on_dismiss: grid9.height = '30dp'
+                        on_dismiss: grid9.height = '26dp'
 
                         ToggleButton:
                             text: "{} {}".format(root.WladcaBestii.power, root.WladcaBestii.name)
@@ -465,3 +463,32 @@
                         ToggleButton:
                             text: "{} {}".format(root.Blazen.power, root.Blazen.name)
                             on_state: root.add_card(self.state, root.Blazen)
+
+                GridLayout:
+                    id: grid10
+                    cols: 1
+                    size_hint_y: None
+                    height: '26dp'
+
+                    Button:
+                        text: "Karty specjalne"
+                        on_release: dropdown10.open(self); self.parent.height = '102dp'
+
+                    Widget:
+                        on_parent: dropdown10.dismiss()
+
+                    DropDown:
+                        id: dropdown10
+                        on_dismiss: grid10.height = '26dp'
+
+                        ToggleButton:
+                            text: "{} {}".format(root.WladcaBestii.power, root.WladcaBestii.name)
+                            on_state: root.add_card(self.state, root.WladcaBestii)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Kolekcjoner.power, root.Kolekcjoner.name)
+                            on_state: root.add_card(self.state, root.Kolekcjoner)
+
+                        ToggleButton:
+                            text: "{} {}".format(root.Zaklinaczka.power, root.Zaklinaczka.name)
+                            on_state: root.add_card(self.state, root.Zaklinaczka)
