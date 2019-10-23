@@ -11,14 +11,22 @@ class SelectCardWindow(Widget):
 
     def add_card(self, state, card):
         if state == 'down':
-            self.list_of_cards.append(card)
+            if any(card.name == "Nekromanta" and not card.canceled_card for card in self.list_of_cards):
+                if len(self.list_of_cards) < 8:
+                    self.list_of_cards.append(card)
+            else:
+                if len(self.list_of_cards) < 7:
+                    self.list_of_cards.append(card)
         else:
             for element in self.list_of_cards:
                 if card.name == element.name:
                     self.list_of_cards.remove(element)
                     break
+        if any(card.name == "Nekromanta" and not card.canceled_card for card in self.list_of_cards):
+            self.count_cards = "{}/8".format(str(len(self.list_of_cards)))
+        else:
+            self.count_cards = "{}/7".format(str(len(self.list_of_cards)))
 
-        self.count_cards = str(len(self.list_of_cards))
         # double check because last cards in list can change firsts cards parameters
         self.points_sum()
         self.sum_to_display = str(self.points_sum())
