@@ -1,3 +1,5 @@
+#:import Factory kivy.factory.Factory
+
 #:set color_armia [0.5, 0.5, 0.5, 1]
 #:set color_artefakt [1, 0.39, 0.31, 1]
 #:set color_bestia [0.1, 0.7, 0.1, 1]
@@ -16,7 +18,7 @@
     size_hint_y: None
     height: '25dp'
 
-<ChosenCardButton@ToggleButton>:
+<ChosenCardButton@Button>:
     height: '25dp'
     size_hint_y: None
     text_size: self.size
@@ -58,35 +60,35 @@
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 0 else root.list_of_cards[0].name
-                on_state: root.add_card(self.state, root.ElfiLucznicy)
+                on_release: root.del_card(0)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 1 else root.list_of_cards[1].name
-                on_state: root.add_card(self.state, root.ElfiLucznicy)
+                on_release: root.del_card(1)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 2 else root.list_of_cards[2].name
-                on_state: root.add_card(self.state, root.ElfiLucznicy)
+                on_release: root.del_card(2)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 3 else root.list_of_cards[3].name
-                on_state: root.add_card(self.state, root.ElfiLucznicy)
+                on_release: root.del_card(3)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 4 else root.list_of_cards[4].name
-                on_state: root.add_card(self.state, root.ElfiLucznicy)
+                on_release: root.del_card(4)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 5 else root.list_of_cards[5].name
-                on_state: root.add_card(self.state, root.ElfiLucznicy)
+                on_release: root.del_card(5)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 6 else root.list_of_cards[6].name
-                on_state: root.add_card(self.state, root.ElfiLucznicy)
+                on_release: root.del_card(6)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 7 else "{} {}".format(root.list_of_cards[7].power, root.list_of_cards[7].name)
-                on_state: root.add_card(self.state, root.ElfiLucznicy)
+                on_release: root.del_card(7)
 
         #List of all cards
         GridLayout:
@@ -112,30 +114,30 @@
                     on_dismiss: grid0.height = '26dp'
 
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.KrasnoludzkaPiechota.power, root.KrasnoludzkaPiechota.name)
-                        on_state: root.add_card(self.state, root.KrasnoludzkaPiechota)
+                        on_release: root.add_card(root.KrasnoludzkaPiechota)
                         background_color: color_armia
 
-                    ToggleButton:
+                    Button:
                         id: elfi_lucznicy
                         text: "{} {}".format(root.ElfiLucznicy.power, root.ElfiLucznicy.name)
-                        on_state: root.add_card(self.state, root.ElfiLucznicy)
+                        on_release: root.add_card(root.ElfiLucznicy)
                         background_color: color_armia
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Rycerze.power, root.Rycerze.name)
-                        on_state: root.add_card(self.state, root.Rycerze)
+                        on_release: root.add_card(root.Rycerze)
                         background_color: color_armia
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.LekkaKonnica.power, root.LekkaKonnica.name)
-                        on_state: root.add_card(self.state, root.LekkaKonnica)
+                        on_release: root.add_card(root.LekkaKonnica)
                         background_color: color_armia
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Zwiadowcy.power, root.Zwiadowcy.name)
-                        on_state: root.add_card(self.state, root.Zwiadowcy)
+                        on_release: root.add_card(root.Zwiadowcy)
                         background_color: color_armia
 
             GridLayout:
@@ -156,29 +158,29 @@
                     id: dropdown1
                     on_dismiss: grid1.height = '26dp'
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Bazyliszek.power, root.Bazyliszek.name)
-                        on_state: root.add_card(self.state, root.Bazyliszek)
+                        on_release: root.add_card(root.Bazyliszek)
                         background_color: color_bestia
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Smok.power, root.Smok.name)
-                        on_state: root.add_card(self.state, root.Smok)
+                        on_release: root.add_card(root.Smok)
                         background_color: color_bestia
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Hydra.power, root.Hydra.name)
-                        on_state: root.add_card(self.state, root.Hydra)
+                        on_release: root.add_card(root.Hydra)
                         background_color: color_bestia
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Jednorozec.power, root.Jednorozec.name)
-                        on_state: root.add_card(self.state, root.Jednorozec)
+                        on_release: root.add_card(root.Jednorozec)
                         background_color: color_bestia
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Rumak.power, root.Rumak.name)
-                        on_state: root.add_card(self.state, root.Rumak)
+                        on_release: root.add_card(root.Rumak)
                         background_color: color_bestia
 
             GridLayout:
@@ -200,29 +202,29 @@
                     on_dismiss: grid2.height = '26dp'
 
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Swieca.power, root.Swieca.name)
-                        on_state: root.add_card(self.state, root.Swieca)
+                        on_release: root.add_card(root.Swieca)
                         background_color: color_plomien
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.ZywiolakOgnia.power, root.ZywiolakOgnia.name)
-                        on_state: root.add_card(self.state, root.ZywiolakOgnia)
+                        on_release: root.add_card(root.ZywiolakOgnia)
                         background_color: color_plomien
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Kuznia.power, root.Kuznia.name)
-                        on_state: root.add_card(self.state, root.Kuznia)
+                        on_release: root.add_card(root.Kuznia)
                         background_color: color_plomien
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Blyskawica.power, root.Blyskawica.name)
-                        on_state: root.add_card(self.state, root.Blyskawica)
+                        on_release: root.add_card(root.Blyskawica)
                         background_color: color_plomien
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Pozar.power, root.Pozar.name)
-                        on_state: root.add_card(self.state, root.Pozar)
+                        on_release: root.add_card(root.Pozar)
                         background_color: color_plomien
 
             GridLayout:
@@ -244,29 +246,29 @@
                     on_dismiss: grid3.height = '26dp'
 
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.FontannaZycia.power, root.FontannaZycia.name)
-                        on_state: root.add_card(self.state, root.FontannaZycia)
+                        on_release: root.add_card(root.FontannaZycia)
                         background_color: color_powodz
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Potop.power, root.Potop.name)
-                        on_state: root.add_card(self.state, root.Potop)
+                        on_release: root.add_card(root.Potop)
                         background_color: color_powodz
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Wyspa.power, root.Wyspa.name)
-                        on_state: root.add_card(self.state, root.Wyspa)
+                        on_release: root.add_card(root.Wyspa)
                         background_color: color_powodz
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Bagno.power, root.Bagno.name)
-                        on_state: root.add_card(self.state, root.Bagno)
+                        on_release: root.add_card(root.Bagno)
                         background_color: color_powodz
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.ZywiolakWody.power, root.ZywiolakWody.name)
-                        on_state: root.add_card(self.state, root.ZywiolakWody)
+                        on_release: root.add_card(root.ZywiolakWody)
                         background_color: color_powodz
 
             GridLayout:
@@ -287,29 +289,29 @@
                     id: dropdown4
                     on_dismiss: grid4.height = '26dp'
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Dzwonnica.power, root.Dzwonnica.name)
-                        on_state: root.add_card(self.state, root.Dzwonnica)
+                        on_release: root.add_card(root.Dzwonnica)
                         background_color: color_kraina
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Jaskinia.power, root.Jaskinia.name)
-                        on_state: root.add_card(self.state, root.Jaskinia)
+                        on_release: root.add_card(root.Jaskinia)
                         background_color: color_kraina
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.ZywiolakZiemi.power, root.ZywiolakZiemi.name)
-                        on_state: root.add_card(self.state, root.ZywiolakZiemi)
+                        on_release: root.add_card(root.ZywiolakZiemi)
                         background_color: color_kraina
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Las.power, root.Las.name)
-                        on_state: root.add_card(self.state, root.Las)
+                        on_release: root.add_card(root.Las)
                         background_color: color_kraina
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Gory.power, root.Gory.name)
-                        on_state: root.add_card(self.state, root.Gory)
+                        on_release: root.add_card(root.Gory)
                         background_color: color_kraina
 
             GridLayout:
@@ -330,29 +332,29 @@
                     id: dropdown5
                     on_dismiss: grid5.height = '26dp'
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Cesarzowa.power, root.Cesarzowa.name)
-                        on_state: root.add_card(self.state, root.Cesarzowa)
+                        on_release: root.add_card(root.Cesarzowa)
                         background_color: color_przywodca
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Krol.power, root.Krol.name)
-                        on_state: root.add_card(self.state, root.Krol)
+                        on_release: root.add_card(root.Krol)
                         background_color: color_przywodca
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Ksiezniczka.power, root.Ksiezniczka.name)
-                        on_state: root.add_card(self.state, root.Ksiezniczka)
+                        on_release: root.add_card(root.Ksiezniczka)
                         background_color: color_przywodca
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Krolowa.power, root.Krolowa.name)
-                        on_state: root.add_card(self.state, root.Krolowa)
+                        on_release: root.add_card(root.Krolowa)
                         background_color: color_przywodca
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.WielkiWodz.power, root.WielkiWodz.name)
-                        on_state: root.add_card(self.state, root.WielkiWodz)
+                        on_release: root.add_card(root.WielkiWodz)
                         background_color: color_przywodca
 
             GridLayout:
@@ -373,29 +375,29 @@
                     id: dropdown6
                     on_dismiss: grid6.height = '26dp'
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.ElfiDlugiLuk.power, root.ElfiDlugiLuk.name)
-                        on_state: root.add_card(self.state, root.ElfiDlugiLuk)
+                        on_release: root.add_card(root.ElfiDlugiLuk)
                         background_color: color_bron
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.MagicznaRozdzka.power, root.MagicznaRozdzka.name)
-                        on_state: root.add_card(self.state, root.MagicznaRozdzka)
+                        on_release: root.add_card(root.MagicznaRozdzka)
                         background_color: color_bron
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.MieczKetha.power, root.MieczKetha.name)
-                        on_state: root.add_card(self.state, root.MieczKetha)
+                        on_release: root.add_card(root.MieczKetha)
                         background_color: color_bron
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.SterowiecWojenny.power, root.SterowiecWojenny.name)
-                        on_state: root.add_card(self.state, root.SterowiecWojenny)
+                        on_release: root.add_card(root.SterowiecWojenny)
                         background_color: color_bron
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Okret.power, root.Okret.name)
-                        on_state: root.add_card(self.state, root.Okret)
+                        on_release: root.add_card(root.Okret)
                         background_color: color_bron
 
             GridLayout:
@@ -416,29 +418,29 @@
                     id: dropdown7
                     on_dismiss: grid7.height = '26dp'
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.ZywiolakPowietrza.power, root.ZywiolakPowietrza.name)
-                        on_state: root.add_card(self.state, root.ZywiolakPowietrza)
+                        on_release: root.add_card(root.ZywiolakPowietrza)
                         background_color: color_pogoda
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Sniezyca.power, root.Sniezyca.name)
-                        on_state: root.add_card(self.state, root.Sniezyca)
+                        on_release: root.add_card(root.Sniezyca)
                         background_color: color_pogoda
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Burza.power, root.Burza.name)
-                        on_state: root.add_card(self.state, root.Burza)
+                        on_release: root.add_card(root.Burza)
                         background_color: color_pogoda
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Dym.power, root.Dym.name)
-                        on_state: root.add_card(self.state, root.Dym)
+                        on_release: root.add_card(root.Dym)
                         background_color: color_pogoda
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Tornado.power, root.Tornado.name)
-                        on_state: root.add_card(self.state, root.Tornado)
+                        on_release: root.add_card(root.Tornado)
                         background_color: color_pogoda
 
             GridLayout:
@@ -459,29 +461,29 @@
                     id: dropdown8
                     on_dismiss: grid8.height = '26dp'
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.KsiegaZmian.power, root.KsiegaZmian.name)
-                        on_state: root.add_card(self.state, root.KsiegaZmian)
+                        on_release: root.add_card(root.KsiegaZmian)
                         background_color: color_artefakt
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.TarczaKetha.power, root.TarczaKetha.name)
-                        on_state: root.add_card(self.state, root.TarczaKetha)
+                        on_release: root.add_card(root.TarczaKetha)
                         background_color: color_artefakt
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.KlejnotPorzadku.power, root.KlejnotPorzadku.name)
-                        on_state: root.add_card(self.state, root.KlejnotPorzadku)
+                        on_release: root.add_card(root.KlejnotPorzadku)
                         background_color: color_artefakt
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.DrzewoSwiata.power, root.DrzewoSwiata.name)
-                        on_state: root.add_card(self.state, root.DrzewoSwiata)
+                        on_release: root.add_card(root.DrzewoSwiata)
                         background_color: color_artefakt
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.RunaOchrony.power, root.RunaOchrony.name)
-                        on_state: root.add_card(self.state, root.RunaOchrony)
+                        on_release: root.add_card(root.RunaOchrony)
                         background_color: color_artefakt
 
             GridLayout:
@@ -502,34 +504,34 @@
                     id: dropdown9
                     on_dismiss: grid9.height = '26dp'
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.WladcaBestii.power, root.WladcaBestii.name)
-                        on_state: root.add_card(self.state, root.WladcaBestii)
+                        on_release: root.add_card(root.WladcaBestii)
                         background_color: color_czarodziej
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Kolekcjoner.power, root.Kolekcjoner.name)
-                        on_state: root.add_card(self.state, root.Kolekcjoner)
+                        on_release: root.add_card(root.Kolekcjoner)
                         background_color: color_czarodziej
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Zaklinaczka.power, root.Zaklinaczka.name)
-                        on_state: root.add_card(self.state, root.Zaklinaczka)
+                        on_release: root.add_card(root.Zaklinaczka)
                         background_color: color_czarodziej
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Nekromanta.power, root.Nekromanta.name)
-                        on_state: root.add_card(self.state, root.Nekromanta)
+                        on_release: root.add_card(root.Nekromanta)
                         background_color: color_czarodziej
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Czarnoksieznik.power, root.Czarnoksieznik.name)
-                        on_state: root.add_card(self.state, root.Czarnoksieznik)
+                        on_release: root.add_card(root.Czarnoksieznik)
                         background_color: color_czarodziej
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Blazen.power, root.Blazen.name)
-                        on_state: root.add_card(self.state, root.Blazen)
+                        on_release: root.add_card(root.Blazen)
                         background_color: color_czarodziej
 
             GridLayout:
@@ -550,22 +552,54 @@
                     id: dropdown10
                     on_dismiss: grid10.height = '26dp'
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.WladcaBestii.power, root.WladcaBestii.name)
-                        on_state: root.add_card(self.state, root.WladcaBestii)
+                        on_release: root.add_card(root.WladcaBestii)
                         background_color: color_specjalne
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Kolekcjoner.power, root.Kolekcjoner.name)
-                        on_state: root.add_card(self.state, root.Kolekcjoner)
+                        on_release: root.add_card(root.Kolekcjoner)
                         background_color: color_specjalne
 
-                    ToggleButton:
+                    Button:
                         text: "{} {}".format(root.Zaklinaczka.power, root.Zaklinaczka.name)
-                        on_state: root.add_card(self.state, root.Zaklinaczka)
+                        on_release: root.add_card(root.Zaklinaczka)
                         background_color: color_specjalne
 
         Button:
+            text: "POLICZ"
+            height: '30dp'
+            on_release: root.display_result()
+            background_color: [0.2, 0.2, 0.2, 1]
+        Button:
             text: "RESET"
             height: '30dp'
+            on_release: root.reset()
             background_color: [0.2, 0.2, 0.2, 1]
+
+<WyspaPopup>:
+    title: "Wyspa"
+    size: (400, 150)
+    size_hint: (None, None)
+
+    GridLayout:
+        cols: 1
+        anchor_y: 'top'
+        size: root.width, root.height
+        pos: root.x, root.y
+
+        Button:
+            text: "18 Bagno"
+            on_release: root.use("Bagno")
+            background_color: color_powodz
+
+        Button:
+            text: "32 Potop"
+            on_release: root.use("Potop"); root.dismiss()
+            background_color: color_powodz
+
+        Button:
+            text: "40 Pożar"
+            on_release: root.use("Pożar"); root.dismiss()
+            background_color: color_plomien

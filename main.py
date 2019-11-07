@@ -2,6 +2,22 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.properties import StringProperty, ListProperty
 from operator import attrgetter
+from kivy.uix.popup import Popup
+
+
+class WyspaPopup(Popup):
+    list_of_cards = ListProperty()
+
+    def __init__(self, list_of_cards, **kwargs):
+        super(WyspaPopup, self).__init__(**kwargs)
+        self.list_of_cards = list_of_cards
+
+    def use(self, element):
+        for card in self.list_of_cards:
+            if card.name == "Wyspa":
+                card.extra_ability = element
+                self.dismiss()
+                return
 
 
 class SelectCardWindow(Widget):
@@ -9,28 +25,32 @@ class SelectCardWindow(Widget):
     count_cards = StringProperty()
     sum_to_display = StringProperty()
 
-    def add_card(self, state, card):
-        if state == 'down':
-            if any(card.name == "Nekromanta" and not card.canceled_card for card in self.list_of_cards):
-                if len(self.list_of_cards) < 8:
-                    self.list_of_cards.append(card)
-            else:
-                if len(self.list_of_cards) < 7:
-                    self.list_of_cards.append(card)
-        else:
-            for element in self.list_of_cards:
-                if card.name == element.name:
-                    self.list_of_cards.remove(element)
-                    break
-        if any(card.name == "Nekromanta" and not card.canceled_card for card in self.list_of_cards):
-            self.count_cards = "{}/8".format(str(len(self.list_of_cards)))
-        else:
-            self.count_cards = "{}/7".format(str(len(self.list_of_cards)))
+    def count_cards_function(self):
+        i = "8" if any(card.name == "Nekromanta" and not card.canceled_card for card in self.list_of_cards) else "7"
+        self.count_cards = "{}/{}".format(str(len(self.list_of_cards)), i)
 
+    def add_card(self, card):
+        i = 8 if any(card.name == "Nekromanta" and not card.canceled_card for card in self.list_of_cards) else 7
+        if len(self.list_of_cards) < i:
+            if not any(element.name == card.name for element in self.list_of_cards):
+                self.list_of_cards.append(card)
+                if hasattr(card, "ability"):
+                    card.ability(card, self.list_of_cards)
+        self.count_cards_function()
+        self.sum_to_display = "0"
+
+    def del_card(self, card):
+        if hasattr(self.list_of_cards[card], "extra_ability"):
+            self.list_of_cards[card].extra_ability = ""
+
+        del self.list_of_cards[card]
+        self.count_cards_function()
+        self.sum_to_display = "0"
+
+    def display_result(self):
         # double check because last cards in list can change firsts cards parameters
         self.points_sum()
         self.sum_to_display = str(self.points_sum())
-
         # reset properties
         for card in self.list_of_cards:
             card.canceled_card = False
@@ -40,7 +60,13 @@ class SelectCardWindow(Widget):
         for card in self.list_of_cards:
             if not card.canceled_card:
                 points_sum += card.card_points(card, self.list_of_cards)
+        self.sum_to_display = str(points_sum)
         return points_sum
+
+    def reset(self):
+        self.list_of_cards = []
+        self.sum_to_display = "0"
+        self.count_cards_function()
 
     class KrasnoludzkaPiechota:
         name = "Krasnoludzka Piechota"
@@ -48,10 +74,6 @@ class SelectCardWindow(Widget):
         power = 15
         set = "Armia"
         description = "KARA: -2 za każdą inną kartę Armii."
-
-        def __init__(self):
-            print('abc')
-            SelectCardWindow.points_sum()
 
         def card_points(self, list_of_cards):
 
@@ -250,12 +272,12 @@ class SelectCardWindow(Widget):
 
         def card_points(self, list_of_cards):
             if not any(card.name == "Runa ochrony" for card in list_of_cards):
-                for card in list_of_cards:
-                    print(card.set)
-
-                    if not card.set in ("Płomień", "Czarodziej", "Pogoda", "Broń", "Artefakt"):
-                        if not card.name in ("Góry", "Potop", "Wyspa", "Jednorożec", "Smok"):
-                            card.canceled_card = True
+                if not any(card.name == "Wyspa" and card.extra_ability == self.name and not card.canceled_card
+                           for card in list_of_cards):
+                    for card in list_of_cards:
+                        if not card.set in ("Płomień", "Czarodziej", "Pogoda", "Broń", "Artefakt"):
+                            if not card.name in ("Góry", "Potop", "Wyspa", "Jednorożec", "Smok"):
+                                card.canceled_card = True
             return self.power
 
     class FontannaZycia:
@@ -263,11 +285,15 @@ class SelectCardWindow(Widget):
         canceled_card = False
         power = 1
         set = "Powódź"
-        description = "PREMIA: Dodaj podstawową siłę dowolnej karty Broni, Powodzi, Płomienia, Krainy albo Pogody"
+        description = "PREMIA: Dodaj podstawową siłę dowolnej karty Broni, " \
+                      "Powodzi, Płomienia, Krainy albo Pogody w ręce"
 
         def card_points(self, list_of_cards):
-            # the most powerful card is Pozar with power 40
-            return self.power + 40
+            list_of_points = []
+            for card in list_of_cards:
+                if card.set in ("Broń", "Powódź", "Płomień", "Kraina", "Pogoda") and not card.canceled_card:
+                    list_of_points.append(card.power)
+            return self.power + max(list_of_points)
 
     class Potop:
         name = "Potop"
@@ -278,14 +304,17 @@ class SelectCardWindow(Widget):
                       "i wszystkie karty Płomienia z wyjątkiem Błyskawicy."
 
         def card_points(self, list_of_cards):
-            if not any(card.name in ("Runa ochrony", "Góry", "Zwiadowcy") for card in list_of_cards):
-                for card in list_of_cards:
-                    if card.set == "Armia" and not any(card.name == "Okręt" and not card.canceled_card
-                                                       for card in list_of_cards):
-                        card.canceled_card = True
-                    if card.set in ("Kraina", "Płomień"):
-                        if card.name not in ("Góry", "Błyskawica"):
+            if not any(card.name in ("Runa ochrony", "Góry", "Zwiadowcy") and not card.canceled_card
+                       for card in list_of_cards):
+                if not any(card.name == "Wyspa" and card.extra_ability == self.name and not card.canceled_card
+                           for card in list_of_cards):
+                    for card in list_of_cards:
+                        if card.set == "Armia" and not any(card.name == "Okręt" and not card.canceled_card
+                                                           for card in list_of_cards):
                             card.canceled_card = True
+                        if card.set in ("Kraina", "Płomień"):
+                            if card.name not in ("Góry", "Błyskawica"):
+                                card.canceled_card = True
             return self.power
 
     class Wyspa:
@@ -294,6 +323,11 @@ class SelectCardWindow(Widget):
         power = 14
         set = "Powódź"
         description = "PREMIA: USUWA karę z dowolnej karty Powodzi albo Płomienia"
+        extra_ability = ""
+
+        def ability(self, list_of_cards):
+            if self.extra_ability == "":
+                WyspaPopup(list_of_cards).open()
 
         def card_points(self, list_of_cards):
             return self.power
@@ -307,12 +341,14 @@ class SelectCardWindow(Widget):
 
         def card_points(self, list_of_cards):
             penalty = 0
-            if not any(card.name in ("Runa ochrony", "Góry") for card in list_of_cards):
-                for card in list_of_cards:
-                    if card.set == "Armia" and not any(card.name == "Okręt" for card in list_of_cards):
-                        penalty += 3
-                    if card.set == "Płomień":
-                        penalty += 3
+            if not any(card.name in ("Runa ochrony", "Góry") and not card.canceled_card for card in list_of_cards):
+                if not any(card.name == "Wyspa" and card.extra_ability == self.name and not card.canceled_card
+                           for card in list_of_cards):
+                    for card in list_of_cards:
+                        if card.set == "Armia" and not any(card.name == "Okręt" for card in list_of_cards):
+                            penalty += 3
+                        if card.set == "Płomień":
+                            penalty += 3
                 return self.power - penalty
 
     class ZywiolakWody:
