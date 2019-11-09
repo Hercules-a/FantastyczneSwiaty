@@ -59,35 +59,35 @@
             rows: 4
 
             ChosenCardButton:
-                text: '' if len(root.list_of_cards) <= 0 else root.list_of_cards[0].name
+                text: '' if len(root.list_of_cards) <= 0 else root.list_of_cards[0].name_to_display
                 on_release: root.del_card(0)
 
             ChosenCardButton:
-                text: '' if len(root.list_of_cards) <= 1 else root.list_of_cards[1].name
+                text: '' if len(root.list_of_cards) <= 1 else root.list_of_cards[1].name_to_display
                 on_release: root.del_card(1)
 
             ChosenCardButton:
-                text: '' if len(root.list_of_cards) <= 2 else root.list_of_cards[2].name
+                text: '' if len(root.list_of_cards) <= 2 else root.list_of_cards[2].name_to_display
                 on_release: root.del_card(2)
 
             ChosenCardButton:
-                text: '' if len(root.list_of_cards) <= 3 else root.list_of_cards[3].name
+                text: '' if len(root.list_of_cards) <= 3 else root.list_of_cards[3].name_to_display
                 on_release: root.del_card(3)
 
             ChosenCardButton:
-                text: '' if len(root.list_of_cards) <= 4 else root.list_of_cards[4].name
+                text: '' if len(root.list_of_cards) <= 4 else root.list_of_cards[4].name_to_display
                 on_release: root.del_card(4)
 
             ChosenCardButton:
-                text: '' if len(root.list_of_cards) <= 5 else root.list_of_cards[5].name
+                text: '' if len(root.list_of_cards) <= 5 else root.list_of_cards[5].name_to_display
                 on_release: root.del_card(5)
 
             ChosenCardButton:
-                text: '' if len(root.list_of_cards) <= 6 else root.list_of_cards[6].name
+                text: '' if len(root.list_of_cards) <= 6 else root.list_of_cards[6].name_to_display
                 on_release: root.del_card(6)
 
             ChosenCardButton:
-                text: '' if len(root.list_of_cards) <= 7 else "{} {}".format(root.list_of_cards[7].power, root.list_of_cards[7].name)
+                text: '' if len(root.list_of_cards) <= 7 else root.list_of_cards[7].name_to_display
                 on_release: root.del_card(7)
 
         #List of all cards
@@ -118,6 +118,7 @@
                         text: "{} {}".format(root.KrasnoludzkaPiechota.power, root.KrasnoludzkaPiechota.name)
                         on_release: root.add_card(root.KrasnoludzkaPiechota)
                         background_color: color_armia
+                        description: "abc"
 
                     Button:
                         id: elfi_lucznicy
@@ -553,18 +554,18 @@
                     on_dismiss: grid10.height = '26dp'
 
                     Button:
-                        text: "{} {}".format(root.WladcaBestii.power, root.WladcaBestii.name)
-                        on_release: root.add_card(root.WladcaBestii)
+                        text: "{} {}".format(root.Mimik.power, root.Mimik.name)
+                        on_release: root.add_card(root.Mimik)
                         background_color: color_specjalne
 
                     Button:
-                        text: "{} {}".format(root.Kolekcjoner.power, root.Kolekcjoner.name)
-                        on_release: root.add_card(root.Kolekcjoner)
+                        text: "{} {}".format(root.Fatamorgana.power, root.Fatamorgana.name)
+                        on_release: root.add_card(root.Fatamorgana)
                         background_color: color_specjalne
 
                     Button:
-                        text: "{} {}".format(root.Zaklinaczka.power, root.Zaklinaczka.name)
-                        on_release: root.add_card(root.Zaklinaczka)
+                        text: "{} {}".format(root.Zmiennoksztaltny.power, root.Zmiennoksztaltny.name)
+                        on_release: root.add_card(root.Zmiennoksztaltny)
                         background_color: color_specjalne
 
         Button:
@@ -603,3 +604,46 @@
             text: "40 Pożar"
             on_release: root.use("Pożar"); root.dismiss()
             background_color: color_plomien
+
+<MimikPopup>:
+    title: "Mimik"
+    size: (400, 500)
+    size_hint: (None, None)
+
+    GridLayout:
+        cols: 1
+        anchor_y: 'top'
+        size: root.width, root.height
+        pos: root.x, root.y
+
+        ChosenCardButton:
+            text: '' if len(root.list_of_cards) <= 0 else root.list_of_cards[0].name
+            on_release: root.use(root.list_of_cards[0])
+
+        ChosenCardButton:
+            text: '' if len(root.list_of_cards) <= 1 else root.list_of_cards[1].name
+            on_release: root.use(root.list_of_cards[1])
+
+        ChosenCardButton:
+            text: '' if len(root.list_of_cards) <= 2 else root.list_of_cards[2].name
+            on_release: root.use(root.list_of_cards[2])
+
+        ChosenCardButton:
+            text: '' if len(root.list_of_cards) <= 3 else root.list_of_cards[3].name
+            on_release: root.use(root.list_of_cards[3])
+
+        ChosenCardButton:
+            text: '' if len(root.list_of_cards) <= 4 else root.list_of_cards[4].name
+            on_release: root.use(root.list_of_cards[4])
+
+        ChosenCardButton:
+            text: '' if len(root.list_of_cards) <= 5 else root.list_of_cards[5].name
+            on_release: root.use(root.list_of_cards[5])
+
+        ChosenCardButton:
+            text: '' if len(root.list_of_cards) <= 6 else root.list_of_cards[6].name
+            on_release: root.use(root.list_of_cards[6])
+
+        ChosenCardButton:
+            text: '' if len(root.list_of_cards) <= 7 else root.list_of_cards[7].name
+            on_release: root.use(root.list_of_cards[7])

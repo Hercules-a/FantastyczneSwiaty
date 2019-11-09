@@ -13,11 +13,30 @@ class WyspaPopup(Popup):
         self.list_of_cards = list_of_cards
 
     def use(self, element):
-        for card in self.list_of_cards:
-            if card.name == "Wyspa":
-                card.extra_ability = element
-                self.dismiss()
-                return
+        card = self.list_of_cards[-1]
+        card.extra_ability = element
+        card.name_to_display = "Wyspa + {}".format(element)
+        self.dismiss()
+
+
+class MimikPopup(Popup):
+    list_of_cards = ListProperty()
+
+    def __init__(self, list_of_cards, **kwargs):
+        super(MimikPopup, self).__init__(**kwargs)
+        self.list_of_cards = list_of_cards
+
+    def use(self, element):
+        card = self.list_of_cards[-1]
+        card.name = element.name
+        card.power = element.power
+        card.set = element.set
+        card.name_to_display = "Mimik + {}".format(element.name)
+        if hasattr(element, "penalty"):
+            card.card_points = element.penalty
+#           setattr(card, "card_points", element.penalty)
+        self.dismiss()
+        return
 
 
 class SelectCardWindow(Widget):
@@ -25,69 +44,30 @@ class SelectCardWindow(Widget):
     count_cards = StringProperty()
     sum_to_display = StringProperty()
 
-    def count_cards_function(self):
-        i = "8" if any(card.name == "Nekromanta" and not card.canceled_card for card in self.list_of_cards) else "7"
-        self.count_cards = "{}/{}".format(str(len(self.list_of_cards)), i)
-
-    def add_card(self, card):
-        i = 8 if any(card.name == "Nekromanta" and not card.canceled_card for card in self.list_of_cards) else 7
-        if len(self.list_of_cards) < i:
-            if not any(element.name == card.name for element in self.list_of_cards):
-                self.list_of_cards.append(card)
-                if hasattr(card, "ability"):
-                    card.ability(card, self.list_of_cards)
-        self.count_cards_function()
-        self.sum_to_display = "0"
-
-    def del_card(self, card):
-        if hasattr(self.list_of_cards[card], "extra_ability"):
-            self.list_of_cards[card].extra_ability = ""
-
-        del self.list_of_cards[card]
-        self.count_cards_function()
-        self.sum_to_display = "0"
-
-    def display_result(self):
-        # double check because last cards in list can change firsts cards parameters
-        self.points_sum()
-        self.sum_to_display = str(self.points_sum())
-        # reset properties
-        for card in self.list_of_cards:
-            card.canceled_card = False
-
-    def points_sum(self):
-        points_sum = 0
-        for card in self.list_of_cards:
-            if not card.canceled_card:
-                points_sum += card.card_points(card, self.list_of_cards)
-        self.sum_to_display = str(points_sum)
-        return points_sum
-
-    def reset(self):
-        self.list_of_cards = []
-        self.sum_to_display = "0"
-        self.count_cards_function()
-
     class KrasnoludzkaPiechota:
         name = "Krasnoludzka Piechota"
+        name_to_display = name
         canceled_card = False
         power = 15
         set = "Armia"
         description = "KARA: -2 za każdą inną kartę Armii."
 
-        def card_points(self, list_of_cards):
-
+        def penalty(self, list_of_cards):
             if any(card.name in ("Zwiadowcy", "Runa ochrony") for card in list_of_cards):
                 return self.power
             else:
                 penalty = 0
                 for card in list_of_cards:
-                    if card.set == self.set and not card.canceled_card and card.name != self.name:
+                    if card.set == "Armia" and not card.canceled_card and card != self:
                         penalty += 2
                 return self.power - penalty
 
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
+
     class ElfiLucznicy:
         name = "Elfi łucznicy"
+        name_to_display = name
         canceled_card = False
         power = 10
         set = "Armia"
@@ -101,25 +81,30 @@ class SelectCardWindow(Widget):
 
     class Rycerze:
         name = "Rycerze"
+        name_to_display = name
         canceled_card = False
         power = 20
         set = "Armia"
         description = "KARA: -8, chyba że masz przynajmniej 1 kartę Przywódcy"
 
-        def card_points(self, list_of_cards):
+        def penalty(self, list_of_cards):
             if any((card.set == "Przywódca" or card.name == "Runa ochrony") and not card.canceled_card
                    for card in list_of_cards):
                 return self.power
             return self.power - 8
 
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
+
     class LekkaKonnica:
         name = "Lekka konnica"
+        name_to_display = name
         canceled_card = False
         power = 17
         set = "Armia"
         description = "KARA: -2 za każdą kartę Krainy."
 
-        def card_points(self, list_of_cards):
+        def penalty(self, list_of_cards):
             penalty = 0
             if not any(card.name == "Runa ochrony" for card in list_of_cards):
                 for card in list_of_cards:
@@ -127,8 +112,12 @@ class SelectCardWindow(Widget):
                         penalty += 2
             return self.power - penalty
 
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
+
     class Zwiadowcy:
         name = "Zwiadowcy"
+        name_to_display = name
         canceled_card = False
         power = 5
         set = "Armia"
@@ -143,35 +132,47 @@ class SelectCardWindow(Widget):
 
     class Bazyliszek:
         name = "Bazyliszek"
+        name_to_display = name
         canceled_card = False
         power = 35
         set = "Bestia"
         description = "KARA: ANULUJE wszystkie karty Armii, Przywódcy i innych Bestii."
 
-        def card_points(self, list_of_cards):
-            for card in list_of_cards:
-                if not any(card.name in ("Władca bestii", "Runa ochrony") for card in list_of_cards):
+        def penalty(self, list_of_cards):
+            if not any(card.name in ("Władca bestii", "Runa ochrony") for card in list_of_cards):
+                for card in list_of_cards:
                     if card.set == "Armia" and not any(card.name == "Zwiadowcy" for card in list_of_cards):
                         card.canceled_card = True
-                    if card.set == "Przywódca" or (card.set == "Bestia" and card.name != "Bazyliszek"):
+                    if card.set == "Przywódca" or (card.set == "Bestia" and card != self):
                         card.canceled_card = True
+            if any(card.name_to_display == "Mimik + Bazyliszek" for card in list_of_cards):
+                self.canceled_card = True
+
             return self.power
+
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
 
     class Smok:
         name = "Smok"
+        name_to_display = name
         canceled_card = False
         power = 30
         set = "Bestia"
         description = "KARA: -40, chyba że masz przynajmniej 1 kartę Czarodzieja"
 
-        def card_points(self, list_of_cards):
+        def penalty(self, list_of_cards):
             if not any(card.set == "Czarodziej" and not card.canceled_card for card in list_of_cards):
                 if not any(card.name in ("Władca bestii", "Runa ochrony") for card in list_of_cards):
                     return self.power - 40
             return self.power
 
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
+
     class Hydra:
         name = "Hydra"
+        name_to_display = name
         canceled_card = False
         power = 12
         set = "Bestia"
@@ -184,6 +185,7 @@ class SelectCardWindow(Widget):
 
     class Jednorozec:
         name = "Jednorożec"
+        name_to_display = name
         canceled_card = False
         power = 9
         set = "Bestia"
@@ -198,6 +200,7 @@ class SelectCardWindow(Widget):
 
     class Rumak:
         name = "Rumak"
+        name_to_display = name
         canceled_card = False
         power = 6
         set = "Bestia"
@@ -210,6 +213,7 @@ class SelectCardWindow(Widget):
 
     class Swieca:
         name = "Świeca"
+        name_to_display = name
         canceled_card = False
         power = 2
         set = "Płomień"
@@ -224,6 +228,7 @@ class SelectCardWindow(Widget):
 
     class ZywiolakOgnia:
         name = "Żywiołak ognia"
+        name_to_display = name
         canceled_card = False
         power = 4
         set = "Płomień"
@@ -232,12 +237,13 @@ class SelectCardWindow(Widget):
         def card_points(self, list_of_cards):
             bonus = 0
             for card in list_of_cards:
-                if card.set == self.set and card.name != self.name:
+                if card.set == self.set and card != self:
                     bonus += 15
             return self.power + bonus
 
     class Kuznia:
         name = "Kuźnia"
+        name_to_display = name
         canceled_card = False
         power = 9
         set = "Płomień"
@@ -252,6 +258,7 @@ class SelectCardWindow(Widget):
 
     class Blyskawica:
         name = "Błyskawica"
+        name_to_display = name
         canceled_card = False
         power = 11
         set = "Płomień"
@@ -264,13 +271,14 @@ class SelectCardWindow(Widget):
 
     class Pozar:
         name = "Pożar"
+        name_to_display = name
         canceled_card = False
         power = 40
         set = "Płomień"
         description = "KARA: ANULUJE wszystkie karty z wyjątkiem Płomienia, Czarodzieja, " \
                       "Pogody, Broni, Artefaktu, Gór, Potopu, Wyspy, Jednorożca i Smoka"
 
-        def card_points(self, list_of_cards):
+        def penalty(self, list_of_cards):
             if not any(card.name == "Runa ochrony" for card in list_of_cards):
                 if not any(card.name == "Wyspa" and card.extra_ability == self.name and not card.canceled_card
                            for card in list_of_cards):
@@ -280,8 +288,12 @@ class SelectCardWindow(Widget):
                                 card.canceled_card = True
             return self.power
 
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
+
     class FontannaZycia:
         name = "Fontanna życia"
+        name_to_display = name
         canceled_card = False
         power = 1
         set = "Powódź"
@@ -297,13 +309,14 @@ class SelectCardWindow(Widget):
 
     class Potop:
         name = "Potop"
+        name_to_display = name
         canceled_card = False
         power = 32
         set = "Powódź"
         description = "KARA: ANULUJE wszystkie karty Armii, wszystkie karty Krainy z wyjątkiem Gór " \
                       "i wszystkie karty Płomienia z wyjątkiem Błyskawicy."
 
-        def card_points(self, list_of_cards):
+        def penalty(self, list_of_cards):
             if not any(card.name in ("Runa ochrony", "Góry", "Zwiadowcy") and not card.canceled_card
                        for card in list_of_cards):
                 if not any(card.name == "Wyspa" and card.extra_ability == self.name and not card.canceled_card
@@ -317,8 +330,12 @@ class SelectCardWindow(Widget):
                                 card.canceled_card = True
             return self.power
 
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
+
     class Wyspa:
         name = "Wyspa"
+        name_to_display = name
         canceled_card = False
         power = 14
         set = "Powódź"
@@ -334,12 +351,13 @@ class SelectCardWindow(Widget):
 
     class Bagno:
         name = "Bagno"
+        name_to_display = name
         canceled_card = False
         power = 18
         set = "Powódź"
         description = "KARA: -3 za każdą kartę Armii i Płomienia"
 
-        def card_points(self, list_of_cards):
+        def penalty(self, list_of_cards):
             penalty = 0
             if not any(card.name in ("Runa ochrony", "Góry") and not card.canceled_card for card in list_of_cards):
                 if not any(card.name == "Wyspa" and card.extra_ability == self.name and not card.canceled_card
@@ -351,8 +369,12 @@ class SelectCardWindow(Widget):
                             penalty += 3
                 return self.power - penalty
 
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
+
     class ZywiolakWody:
         name = "Żywiołak wody"
+        name_to_display = name
         canceled_card = False
         power = 4
         set = "Powódź"
@@ -361,12 +383,13 @@ class SelectCardWindow(Widget):
         def card_points(self, list_of_cards):
             bonus = 0
             for card in list_of_cards:
-                if card.set == self.set and card.name != self.name:
+                if card.set == self.set and card != self:
                     bonus += 15
             return self.power + bonus
 
     class Dzwonnica:
         name = "Dzwonnica"
+        name_to_display = name
         canceled_card = False
         power = 8
         set = "Kraina"
@@ -379,6 +402,7 @@ class SelectCardWindow(Widget):
 
     class Jaskinia:
         name = "Jaskinia"
+        name_to_display = name
         canceled_card = False
         power = 6
         set = "Kraina"
@@ -391,6 +415,7 @@ class SelectCardWindow(Widget):
 
     class ZywiolakZiemi:
         name = "Żywiołak ziemi"
+        name_to_display = name
         canceled_card = False
         power = 4
         set = "Kraina"
@@ -399,12 +424,13 @@ class SelectCardWindow(Widget):
         def card_points(self, list_of_cards):
             bonus = 0
             for card in list_of_cards:
-                if card.set == self.set and card.name != self.name and not card.canceled_card:
+                if card.set == self.set and card != self and not card.canceled_card:
                     bonus += 15
             return self.power + bonus
 
     class Las:
         name = "Las"
+        name_to_display = name
         canceled_card = False
         power = 7
         set = "Kraina"
@@ -419,6 +445,7 @@ class SelectCardWindow(Widget):
 
     class Gory:
         name = "Góry"
+        name_to_display = name
         canceled_card = False
         power = 9
         set = "Kraina"
@@ -433,6 +460,7 @@ class SelectCardWindow(Widget):
 
     class Cesarzowa:
         name = "Cesarzowa"
+        name_to_display = name
         canceled_card = False
         power = 15
         set = "Przywódca"
@@ -444,12 +472,13 @@ class SelectCardWindow(Widget):
                 if card.set == "Armia" and not card.canceled_card:
                     bonus += 10
                 if not any(card.name == "Runa ochrony" for card in list_of_cards):
-                    if card.set == self.set and card.name != self.name and not card.canceled_card:
+                    if card.set == self.set and card != self and not card.canceled_card:
                         penalty += 5
             return self.power + bonus - penalty
 
     class Krol:
         name = "Król"
+        name_to_display = name
         canceled_card = False
         power = 8
         set = "Przywódca"
@@ -468,6 +497,7 @@ class SelectCardWindow(Widget):
 
     class Ksiezniczka:
         name = "Księżniczka"
+        name_to_display = name
         canceled_card = False
         power = 2
         set = "Przywódca"
@@ -476,13 +506,14 @@ class SelectCardWindow(Widget):
         def card_points(self, list_of_cards):
             bonus = 0
             for card in list_of_cards:
-                if card.set in ("Armia", "Czarodziej", "Przywódca") and card.name != self.name \
+                if card.set in ("Armia", "Czarodziej", "Przywódca") and card != self \
                         and not card.canceled_card:
                     bonus += 8
             return self.power + bonus
 
     class Krolowa:
         name = "Królowa"
+        name_to_display = name
         canceled_card = False
         power = 6
         set = "Przywódca"
@@ -501,6 +532,7 @@ class SelectCardWindow(Widget):
 
     class WielkiWodz:
         name = "Wielki wódz"
+        name_to_display = name
         canceled_card = False
         power = 4
         set = "Przywódca"
@@ -515,6 +547,7 @@ class SelectCardWindow(Widget):
 
     class ElfiDlugiLuk:
         name = "Elfi długi łuk"
+        name_to_display = name
         canceled_card = False
         power = 3
         set = "Broń"
@@ -528,6 +561,7 @@ class SelectCardWindow(Widget):
 
     class MagicznaRozdzka:
         name = "Magiczna różdżka"
+        name_to_display = name
         canceled_card = False
         power = 1
         set = "Broń"
@@ -540,6 +574,7 @@ class SelectCardWindow(Widget):
 
     class MieczKetha:
         name = "Miecz Ketha"
+        name_to_display = name
         canceled_card = False
         power = 7
         set = "Broń"
@@ -555,12 +590,13 @@ class SelectCardWindow(Widget):
 
     class SterowiecWojenny:
         name = "Sterowiec wojenny"
+        name_to_display = name
         canceled_card = False
         power = 35
         set = "Broń"
         description = "KARA: ANULOWANY, chyba że masz przynajmniej 1 kartę Armii. ANULOWANY z dowolną kasrtą pogody."
 
-        def card_points(self, list_of_cards):
+        def penalty(self, list_of_cards):
             if not any(card.name == "Runa ochrony" for card in list_of_cards):
                 if not any(card.name == "Zwiadowcy" and not card.canceled_card for card in list_of_cards):
                     if not any(card.set == "Armia" for card in list_of_cards):
@@ -569,22 +605,30 @@ class SelectCardWindow(Widget):
                     self.canceled_card = True
             return self.power
 
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
+
     class Okret:
         name = "Okręt"
+        name_to_display = name
         canceled_card = False
         power = 23
         set = "Broń"
         description = "KARA: ANULOWANY, chyba że masz przynajmniej 1 kartę Powodzi. " \
                       "USUWA słowo Armia z wszystkich kar wszystkich kart powodzi."
 
-        def card_points(self, list_of_cards):
+        def penalty(self, list_of_cards):
             if not any((card.set == "Powódź" or card.name == "Runa ochrony") and not card.canceled_card
                        for card in list_of_cards):
                 self.canceled_card = True
             return self.power
 
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
+
     class ZywiolakPowietrza:
         name = "Żywiołak powietrza"
+        name_to_display = name
         canceled_card = False
         power = 4
         set = "Pogoda"
@@ -593,18 +637,19 @@ class SelectCardWindow(Widget):
         def card_points(self, list_of_cards):
             bonus = 0
             for card in list_of_cards:
-                if card.set == self.set and card.name != self.name and not card.canceled_card:
+                if card.set == self.set and card != self and not card.canceled_card:
                     bonus += 15
             return self.power + bonus
 
     class Sniezyca:
         name = "Śnieżyca"
+        name_to_display = name
         canceled_card = False
         power = 30
         set = "Pogoda"
         description = "KARA: ANULUJE wszystkie karty Powodzi. -5 za każdą kartę Armii, Przywódcy, Bestii i Płomienia."
 
-        def card_points(self, list_of_cards):
+        def penalty(self, list_of_cards):
             penalty = 0
             if not any(card.name in ("Runa ochrony", "Jaskinia") and not card.canceled_card for card in list_of_cards):
                 for card in list_of_cards:
@@ -617,40 +662,52 @@ class SelectCardWindow(Widget):
                             penalty += 5
             return self.power - penalty
 
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
+
     class Burza:
         name = "Burza"
+        name_to_display = name
         canceled_card = False
         power = 8
         set = "Pogoda"
         description = "PREMIA: +10 za każdą kartę Powodzi. KARA: " \
                       "ANULUJE wszystkie karty Płomienia z wyjątkiem Błyskawicy"
 
-        def card_points(self, list_of_cards):
-            bonus = 0
-            for card in list_of_cards:
-                if card.set == "Powódź" and not card.canceled_card:
-                    bonus += 10
+        def penalty(self, list_of_cards):
             if not any(card.name in ("Runa ochrony", "Jaskinia") and not card.canceled_card for card in list_of_cards):
                 for card in list_of_cards:
                     if card.set == "Płomień" and card.name != "Błyskawica":
                         card.canceled_card = True
+
+        def card_points(self, list_of_cards):
+            self.penalty(list_of_cards)
+            bonus = 0
+            for card in list_of_cards:
+                if card.set == "Powódź" and not card.canceled_card:
+                    bonus += 10
             return self.power + bonus
 
     class Dym:
         name = "Dym"
+        name_to_display = name
         canceled_card = False
         power = 27
         set = "Pogoda"
         description = "KARA: Ta kara zostaje ANULOWANA, chyba że masz przynajmniej 1 kartę Płomienia"
 
-        def card_points(self, list_of_cards):
+        def penalty(self, list_of_cards):
             if not any((card.name in ("Runa ochrony", "Jaskinia") or card.set == "Płomień")
                        and not card.canceled_card for card in list_of_cards):
                 self.canceled_card = True
             return self.power
 
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
+
     class Tornado:
         name = "Tornado"
+        name_to_display = name
         canceled_card = False
         power = 13
         set = "Pogoda"
@@ -664,10 +721,11 @@ class SelectCardWindow(Widget):
 
     class KsiegaZmian:
         name = "Księga zmian"
+        name_to_display = name
         canceled_card = False
         power = 3
         set = "Artefakt"
-        description = "PREMIA: Możesz zmienić zestaw do którego należy 1 inna kasta. " \
+        description = "PREMIA: Możesz zmienić zestaw do którego należy 1 inna karta. " \
                       "Jej nazwa, premia i kary pozostają te same."
 
         def card_points(self, list_of_cards):
@@ -675,6 +733,7 @@ class SelectCardWindow(Widget):
 
     class TarczaKetha:
         name = "Tarcza Ketha"
+        name_to_display = name
         canceled_card = False
         power = 4
         set = "Artefakt"
@@ -690,6 +749,7 @@ class SelectCardWindow(Widget):
 
     class KlejnotPorzadku:
         name = "Klejnot porządku"
+        name_to_display = name
         canceled_card = False
         power = 5
         set = "Artefakt"
@@ -729,6 +789,7 @@ class SelectCardWindow(Widget):
 
     class DrzewoSwiata:
         name = "Drzewo świata"
+        name_to_display = name
         canceled_card = False
         power = 2
         set = "Artefakt"
@@ -750,6 +811,7 @@ class SelectCardWindow(Widget):
 
     class RunaOchrony:
         name = "Runa ochrony"
+        name_to_display = name
         canceled_card = False
         power = 1
         set = "Artefakt"
@@ -760,6 +822,7 @@ class SelectCardWindow(Widget):
 
     class WladcaBestii:
         name = "Władca bestii"
+        name_to_display = name
         canceled_card = False
         power = 9
         set = "Czarodziej"
@@ -774,6 +837,7 @@ class SelectCardWindow(Widget):
 
     class Kolekcjoner:
         name = "Kolekcjoner"
+        name_to_display = name
         canceled_card = False
         power = 7
         set = "Czarodziej"
@@ -807,6 +871,7 @@ class SelectCardWindow(Widget):
 
     class Zaklinaczka:
         name = "Zaklinaczka"
+        name_to_display = name
         canceled_card = False
         power = 5
         set = "Czarodziej"
@@ -821,6 +886,7 @@ class SelectCardWindow(Widget):
 
     class Nekromanta:
         name = "Nekromanta"
+        name_to_display = name
         canceled_card = False
         power = 3
         set = "Czarodziej"
@@ -832,21 +898,26 @@ class SelectCardWindow(Widget):
 
     class Czarnoksieznik:
         name = "Czarnoksiężnik"
+        name_to_display = name
         canceled_card = False
         power = 25
         set = "Czarodziej"
         description = "KARA: -10 za każdą kartę Przywódcy i każdą inną kartę Czarodzieja."
 
-        def card_points(self, list_of_cards):
+        def penalty(self, list_of_cards):
             penalty = 0
             if not any(card.name == "Runa ochrony" for card in list_of_cards):
                 for card in list_of_cards:
-                    if card.set in ("Przywódca", "Czarodziej") and not card.canceled_card and card.name != self.name:
+                    if card.set in ("Przywódca", "Czarodziej") and not card.canceled_card and card != self:
                         penalty += 10
             return self.power - penalty
 
+        def card_points(self, list_of_cards):
+            return self.penalty(list_of_cards)
+
     class Blazen:
         name = "Błazen"
+        name_to_display = name
         canceled_card = False
         power = 3
         set = "Czarodziej"
@@ -869,6 +940,107 @@ class SelectCardWindow(Widget):
             except IndexError:
                 pass
             return self.power + bonus
+
+    class Mimik:
+        name = "Mimik"
+        name_to_display = name
+        canceled_card = False
+        power = 0
+        set = "Specjalne"
+        description = "Może zduplikować nazwę, podstawową siłę, zestaw i karę, " \
+                      "ALE NIE PREMIĘ dowolnej innej karty z Twojej ręki"
+        extra_ability = ""
+
+        def ability(self, list_of_cards):
+            if self.extra_ability == "":
+                MimikPopup(list_of_cards).open()
+
+        def card_points(self, list_of_cards):
+            return self.power
+
+    class Fatamorgana:
+        name = "Fatamorgana"
+        canceled_card = False
+        power = 0
+        set = "Specjalne"
+        description = "Może zduplikować nazwę i zestaw, do którego należy dowolna karta ..."
+        extra_ability = ""
+
+        def ability(self, list_of_cards):
+            if self.extra_ability == "":
+                WyspaPopup(list_of_cards).open()
+
+        def card_points(self, list_of_cards):
+            return self.power
+
+    class Zmiennoksztaltny:
+        name = "Zmiennokształtny"
+        canceled_card = False
+        power = 0
+        set = "Specjalne"
+        description = "Może zduplikować nazwę i zestaw, do którego należy dowolna karta ..."
+        extra_ability = ""
+
+        def ability(self, list_of_cards):
+            if self.extra_ability == "":
+                WyspaPopup(list_of_cards).open()
+
+        def card_points(self, list_of_cards):
+            return self.power
+
+    class EmptyCard:
+        name = ""
+        name_to_display = name
+        canceled_card = False
+        power = 0
+        set = ""
+        description = ""
+
+        def card_points(self, list_of_cards):
+            pass
+
+    def count_cards_function(self):
+        i = "8" if any(isinstance(card, self.Nekromanta) and not card.canceled_card for card in self.list_of_cards) else "7"
+        self.count_cards = "{}/{}".format(str(len(self.list_of_cards)), i)
+
+    def add_card(self, card):
+        i = 8 if any(isinstance(element, self.Nekromanta) and not element.canceled_card for element in self.list_of_cards) else 7
+        if len(self.list_of_cards) < i:
+            if not any(element.name == card.name for element in self.list_of_cards):
+                self.list_of_cards.append(card())
+                if hasattr(card, "ability"):
+                    card.ability(card, self.list_of_cards)
+
+        self.count_cards_function()
+        self.sum_to_display = "0"
+
+    def del_card(self, card):
+        del self.list_of_cards[card]
+        self.count_cards_function()
+        self.sum_to_display = "0"
+
+    def display_result(self):
+        # adding EmptyCard and instant delete to refresh UI
+        self.list_of_cards.append(self.EmptyCard())
+        self.list_of_cards.pop()
+        # double check because last cards in list can change firsts cards parameters
+        self.points_sum()
+        self.sum_to_display = str(self.points_sum())
+        # reset properties
+        for card in self.list_of_cards:
+            card.canceled_card = False
+
+    def points_sum(self):
+        points_sum = 0
+        for card in self.list_of_cards:
+            if not card.canceled_card:
+                points_sum += card.card_points(self.list_of_cards)
+        return points_sum
+
+    def reset(self):
+        self.list_of_cards = []
+        self.sum_to_display = "0"
+        self.count_cards_function()
 
 
 class MyApp(App):
