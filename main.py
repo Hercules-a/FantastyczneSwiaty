@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.properties import StringProperty, ListProperty
+from kivy.properties import StringProperty, ListProperty, ObjectProperty
 from operator import attrgetter
 from kivy.uix.popup import Popup
 
@@ -34,9 +34,29 @@ class MimikPopup(Popup):
         card.name_to_display = "Mimik + {}".format(element.name)
         if hasattr(element, "penalty"):
             card.card_points = element.penalty
-#           setattr(card, "card_points", element.penalty)
         self.dismiss()
         return
+
+
+class KsiegaZmianSetPopup(Popup):
+    element = ObjectProperty()
+    card = ObjectProperty()
+
+    def __init__(self, element, card, **kwargs):
+        super(KsiegaZmianSetPopup, self).__init__(**kwargs)
+        self.element = element
+        self.card = card
+
+    def use(self, card_set):
+        self.element.set = card_set
+        self.card.name_to_display = "Księga Zmian + {} + {}".format(self.element.name, self.element.set)
+        self.dismiss()
+
+
+class KsiegaZmianPopup(MimikPopup):
+    def use(self, element, ):
+        KsiegaZmianSetPopup(element, self.list_of_cards[-1]).open()
+        self.dismiss()
 
 
 class SelectCardWindow(Widget):
@@ -305,7 +325,10 @@ class SelectCardWindow(Widget):
             for card in list_of_cards:
                 if card.set in ("Broń", "Powódź", "Płomień", "Kraina", "Pogoda") and not card.canceled_card:
                     list_of_points.append(card.power)
-            return self.power + max(list_of_points)
+            if list_of_points == []:
+                return self.power
+            else:
+                return self.power + max(list_of_points)
 
     class Potop:
         name = "Potop"
@@ -727,6 +750,10 @@ class SelectCardWindow(Widget):
         set = "Artefakt"
         description = "PREMIA: Możesz zmienić zestaw do którego należy 1 inna karta. " \
                       "Jej nazwa, premia i kary pozostają te same."
+        extra_ability = ""
+
+        def ability(self, list_of_cards):
+            KsiegaZmianPopup(list_of_cards).open()
 
         def card_points(self, list_of_cards):
             return self.power
@@ -952,8 +979,7 @@ class SelectCardWindow(Widget):
         extra_ability = ""
 
         def ability(self, list_of_cards):
-            if self.extra_ability == "":
-                MimikPopup(list_of_cards).open()
+            MimikPopup(list_of_cards).open()
 
         def card_points(self, list_of_cards):
             return self.power
@@ -967,8 +993,7 @@ class SelectCardWindow(Widget):
         extra_ability = ""
 
         def ability(self, list_of_cards):
-            if self.extra_ability == "":
-                WyspaPopup(list_of_cards).open()
+            WyspaPopup(list_of_cards).open()
 
         def card_points(self, list_of_cards):
             return self.power
@@ -1000,11 +1025,13 @@ class SelectCardWindow(Widget):
             pass
 
     def count_cards_function(self):
-        i = "8" if any(isinstance(card, self.Nekromanta) and not card.canceled_card for card in self.list_of_cards) else "7"
+        i = "8" if any(isinstance(card, self.Nekromanta) and not card.canceled_card
+                       for card in self.list_of_cards) else "7"
         self.count_cards = "{}/{}".format(str(len(self.list_of_cards)), i)
 
     def add_card(self, card):
-        i = 8 if any(isinstance(element, self.Nekromanta) and not element.canceled_card for element in self.list_of_cards) else 7
+        i = 8 if any(isinstance(element, self.Nekromanta) and not element.canceled_card
+                     for element in self.list_of_cards) else 7
         if len(self.list_of_cards) < i:
             if not any(element.name == card.name for element in self.list_of_cards):
                 self.list_of_cards.append(card())

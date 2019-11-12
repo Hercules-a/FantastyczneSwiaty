@@ -19,7 +19,7 @@
     height: '25dp'
 
 <ChosenCardButton@Button>:
-    height: '25dp'
+    height: '28dp'
     size_hint_y: None
     text_size: self.size
     halign: 'center'
@@ -567,22 +567,26 @@
                         text: "{} {}".format(root.Zmiennoksztaltny.power, root.Zmiennoksztaltny.name)
                         on_release: root.add_card(root.Zmiennoksztaltny)
                         background_color: color_specjalne
+        GridLayout:
+            cols: 2
+            rows: 1
+            Button:
+                text: "RESET"
+                height: '30dp'
+                on_release: root.reset()
+                background_color: [1, 0, 0, 1]
 
-        Button:
-            text: "POLICZ"
-            height: '30dp'
-            on_release: root.display_result()
-            background_color: [0.2, 0.2, 0.2, 1]
-        Button:
-            text: "RESET"
-            height: '30dp'
-            on_release: root.reset()
-            background_color: [0.2, 0.2, 0.2, 1]
+            Button:
+                text: "POLICZ"
+                height: '30dp'
+                on_release: root.display_result()
+                background_color: [0, 1, 0, 1]
 
 <WyspaPopup>:
     title: "Wyspa"
     size: (400, 150)
     size_hint: (None, None)
+    auto_dismiss: False
 
     GridLayout:
         cols: 1
@@ -597,18 +601,19 @@
 
         Button:
             text: "32 Potop"
-            on_release: root.use("Potop"); root.dismiss()
+            on_release: root.use("Potop")
             background_color: color_powodz
 
         Button:
             text: "40 Pożar"
-            on_release: root.use("Pożar"); root.dismiss()
+            on_release: root.use("Pożar")
             background_color: color_plomien
 
 <MimikPopup>:
     title: "Mimik"
     size: (400, 500)
     size_hint: (None, None)
+    auto_dismiss: False
 
     GridLayout:
         cols: 1
@@ -647,3 +652,71 @@
         ChosenCardButton:
             text: '' if len(root.list_of_cards) <= 7 else root.list_of_cards[7].name
             on_release: root.use(root.list_of_cards[7])
+
+<KsiegaZmianSetPopup>:
+    title: "Ksiega zmian"
+    size: (400, 150)
+    size_hint: (None, None)
+    auto_dismiss: False
+
+    GridLayout:
+        cols: 1
+        anchor_y: 'top'
+        size: root.width, root.height
+        pos: root.x, root.y
+
+        Button:
+            text: "Armia"
+            on_release: root.use("Armia")
+            background_color: color_armia
+
+        Button:
+            text: "Artefakt"
+            on_release: root.use("Artefakt")
+            background_color: color_artefakt
+
+        Button:
+            text: "Bestia"
+            on_release: root.use("Bestia")
+            background_color: color_bestia
+
+        Button:
+            text: "Płomień"
+            on_release: root.use("Płomień")
+            background_color: color_plomien
+
+        Button:
+            text: "Powódź"
+            on_release: root.use("Powódź")
+            background_color: color_powodz
+
+        Button:
+            text: "Kraina"
+            on_release: root.use("Kraina")
+            background_color: color_kraina
+
+        Button:
+            text: "Przywódca"
+            on_release: root.use("Przywódca")
+            background_color: color_przywodca
+
+        Button:
+            text: "Broń"
+            on_release: root.use("Broń")
+            background_color: color_bron
+
+        Button:
+            text: "Pogoda"
+            on_release: root.use("Pogoda")
+            background_color: color_pogoda
+
+        Button:
+            text: "Czarodziej"
+            on_release: root.use("Czarodziej")
+            background_color: color_czarodziej
+
+        Button:
+            text: "Karty Specjalne"
+            on_release: root.use("Specjalne")
+            background_color: color_specjalne
+
