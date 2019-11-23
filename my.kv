@@ -19,8 +19,8 @@
     height: '25dp'
 
 <ChosenCardButton@Button>:
-    height: '28dp'
-    size_hint_y: None
+    #height: '28dp'
+    size_hint: .99, .24
     text_size: self.size
     halign: 'center'
 
@@ -37,13 +37,13 @@
     GridLayout:
         cols: 1
         anchor_y: 'top'
-        size: root.width - 10, root.height - 10
-        pos: 5, 5
+        size: root.width, root.height
+        pos: 0, 0
 
         GridLayout:
             rows: 1
-            size_hint_y: None
-            height: '26dp'
+            size_hint: .99, .04
+            #height: '26dp'
 
 
             MyLabel:
@@ -53,8 +53,8 @@
 
         # Display chosen cards
         GridLayout:
-            size_hint_y: None
-            height: '115dp'
+            size_hint: .99, .19
+            #height: '115dp'
             cols: 2
             rows: 4
 
@@ -92,18 +92,18 @@
 
         #List of all cards
         GridLayout:
-            size_hint_y: None
+            size_hint: .99, .74
             cols: 1
-            height: '442dp'
+            #height: '442dp'
+
             GridLayout:
                 id: grid0
                 cols: 1
-                size_hint_y: None
-                height: '26dp'
+                size_hint: .99, .058
 
                 Button:
                     text: "Armia"
-                    on_release: dropdown0.open(self); self.parent.height = '152dp'
+                    on_release: dropdown0.open(self); self.parent.size_hint = .99, .348
                     background_color: color_armia
 
                 Widget:
@@ -111,14 +111,13 @@
 
                 DropDown:
                     id: dropdown0
-                    on_dismiss: grid0.height = '26dp'
+                    on_dismiss: grid0.size_hint = .99, .058
 
 
                     Button:
                         text: "{} {}".format(root.KrasnoludzkaPiechota.power, root.KrasnoludzkaPiechota.name)
                         on_release: root.add_card(root.KrasnoludzkaPiechota)
                         background_color: color_armia
-                        description: "abc"
 
                     Button:
                         id: elfi_lucznicy
@@ -144,12 +143,11 @@
             GridLayout:
                 id: grid1
                 cols: 1
-                size_hint_y: None
-                height: '26dp'
+                size_hint: .99, .058
 
                 Button:
                     text: "Bestia"
-                    on_release: dropdown1.open(self); self.parent.height = '152dp'
+                    on_release: dropdown1.open(self); self.parent.size_hint = .99, .348
                     background_color: color_bestia
 
                 Widget:
@@ -157,7 +155,7 @@
 
                 DropDown:
                     id: dropdown1
-                    on_dismiss: grid1.height = '26dp'
+                    on_dismiss: grid1.size_hint = .99, .058
 
                     Button:
                         text: "{} {}".format(root.Bazyliszek.power, root.Bazyliszek.name)
@@ -187,12 +185,11 @@
             GridLayout:
                 id: grid2
                 cols: 1
-                size_hint_y: None
-                height: '26dp'
+                size_hint: .99, .058
 
                 Button:
                     text: "Płomień"
-                    on_release: dropdown2.open(self); self.parent.height = '152dp'
+                    on_release: dropdown2.open(self); self.parent.size_hint = .99, .348
                     background_color: color_plomien
 
                 Widget:
@@ -200,7 +197,7 @@
 
                 DropDown:
                     id: dropdown2
-                    on_dismiss: grid2.height = '26dp'
+                    on_dismiss: grid2.size_hint = .99, .058
 
 
                     Button:
@@ -231,12 +228,11 @@
             GridLayout:
                 id: grid3
                 cols: 1
-                size_hint_y: None
-                height: '26dp'
+                size_hint: .99, .058
 
                 Button:
                     text: "Powódź"
-                    on_release: dropdown3.open(self); self.parent.height = '152dp'
+                    on_release: dropdown3.open(self); self.parent.size_hint = .99, .348
                     background_color: color_powodz
 
                 Widget:
@@ -244,7 +240,7 @@
 
                 DropDown:
                     id: dropdown3
-                    on_dismiss: grid3.height = '26dp'
+                    on_dismiss: grid3.size_hint = .99, .058
 
 
                     Button:
@@ -275,12 +271,11 @@
             GridLayout:
                 id: grid4
                 cols: 1
-                size_hint_y: None
-                height: '26dp'
+                size_hint: .99, .058
 
                 Button:
                     text: "Kraina"
-                    on_release: dropdown4.open(self); self.parent.height = '152dp'
+                    on_release: dropdown4.open(self); self.parent.size_hint = .99, .348
                     background_color: color_kraina
 
                 Widget:
@@ -288,7 +283,7 @@
 
                 DropDown:
                     id: dropdown4
-                    on_dismiss: grid4.height = '26dp'
+                    on_dismiss: grid4.size_hint = .99, .058
 
                     Button:
                         text: "{} {}".format(root.Dzwonnica.power, root.Dzwonnica.name)
@@ -318,12 +313,11 @@
             GridLayout:
                 id: grid5
                 cols: 1
-                size_hint_y: None
-                height: '26dp'
+                size_hint: .99, .058
 
                 Button:
                     text: "Przywódca"
-                    on_release: dropdown5.open(self); self.parent.height = '152dp'
+                    on_release: dropdown5.open(self); self.parent.size_hint = .99, .348
                     background_color: color_przywodca
 
                 Widget:
@@ -331,7 +325,7 @@
 
                 DropDown:
                     id: dropdown5
-                    on_dismiss: grid5.height = '26dp'
+                    on_dismiss: grid5.size_hint = .99, .058
 
                     Button:
                         text: "{} {}".format(root.Cesarzowa.power, root.Cesarzowa.name)
@@ -361,12 +355,11 @@
             GridLayout:
                 id: grid6
                 cols: 1
-                size_hint_y: None
-                height: '26dp'
+                size_hint: .99, .058
 
                 Button:
                     text: "Broń"
-                    on_release: dropdown6.open(self); self.parent.height = '152dp'
+                    on_release: dropdown6.open(self); self.parent.size_hint = .99, .348
                     background_color: color_bron
 
                 Widget:
@@ -374,7 +367,7 @@
 
                 DropDown:
                     id: dropdown6
-                    on_dismiss: grid6.height = '26dp'
+                    on_dismiss: grid6.size_hint = .99, .058
 
                     Button:
                         text: "{} {}".format(root.ElfiDlugiLuk.power, root.ElfiDlugiLuk.name)
@@ -404,12 +397,11 @@
             GridLayout:
                 id: grid7
                 cols: 1
-                size_hint_y: None
-                height: '26dp'
+                size_hint: .99, .058
 
                 Button:
                     text: "Pogoda"
-                    on_release: dropdown7.open(self); self.parent.height = '152dp'
+                    on_release: dropdown7.open(self); self.parent.size_hint = .99, .348
                     background_color: color_pogoda
 
                 Widget:
@@ -417,7 +409,7 @@
 
                 DropDown:
                     id: dropdown7
-                    on_dismiss: grid7.height = '26dp'
+                    on_dismiss: grid7.size_hint = .99, .058
 
                     Button:
                         text: "{} {}".format(root.ZywiolakPowietrza.power, root.ZywiolakPowietrza.name)
@@ -447,12 +439,11 @@
             GridLayout:
                 id: grid8
                 cols: 1
-                size_hint_y: None
-                height: '26dp'
+                size_hint: .99, .058
 
                 Button:
                     text: "Artefakt"
-                    on_release: dropdown8.open(self); self.parent.height = '152dp'
+                    on_release: dropdown8.open(self); self.parent.size_hint = .99, .348
                     background_color: color_artefakt
 
                 Widget:
@@ -460,7 +451,7 @@
 
                 DropDown:
                     id: dropdown8
-                    on_dismiss: grid8.height = '26dp'
+                    on_dismiss: grid8.size_hint = .99, .058
 
                     Button:
                         text: "{} {}".format(root.KsiegaZmian.power, root.KsiegaZmian.name)
@@ -490,12 +481,11 @@
             GridLayout:
                 id: grid9
                 cols: 1
-                size_hint_y: None
-                height: '26dp'
+                size_hint: .99, .058
 
                 Button:
                     text: "Czarodziej"
-                    on_release: dropdown9.open(self); self.parent.height = '177dp'
+                    on_release: dropdown9.open(self); self.parent.size_hint = .99, .41
                     background_color: color_czarodziej
 
                 Widget:
@@ -503,7 +493,7 @@
 
                 DropDown:
                     id: dropdown9
-                    on_dismiss: grid9.height = '26dp'
+                    on_dismiss: grid9.size_hint = .99, .058
 
                     Button:
                         text: "{} {}".format(root.WladcaBestii.power, root.WladcaBestii.name)
@@ -538,12 +528,11 @@
             GridLayout:
                 id: grid10
                 cols: 1
-                size_hint_y: None
-                height: '26dp'
+                size_hint: .99, .058
 
                 Button:
                     text: "Karty specjalne"
-                    on_release: dropdown10.open(self); self.parent.height = '102dp'
+                    on_release: dropdown10.open(self); self.parent.size_hint = .99, .23
                     background_color: color_specjalne
 
                 Widget:
@@ -551,7 +540,7 @@
 
                 DropDown:
                     id: dropdown10
-                    on_dismiss: grid10.height = '26dp'
+                    on_dismiss: grid10.size_hint = .99, .058
 
                     Button:
                         text: "{} {}".format(root.Mimik.power, root.Mimik.name)
@@ -570,15 +559,16 @@
         GridLayout:
             cols: 2
             rows: 1
+            size_hint: .99, .04
             Button:
                 text: "RESET"
-                height: '30dp'
+                size_hint: .4, .99
                 on_release: root.reset()
                 background_color: [1, 0, 0, 1]
 
             Button:
                 text: "POLICZ"
-                height: '30dp'
+                size_hint: .4, .99
                 on_release: root.display_result()
                 background_color: [0, 1, 0, 1]
 
@@ -622,35 +612,35 @@
         pos: root.x, root.y
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 0 else root.list_of_cards[0].name
+            text: '' if len(root.list_of_cards) <= 1 else root.list_of_cards[0].name
             on_release: root.use(root.list_of_cards[0])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 1 else root.list_of_cards[1].name
+            text: '' if len(root.list_of_cards) <= 2 else root.list_of_cards[1].name
             on_release: root.use(root.list_of_cards[1])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 2 else root.list_of_cards[2].name
+            text: '' if len(root.list_of_cards) <= 3 else root.list_of_cards[2].name
             on_release: root.use(root.list_of_cards[2])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 3 else root.list_of_cards[3].name
+            text: '' if len(root.list_of_cards) <= 4 else root.list_of_cards[3].name
             on_release: root.use(root.list_of_cards[3])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 4 else root.list_of_cards[4].name
+            text: '' if len(root.list_of_cards) <= 5 else root.list_of_cards[4].name
             on_release: root.use(root.list_of_cards[4])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 5 else root.list_of_cards[5].name
+            text: '' if len(root.list_of_cards) <= 6 else root.list_of_cards[5].name
             on_release: root.use(root.list_of_cards[5])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 6 else root.list_of_cards[6].name
+            text: '' if len(root.list_of_cards) <= 7 else root.list_of_cards[6].name
             on_release: root.use(root.list_of_cards[6])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 7 else root.list_of_cards[7].name
+            text: '' if len(root.list_of_cards) <= 8 else root.list_of_cards[7].name
             on_release: root.use(root.list_of_cards[7])
 
 <KsiegaZmianSetPopup>:
@@ -720,3 +710,486 @@
             on_release: root.use("Specjalne")
             background_color: color_specjalne
 
+<ZmiennoksztaltnyPopup>:
+    __safe_id: [dropdown1.__self__, dropdown5.__self__, dropdown6.__self__, dropdown8.__self__, dropdown9.__self__]
+
+
+    title: "Zmiennokształtny"
+    size: (400, 370)
+    size_hint: (None, None)
+    auto_dismiss: False
+
+    GridLayout:
+        cols: 1
+        anchor_y: 'top'
+        size: root.width - 10, root.height - 10
+        pos: 5, 5
+
+        #List of all cards
+        GridLayout:
+            size_hint_y: None
+            cols: 1
+
+            GridLayout:
+                id: grid0
+                cols: 1
+                size_hint_y: None
+                height: '26dp'
+
+
+            GridLayout:
+                id: grid1
+                cols: 1
+                size_hint_y: None
+                height: '26dp'
+
+                Button:
+                    text: "Bestia"
+                    on_release: dropdown1.open(self); self.parent.height = '152dp'
+                    background_color: color_bestia
+
+                Widget:
+                    on_parent: dropdown1.dismiss()
+
+                DropDown:
+                    id: dropdown1
+                    on_dismiss: grid1.height = '26dp'
+
+                    Button:
+                        text: "Bazyliszek"
+                        on_release: root.add_card("Bazyliszek", "Bestia"); dropdown1.dismiss()
+                        background_color: color_bestia
+
+                    Button:
+                        text: "Smok"
+                        on_release: root.add_card("Smok", "Bestia"); dropdown1.dismiss()
+                        background_color: color_bestia
+
+                    Button:
+                        text: "Hydra"
+                        on_release: root.add_card("Hydra", "Bestia"); dropdown1.dismiss()
+                        background_color: color_bestia
+
+                    Button:
+                        text: "Jednorożec"
+                        on_release: root.add_card("Jednorożec", "Bestia"); dropdown1.dismiss()
+                        background_color: color_bestia
+
+                    Button:
+                        text: "Rumak"
+                        on_release: root.add_card("Rumak", "Bestia"); dropdown1.dismiss()
+                        background_color: color_bestia
+
+            GridLayout:
+                id: grid5
+                cols: 1
+                size_hint_y: None
+                height: '26dp'
+
+                Button:
+                    text: "Przywódca"
+                    on_release: dropdown5.open(self); self.parent.height = '152dp'
+                    background_color: color_przywodca
+
+                Widget:
+                    on_parent: dropdown5.dismiss()
+
+                DropDown:
+                    id: dropdown5
+                    on_dismiss: grid5.height = '26dp'
+
+                    Button:
+                        text: "Cesarzowa"
+                        on_release: root.add_card("Cesarzowa", "Przywódca"); dropdown5.dismiss()
+                        background_color: color_przywodca
+
+                    Button:
+                        text: "Król"
+                        on_release: root.add_card("Król", "Przywódca"); dropdown5.dismiss()
+                        background_color: color_przywodca
+
+                    Button:
+                        text: "Księżniczka"
+                        on_release: root.add_card("Księżniczka", "Przywódca"); dropdown5.dismiss()
+                        background_color: color_przywodca
+
+                    Button:
+                        text: "Królowa"
+                        on_release: root.add_card("Królowa", "Przywódca"); dropdown5.dismiss()
+                        background_color: color_przywodca
+
+                    Button:
+                        text: "Wielki wódz"
+                        on_release: root.add_card("Wielki wódz", "Przywódca"); dropdown5.dismiss()
+                        background_color: color_przywodca
+
+            GridLayout:
+                id: grid6
+                cols: 1
+                size_hint_y: None
+                height: '26dp'
+
+                Button:
+                    text: "Broń"
+                    on_release: dropdown6.open(self); self.parent.height = '152dp'
+                    background_color: color_bron
+
+                Widget:
+                    on_parent: dropdown6.dismiss()
+
+                DropDown:
+                    id: dropdown6
+                    on_dismiss: grid6.height = '26dp'
+
+                    Button:
+                        text: "Elfi długi łuk"
+                        on_release: root.add_card("Elfi długi łuk", "Broń"); dropdown6.dismiss()
+                        background_color: color_bron
+
+                    Button:
+                        text: "Magiczna różdżka"
+                        on_release: root.add_card("Magiczna różdżka", "Broń"); dropdown6.dismiss()
+                        background_color: color_bron
+
+                    Button:
+                        text: "Miecz Ketha"
+                        on_release: root.add_card("Miecz Ketha", "Broń"); dropdown6.dismiss()
+                        background_color: color_bron
+
+                    Button:
+                        text: "Sterowiec wojenny"
+                        on_release: root.add_card("Sterowiec wojenny", "Broń"); dropdown6.dismiss()
+                        background_color: color_bron
+
+                    Button:
+                        text: "Okręt"
+                        on_release: root.add_card("Okręt", "Broń"); dropdown6.dismiss()
+                        background_color: color_bron
+
+            GridLayout:
+                id: grid8
+                cols: 1
+                size_hint_y: None
+                height: '26dp'
+
+                Button:
+                    text: "Artefakt"
+                    on_release: dropdown8.open(self); self.parent.height = '152dp'
+                    background_color: color_artefakt
+
+                Widget:
+                    on_parent: dropdown8.dismiss()
+
+                DropDown:
+                    id: dropdown8
+                    on_dismiss: grid8.height = '26dp'
+
+                    Button:
+                        text: "Księga zmian"
+                        on_release: root.add_card("Księga zmian", "Artefakt"); dropdown8.dismiss()
+                        background_color: color_artefakt
+
+                    Button:
+                        text: "Tarcza Ketha"
+                        on_release: root.add_card("Tarcza Ketha", "Artefakt"); dropdown8.dismiss()
+                        background_color: color_artefakt
+
+                    Button:
+                        text: "Klejnot porządku"
+                        on_release: root.add_card("Klejnot porządku", "Artefakt"); dropdown8.dismiss()
+                        background_color: color_artefakt
+
+                    Button:
+                        text: "Drzewo świata"
+                        on_release: root.add_card("Drzewo świata", "Artefakt"); dropdown8.dismiss()
+                        background_color: color_artefakt
+
+                    Button:
+                        text: "Runa ochrony"
+                        on_release: root.add_card("Runa ochrony", "Artefakt"); dropdown8.dismiss()
+                        background_color: color_artefakt
+
+            GridLayout:
+                id: grid9
+                cols: 1
+                size_hint_y: None
+                height: '26dp'
+
+                Button:
+                    text: "Czarodziej"
+                    on_release: dropdown9.open(self); self.parent.height = '177dp'
+                    background_color: color_czarodziej
+
+                Widget:
+                    on_parent: dropdown9.dismiss()
+
+                DropDown:
+                    id: dropdown9
+                    on_dismiss: grid9.height = '26dp'
+
+                    Button:
+                        text: "Władca bestii"
+                        on_release: root.add_card("Władca bestii", "Czarodziej"); dropdown9.dismiss()
+                        background_color: color_czarodziej
+
+                    Button:
+                        text: "Kolekcjoner"
+                        on_release: root.add_card("Kolekcjoner", "Czarodziej"); dropdown9.dismiss()
+                        background_color: color_czarodziej
+
+                    Button:
+                        text: "Zaklinaczka"
+                        on_release: root.add_card("Zaklinaczka", "Czarodziej"); dropdown9.dismiss()
+                        background_color: color_czarodziej
+
+                    Button:
+                        text: "Nekromanta"
+                        on_release: root.add_card("Nekromanta", "Czarodziej"); dropdown9.dismiss()
+                        background_color: color_czarodziej
+
+                    Button:
+                        text: "Czarnoksiężnik"
+                        on_release: root.add_card("Czarnoksiężnik", "Czarodziej"); dropdown9.dismiss()
+                        background_color: color_czarodziej
+
+                    Button:
+                        text: "Błazen"
+                        on_release: root.add_card("Błazen", "Czarodziej"); dropdown9.dismiss()
+                        background_color: color_czarodziej
+
+
+<FatamorganaPopup>:
+    __safe_id: [dropdown0.__self__, dropdown2.__self__, dropdown3.__self__, dropdown4.__self__, dropdown7.__self__]
+
+    title: "Fatamorgana"
+    size: (400, 370)
+    size_hint: (None, None)
+    auto_dismiss: False
+
+    GridLayout:
+        cols: 1
+        anchor_y: 'top'
+        size: root.width - 10, root.height - 10
+        pos: 5, 5
+        #List of all cards
+        GridLayout:
+            size_hint_y: None
+            cols: 1
+
+            GridLayout:
+                id: grid0
+                cols: 1
+                size_hint_y: None
+                height: '26dp'
+
+                Button:
+                    text: "Armia"
+                    on_release: dropdown0.open(self); self.parent.height = '152dp'
+                    background_color: color_armia
+
+                Widget:
+                    on_parent: dropdown0.dismiss()
+
+                DropDown:
+                    id: dropdown0
+                    on_dismiss: grid0.height = '26dp'
+
+                    Button:
+                        text: "Krasnoludzka piechota"
+                        on_release: root.add_card("Krasnoludzka piechota", "Armia"); dropdown0.dismiss()
+                        background_color: color_armia
+
+                    Button:
+                        id: elfi_lucznicy
+                        text: "Elfi łucznicy"
+                        on_release: root.add_card("Elfi łucznicy", "Armia"); dropdown0.dismiss()
+                        background_color: color_armia
+
+                    Button:
+                        text: "Rycerze"
+                        on_release: root.add_card("Rycerze", "Armia"); dropdown0.dismiss()
+                        background_color: color_armia
+
+                    Button:
+                        text: "Lekka konnica"
+                        on_release: root.add_card("Lekka konnica", "Armia"); dropdown0.dismiss()
+                        background_color: color_armia
+
+                    Button:
+                        text: "Zwiadowcy"
+                        on_release: root.add_card("Zwiadowcy", "Armia"); dropdown0.dismiss()
+                        background_color: color_armia
+
+            GridLayout:
+                id: grid2
+                cols: 1
+                size_hint_y: None
+                height: '26dp'
+
+                Button:
+                    text: "Płomień"
+                    on_release: dropdown2.open(self); self.parent.height = '152dp'
+                    background_color: color_plomien
+
+                Widget:
+                    on_parent: dropdown2.dismiss()
+
+                DropDown:
+                    id: dropdown2
+                    on_dismiss: grid2.height = '26dp'
+
+
+                    Button:
+                        text: "Świeca"
+                        on_release: root.add_card("Świeca", "Płomień"); dropdown2.dismiss()
+                        background_color: color_plomien
+
+                    Button:
+                        text: "Żywiołak ognia"
+                        on_release: root.add_card("Żywiołak ognia", "Płomień"); dropdown2.dismiss()
+                        background_color: color_plomien
+
+                    Button:
+                        text: "Kuźnia"
+                        on_release: root.add_card("Kuźnia", "Płomień"); dropdown2.dismiss()
+                        background_color: color_plomien
+
+                    Button:
+                        text: "Błyskawica"
+                        on_release: root.add_card("Błyskawica", "Płomień"); dropdown2.dismiss()
+                        background_color: color_plomien
+
+                    Button:
+                        text: "Pożar"
+                        on_release: root.add_card("Pożar", "Płomień"); dropdown2.dismiss()
+                        background_color: color_plomien
+
+            GridLayout:
+                id: grid3
+                cols: 1
+                size_hint_y: None
+                height: '26dp'
+
+                Button:
+                    text: "Powódź"
+                    on_release: dropdown3.open(self); self.parent.height = '152dp'
+                    background_color: color_powodz
+
+                Widget:
+                    on_parent: dropdown3.dismiss()
+
+                DropDown:
+                    id: dropdown3
+                    on_dismiss: grid3.height = '26dp'
+
+
+                    Button:
+                        text: "Fontanna życia"
+                        on_release: root.add_card("Fontanna życia", "Powódź"); dropdown3.dismiss()
+                        background_color: color_powodz
+
+                    Button:
+                        text: "Potop"
+                        on_release: root.add_card("Potop", "Powódź"); dropdown3.dismiss()
+                        background_color: color_powodz
+
+                    Button:
+                        text: "Wyspa"
+                        on_release: root.add_card("Wyspa", "Powódź"); dropdown3.dismiss()
+                        background_color: color_powodz
+
+                    Button:
+                        text: "Bagno"
+                        on_release: root.add_card("Bagno", "Powódź"); dropdown3.dismiss()
+                        background_color: color_powodz
+
+                    Button:
+                        text: "Żywiołak wody"
+                        on_release: root.add_card("Żywiołak wody", "Powódź"); dropdown3.dismiss()
+                        background_color: color_powodz
+
+            GridLayout:
+                id: grid4
+                cols: 1
+                size_hint_y: None
+                height: '26dp'
+
+                Button:
+                    text: "Kraina"
+                    on_release: dropdown4.open(self); self.parent.height = '152dp'
+                    background_color: color_kraina
+
+                Widget:
+                    on_parent: dropdown4.dismiss()
+
+                DropDown:
+                    id: dropdown4
+                    on_dismiss: grid4.height = '26dp'
+
+                    Button:
+                        text: "Dzwonnica"
+                        on_release: root.add_card("Dzwonnica", "Kraina"); dropdown4.dismiss()
+                        background_color: color_kraina
+
+                    Button:
+                        text: "Jaskinia"
+                        on_release: root.add_card("Jaskinia", "Kraina"); dropdown4.dismiss()
+                        background_color: color_kraina
+
+                    Button:
+                        text: "Żywiołak ziemi"
+                        on_release: root.add_card("Żywiołak ziemi", "Kraina"); dropdown4.dismiss()
+                        background_color: color_kraina
+
+                    Button:
+                        text: "Las"
+                        on_release: root.add_card("Las", "Kraina"); dropdown4.dismiss()
+                        background_color: color_kraina
+
+                    Button:
+                        text: "Góry"
+                        on_release: root.add_card("Góry", "Kraina"); dropdown4.dismiss()
+                        background_color: color_kraina
+
+            GridLayout:
+                id: grid7
+                cols: 1
+                size_hint_y: None
+                height: '26dp'
+
+                Button:
+                    text: "Pogoda"
+                    on_release: dropdown7.open(self); self.parent.height = '152dp'
+                    background_color: color_pogoda
+
+                Widget:
+                    on_parent: dropdown7.dismiss()
+
+                DropDown:
+                    id: dropdown7
+                    on_dismiss: grid7.height = '26dp'
+
+                    Button:
+                        text: "Żywiołak powietrza"
+                        on_release: root.add_card("Żywiołak powietrza", "Pogoda"); dropdown7.dismiss()
+                        background_color: color_pogoda
+
+                    Button:
+                        text: "Śnieżyca"
+                        on_release: root.add_card("Śnieżyca", "Pogoda"); dropdown7.dismiss()
+                        background_color: color_pogoda
+
+                    Button:
+                        text: "Burza"
+                        on_release: root.add_card("Burza", "Pogoda"); dropdown7.dismiss()
+                        background_color: color_pogoda
+
+                    Button:
+                        text: "Dym"
+                        on_release: root.add_card("Dym", "Pogoda"); dropdown7.dismiss()
+                        background_color: color_pogoda
+
+                    Button:
+                        text: "Tornado"
+                        on_release: root.add_card("Tornado", "Pogoda"); dropdown7.dismiss()
+                        background_color: color_pogoda

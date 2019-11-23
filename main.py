@@ -5,6 +5,36 @@ from operator import attrgetter
 from kivy.uix.popup import Popup
 
 
+class ZmiennoksztaltnyPopup(Popup):
+    list_of_cards = ListProperty()
+
+    def __init__(self, list_of_cards, **kwargs):
+        super(ZmiennoksztaltnyPopup, self).__init__(**kwargs)
+        self.list_of_cards = list_of_cards
+
+    def add_card(self, name, card_set):
+        card = self.list_of_cards[-1]
+        card.name = name
+        card.set = card_set
+        card.name_to_display = "Zmiennoksztaltny + {}".format(name)
+        self.dismiss()
+
+
+class FatamorganaPopup(Popup):
+    list_of_cards = ListProperty()
+
+    def __init__(self, list_of_cards, **kwargs):
+        super(FatamorganaPopup, self).__init__(**kwargs)
+        self.list_of_cards = list_of_cards
+
+    def add_card(self, name, card_set):
+        card = self.list_of_cards[-1]
+        card.name = name
+        card.set = card_set
+        card.name_to_display = "Fatamorgana + {}".format(name)
+        self.dismiss()
+
+
 class WyspaPopup(Popup):
     list_of_cards = ListProperty()
 
@@ -54,7 +84,7 @@ class KsiegaZmianSetPopup(Popup):
 
 
 class KsiegaZmianPopup(MimikPopup):
-    def use(self, element, ):
+    def use(self, element):
         KsiegaZmianSetPopup(element, self.list_of_cards[-1]).open()
         self.dismiss()
 
@@ -272,7 +302,7 @@ class SelectCardWindow(Widget):
         def card_points(self, list_of_cards):
             bonus = 0
             for card in list_of_cards:
-                if card.set in ("Broń", "Artefakt"):
+                if card.set in ("Broń", "Artefakt") and not card.canceled_card:
                     bonus += 9
             return self.power + bonus
 
@@ -366,8 +396,7 @@ class SelectCardWindow(Widget):
         extra_ability = ""
 
         def ability(self, list_of_cards):
-            if self.extra_ability == "":
-                WyspaPopup(list_of_cards).open()
+             WyspaPopup(list_of_cards).open()
 
         def card_points(self, list_of_cards):
             return self.power
@@ -641,6 +670,7 @@ class SelectCardWindow(Widget):
                       "USUWA słowo Armia z wszystkich kar wszystkich kart powodzi."
 
         def penalty(self, list_of_cards):
+
             if not any((card.set == "Powódź" or card.name == "Runa ochrony") and not card.canceled_card
                        for card in list_of_cards):
                 self.canceled_card = True
@@ -800,7 +830,8 @@ class SelectCardWindow(Widget):
                         score.append(count)
                         count = 1
             except IndexError:
-                pass
+                score.append(count)
+
             if max(score) == 3:
                 return self.power + 10
             elif max(score) == 4:
@@ -885,13 +916,15 @@ class SelectCardWindow(Widget):
                     else:
                         score.append(count)
                         count = 1
+
             except IndexError:
-                pass
+                score.append(count)
+
             if max(score) == 3:
                 return self.power + 10
             elif max(score) == 4:
                 return self.power + 40
-            elif max(score) == 5:
+            elif max(score) >= 5:
                 return self.power + 100
             else:
                 return self.power
@@ -953,20 +986,13 @@ class SelectCardWindow(Widget):
 
         def card_points(self, list_of_cards):
             bonus = 0
-            if all(card.power % 2 == 1 for card in list_of_cards):
-                return self.power + 50
-            sorted_list = []
-            for card in list_of_cards:
-                if not card.canceled_card:
-                    sorted_list.append(card)
-            sorted_list = sorted(sorted_list, key=attrgetter("name"))
-            try:
-                for i in range(9):
-                    if sorted_list[i + 1].name != sorted_list[i].name and sorted_list[i].power % 2 == 1:
+            if any(card.power % 2 == 0 and not card.canceled_card for card in list_of_cards):
+                for card in list_of_cards:
+                    if card.power % 2 == 1 and not card.canceled_card and not card == self:
                         bonus += 3
-            except IndexError:
-                pass
-            return self.power + bonus
+                return self.power + bonus
+            else:
+                return self.power + 50
 
     class Mimik:
         name = "Mimik"
@@ -986,6 +1012,7 @@ class SelectCardWindow(Widget):
 
     class Fatamorgana:
         name = "Fatamorgana"
+        name_to_display = name
         canceled_card = False
         power = 0
         set = "Specjalne"
@@ -993,22 +1020,21 @@ class SelectCardWindow(Widget):
         extra_ability = ""
 
         def ability(self, list_of_cards):
-            WyspaPopup(list_of_cards).open()
+            FatamorganaPopup(list_of_cards).open()
 
         def card_points(self, list_of_cards):
             return self.power
 
     class Zmiennoksztaltny:
         name = "Zmiennokształtny"
+        name_to_display = name
         canceled_card = False
         power = 0
         set = "Specjalne"
         description = "Może zduplikować nazwę i zestaw, do którego należy dowolna karta ..."
-        extra_ability = ""
 
         def ability(self, list_of_cards):
-            if self.extra_ability == "":
-                WyspaPopup(list_of_cards).open()
+            ZmiennoksztaltnyPopup(list_of_cards).open()
 
         def card_points(self, list_of_cards):
             return self.power
