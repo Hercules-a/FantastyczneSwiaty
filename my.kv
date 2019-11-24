@@ -60,35 +60,35 @@
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 0 else root.list_of_cards[0].name_to_display
-                on_release: root.del_card(0)
+                on_release: root.del_card(-1) if len(root.list_of_cards) <= 0 else root.del_card(0)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 1 else root.list_of_cards[1].name_to_display
-                on_release: root.del_card(1)
+                on_release: root.del_card(-1) if len(root.list_of_cards) <= 1 else root.del_card(1)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 2 else root.list_of_cards[2].name_to_display
-                on_release: root.del_card(2)
+                on_release: root.del_card(-1) if len(root.list_of_cards) <= 2 else root.del_card(2)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 3 else root.list_of_cards[3].name_to_display
-                on_release: root.del_card(3)
+                on_release: root.del_card(-1) if len(root.list_of_cards) <= 3 else root.del_card(3)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 4 else root.list_of_cards[4].name_to_display
-                on_release: root.del_card(4)
+                on_release: root.del_card(-1) if len(root.list_of_cards) <= 4 else root.del_card(4)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 5 else root.list_of_cards[5].name_to_display
-                on_release: root.del_card(5)
+                on_release: root.del_card(-1) if len(root.list_of_cards) <= 5 else root.del_card(5)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 6 else root.list_of_cards[6].name_to_display
-                on_release: root.del_card(6)
+                on_release: root.del_card(-1) if len(root.list_of_cards) <= 6 else root.del_card(6)
 
             ChosenCardButton:
                 text: '' if len(root.list_of_cards) <= 7 else root.list_of_cards[7].name_to_display
-                on_release: root.del_card(7)
+                on_release: root.del_card(-1) if len(root.list_of_cards) <= 7 else root.del_card(7)
 
         #List of all cards
         GridLayout:
@@ -614,35 +614,35 @@
 
         ChosenCardButton:
             text: '' if len(root.list_of_cards) <= 1 else root.list_of_cards[0].name
-            on_release: root.use(root.list_of_cards[0])
+            on_release: root.use(False) if len(root.list_of_cards) <= 1 else root.use(root.list_of_cards[0])
 
         ChosenCardButton:
             text: '' if len(root.list_of_cards) <= 2 else root.list_of_cards[1].name
-            on_release: root.use(root.list_of_cards[1])
+            on_release: root.use(False) if len(root.list_of_cards) <= 2 else root.use(root.list_of_cards[1])
 
         ChosenCardButton:
             text: '' if len(root.list_of_cards) <= 3 else root.list_of_cards[2].name
-            on_release: root.use(root.list_of_cards[2])
+            on_release: root.use(False) if len(root.list_of_cards) <= 3 else root.use(root.list_of_cards[2])
 
         ChosenCardButton:
             text: '' if len(root.list_of_cards) <= 4 else root.list_of_cards[3].name
-            on_release: root.use(root.list_of_cards[3])
+            on_release: root.use(False) if len(root.list_of_cards) <= 4 else root.use(root.list_of_cards[3])
 
         ChosenCardButton:
             text: '' if len(root.list_of_cards) <= 5 else root.list_of_cards[4].name
-            on_release: root.use(root.list_of_cards[4])
+            on_release: root.use(False) if len(root.list_of_cards) <= 5 else root.use(root.list_of_cards[4])
 
         ChosenCardButton:
             text: '' if len(root.list_of_cards) <= 6 else root.list_of_cards[5].name
-            on_release: root.use(root.list_of_cards[5])
+            on_release: root.use(False) if len(root.list_of_cards) <= 6 else root.use(root.list_of_cards[5])
 
         ChosenCardButton:
             text: '' if len(root.list_of_cards) <= 7 else root.list_of_cards[6].name
-            on_release: root.use(root.list_of_cards[6])
+            on_release: root.use(False) if len(root.list_of_cards) <= 7 else root.use(root.list_of_cards[6])
 
         ChosenCardButton:
             text: '' if len(root.list_of_cards) <= 8 else root.list_of_cards[7].name
-            on_release: root.use(root.list_of_cards[7])
+            on_release: root.use(False) if len(root.list_of_cards) <= 8 else root.use(root.list_of_cards[7])
 
 <KsiegaZmianSetPopup>:
     title: "Księga zmian"

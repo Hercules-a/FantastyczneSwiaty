@@ -58,6 +58,8 @@ class MimikPopup(Popup):
         self.list_of_cards = list_of_cards
 
     def use(self, element):
+        if not element:
+            return
         card = self.list_of_cards[-1]
         card.name = element.name
         card.power = element.power
@@ -86,6 +88,8 @@ class KsiegaZmianSetPopup(Popup):
 
 class KsiegaZmianPopup(MimikPopup):
     def use(self, element):
+        if not element:
+            return
         KsiegaZmianSetPopup(element, self.list_of_cards[-1]).open()
         self.dismiss()
 
@@ -1075,6 +1079,8 @@ class SelectCardWindow(Widget):
         self.sum_to_display = "0"
 
     def del_card(self, card):
+        if card == -1:
+            return
         del self.list_of_cards[card]
         self.count_cards_function()
         self.sum_to_display = "0"
