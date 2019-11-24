@@ -556,25 +556,23 @@
                         text: "{} {}".format(root.Zmiennoksztaltny.power, root.Zmiennoksztaltny.name)
                         on_release: root.add_card(root.Zmiennoksztaltny)
                         background_color: color_specjalne
+
+
         GridLayout:
             cols: 2
             rows: 1
-            size_hint: .99, .04
+            size_hint_y: .04
+
             Button:
                 text: "RESET"
-                size_hint: .4, .99
                 on_release: root.reset()
                 background_color: [1, 0, 0, 1]
 
-            Button:
-                text: "POLICZ"
-                size_hint: .4, .99
-                on_release: root.display_result()
-                background_color: [0, 1, 0, 1]
+
 
 <WyspaPopup>:
     title: "Wyspa"
-    size: (400, 150)
+    size: "300dp", "150dp"
     size_hint: (None, None)
     auto_dismiss: False
 
@@ -588,20 +586,23 @@
             text: "18 Bagno"
             on_release: root.use("Bagno")
             background_color: color_powodz
+            size_hint: .99, .33
 
         Button:
             text: "32 Potop"
             on_release: root.use("Potop")
             background_color: color_powodz
+            size_hint: .99, .33
 
         Button:
             text: "40 Pożar"
             on_release: root.use("Pożar")
             background_color: color_plomien
+            size_hint: .99, .33
 
 <MimikPopup>:
-    title: "Mimik"
-    size: (400, 500)
+    title: ""
+    size: "300dp", "340dp"
     size_hint: (None, None)
     auto_dismiss: False
 
@@ -644,8 +645,8 @@
             on_release: root.use(root.list_of_cards[7])
 
 <KsiegaZmianSetPopup>:
-    title: "Ksiega zmian"
-    size: (400, 150)
+    title: "Księga zmian"
+    size: "300dp", "340dp"
     size_hint: (None, None)
     auto_dismiss: False
 
@@ -715,7 +716,7 @@
 
 
     title: "Zmiennokształtny"
-    size: (400, 370)
+    size: "300dp", "340dp"
     size_hint: (None, None)
     auto_dismiss: False
 
@@ -729,13 +730,6 @@
         GridLayout:
             size_hint_y: None
             cols: 1
-
-            GridLayout:
-                id: grid0
-                cols: 1
-                size_hint_y: None
-                height: '26dp'
-
 
             GridLayout:
                 id: grid1
@@ -962,7 +956,7 @@
     __safe_id: [dropdown0.__self__, dropdown2.__self__, dropdown3.__self__, dropdown4.__self__, dropdown7.__self__]
 
     title: "Fatamorgana"
-    size: (400, 370)
+    size: "300dp", "320dp"
     size_hint: (None, None)
     auto_dismiss: False
 

@@ -4,7 +4,7 @@
 title = Fantastyczne Światy
 
 # (str) Package name
-package.name = myapp
+package.name = FantastyczneSwiaty
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test

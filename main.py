@@ -3,6 +3,7 @@ from kivy.uix.widget import Widget
 from kivy.properties import StringProperty, ListProperty, ObjectProperty
 from operator import attrgetter
 from kivy.uix.popup import Popup
+from kivy.clock import Clock
 
 
 class ZmiennoksztaltnyPopup(Popup):
@@ -90,9 +91,11 @@ class KsiegaZmianPopup(MimikPopup):
 
 
 class SelectCardWindow(Widget):
+
     list_of_cards = ListProperty()
     count_cards = StringProperty()
     sum_to_display = StringProperty()
+    start_calculate = True
 
     class KrasnoludzkaPiechota:
         name = "Krasnoludzka Piechota"
@@ -1056,10 +1059,14 @@ class SelectCardWindow(Widget):
         self.count_cards = "{}/{}".format(str(len(self.list_of_cards)), i)
 
     def add_card(self, card):
+        if self.start_calculate:
+            Clock.schedule_interval(self.display_result, 0.5)
+            self.start_calculate = False
+
         i = 8 if any(isinstance(element, self.Nekromanta) and not element.canceled_card
                      for element in self.list_of_cards) else 7
         if len(self.list_of_cards) < i:
-            if not any(element.name == card.name for element in self.list_of_cards):
+            if not any(isinstance(element, card) for element in self.list_of_cards):
                 self.list_of_cards.append(card())
                 if hasattr(card, "ability"):
                     card.ability(card, self.list_of_cards)
@@ -1072,8 +1079,8 @@ class SelectCardWindow(Widget):
         self.count_cards_function()
         self.sum_to_display = "0"
 
-    def display_result(self):
-        # adding EmptyCard and instant delete to refresh UI
+    def display_result(self, dt):
+        # add EmptyCard and instant delete to refresh UI
         self.list_of_cards.append(self.EmptyCard())
         self.list_of_cards.pop()
         # double check because last cards in list can change firsts cards parameters
