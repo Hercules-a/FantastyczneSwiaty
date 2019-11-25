@@ -790,7 +790,10 @@ class SelectCardWindow(Widget):
         extra_ability = ""
 
         def ability(self, list_of_cards):
-            KsiegaZmianPopup(list_of_cards).open()
+            if len(list_of_cards) > 1:
+                KsiegaZmianPopup(list_of_cards).open()
+            else:
+                del list_of_cards[-1]
 
         def card_points(self, list_of_cards):
             return self.power
@@ -1012,7 +1015,10 @@ class SelectCardWindow(Widget):
         extra_ability = ""
 
         def ability(self, list_of_cards):
-            MimikPopup(list_of_cards).open()
+            if len(list_of_cards) > 1:
+                MimikPopup(list_of_cards).open()
+            else:
+                del list_of_cards[-1]
 
         def card_points(self, list_of_cards):
             return self.power

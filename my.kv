@@ -23,6 +23,7 @@
     size_hint: .99, .24
     text_size: self.size
     halign: 'center'
+    font_size: self.height*0.48
 
 <MyLabel@Label>:
     valign: 'center'
@@ -613,35 +614,35 @@
         pos: root.x, root.y
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 1 else root.list_of_cards[0].name
+            text: '' if len(root.list_of_cards) <= 1 else root.list_of_cards[0].name_to_display
             on_release: root.use(False) if len(root.list_of_cards) <= 1 else root.use(root.list_of_cards[0])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 2 else root.list_of_cards[1].name
+            text: '' if len(root.list_of_cards) <= 2 else root.list_of_cards[1].name_to_display
             on_release: root.use(False) if len(root.list_of_cards) <= 2 else root.use(root.list_of_cards[1])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 3 else root.list_of_cards[2].name
+            text: '' if len(root.list_of_cards) <= 3 else root.list_of_cards[2].name_to_display
             on_release: root.use(False) if len(root.list_of_cards) <= 3 else root.use(root.list_of_cards[2])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 4 else root.list_of_cards[3].name
+            text: '' if len(root.list_of_cards) <= 4 else root.list_of_cards[3].name_to_display
             on_release: root.use(False) if len(root.list_of_cards) <= 4 else root.use(root.list_of_cards[3])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 5 else root.list_of_cards[4].name
+            text: '' if len(root.list_of_cards) <= 5 else root.list_of_cards[4].name_to_display
             on_release: root.use(False) if len(root.list_of_cards) <= 5 else root.use(root.list_of_cards[4])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 6 else root.list_of_cards[5].name
+            text: '' if len(root.list_of_cards) <= 6 else root.list_of_cards[5].name_to_display
             on_release: root.use(False) if len(root.list_of_cards) <= 6 else root.use(root.list_of_cards[5])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 7 else root.list_of_cards[6].name
+            text: '' if len(root.list_of_cards) <= 7 else root.list_of_cards[6].name_to_display
             on_release: root.use(False) if len(root.list_of_cards) <= 7 else root.use(root.list_of_cards[6])
 
         ChosenCardButton:
-            text: '' if len(root.list_of_cards) <= 8 else root.list_of_cards[7].name
+            text: '' if len(root.list_of_cards) <= 8 else root.list_of_cards[7].name_to_display
             on_release: root.use(False) if len(root.list_of_cards) <= 8 else root.use(root.list_of_cards[7])
 
 <KsiegaZmianSetPopup>:
