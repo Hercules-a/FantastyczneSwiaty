@@ -49,12 +49,16 @@
 
             MyLabel:
                 text: "Wybrano {}".format('0/7' if root.count_cards == '' else root.count_cards)
+            Button:
+                text: "RESET"
+                on_release: root.reset()
+                background_color: [1, 0, 0, 1]
             MyLabel:
                 text: "Punkty: {}".format('0' if root.sum_to_display == '' else root.sum_to_display)
 
         # Display chosen cards
         GridLayout:
-            size_hint: .99, .19
+            size_hint: .99, .23
             #height: '115dp'
             cols: 2
             rows: 4
@@ -114,10 +118,9 @@
                     id: dropdown0
                     on_dismiss: grid0.size_hint = .99, .058
 
-
                     Button:
-                        text: "{} {}".format(root.KrasnoludzkaPiechota.power, root.KrasnoludzkaPiechota.name)
-                        on_release: root.add_card(root.KrasnoludzkaPiechota)
+                        text: "{} {}".format(root.Zwiadowcy.power, root.Zwiadowcy.name)
+                        on_release: root.add_card(root.Zwiadowcy)
                         background_color: color_armia
 
                     Button:
@@ -127,8 +130,8 @@
                         background_color: color_armia
 
                     Button:
-                        text: "{} {}".format(root.Rycerze.power, root.Rycerze.name)
-                        on_release: root.add_card(root.Rycerze)
+                        text: "{} {}".format(root.KrasnoludzkaPiechota.power, root.KrasnoludzkaPiechota.name)
+                        on_release: root.add_card(root.KrasnoludzkaPiechota)
                         background_color: color_armia
 
                     Button:
@@ -137,8 +140,8 @@
                         background_color: color_armia
 
                     Button:
-                        text: "{} {}".format(root.Zwiadowcy.power, root.Zwiadowcy.name)
-                        on_release: root.add_card(root.Zwiadowcy)
+                        text: "{} {}".format(root.Rycerze.power, root.Rycerze.name)
+                        on_release: root.add_card(root.Rycerze)
                         background_color: color_armia
 
             GridLayout:
@@ -159,18 +162,8 @@
                     on_dismiss: grid1.size_hint = .99, .058
 
                     Button:
-                        text: "{} {}".format(root.Bazyliszek.power, root.Bazyliszek.name)
-                        on_release: root.add_card(root.Bazyliszek)
-                        background_color: color_bestia
-
-                    Button:
-                        text: "{} {}".format(root.Smok.power, root.Smok.name)
-                        on_release: root.add_card(root.Smok)
-                        background_color: color_bestia
-
-                    Button:
-                        text: "{} {}".format(root.Hydra.power, root.Hydra.name)
-                        on_release: root.add_card(root.Hydra)
+                        text: "{} {}".format(root.Rumak.power, root.Rumak.name)
+                        on_release: root.add_card(root.Rumak)
                         background_color: color_bestia
 
                     Button:
@@ -179,8 +172,18 @@
                         background_color: color_bestia
 
                     Button:
-                        text: "{} {}".format(root.Rumak.power, root.Rumak.name)
-                        on_release: root.add_card(root.Rumak)
+                        text: "{} {}".format(root.Hydra.power, root.Hydra.name)
+                        on_release: root.add_card(root.Hydra)
+                        background_color: color_bestia
+
+                    Button:
+                        text: "{} {}".format(root.Smok.power, root.Smok.name)
+                        on_release: root.add_card(root.Smok)
+                        background_color: color_bestia
+
+                    Button:
+                        text: "{} {}".format(root.Bazyliszek.power, root.Bazyliszek.name)
+                        on_release: root.add_card(root.Bazyliszek)
                         background_color: color_bestia
 
             GridLayout:
@@ -250,8 +253,8 @@
                         background_color: color_powodz
 
                     Button:
-                        text: "{} {}".format(root.Potop.power, root.Potop.name)
-                        on_release: root.add_card(root.Potop)
+                        text: "{} {}".format(root.ZywiolakWody.power, root.ZywiolakWody.name)
+                        on_release: root.add_card(root.ZywiolakWody)
                         background_color: color_powodz
 
                     Button:
@@ -265,8 +268,8 @@
                         background_color: color_powodz
 
                     Button:
-                        text: "{} {}".format(root.ZywiolakWody.power, root.ZywiolakWody.name)
-                        on_release: root.add_card(root.ZywiolakWody)
+                        text: "{} {}".format(root.Potop.power, root.Potop.name)
+                        on_release: root.add_card(root.Potop)
                         background_color: color_powodz
 
             GridLayout:
@@ -287,8 +290,8 @@
                     on_dismiss: grid4.size_hint = .99, .058
 
                     Button:
-                        text: "{} {}".format(root.Dzwonnica.power, root.Dzwonnica.name)
-                        on_release: root.add_card(root.Dzwonnica)
+                        text: "{} {}".format(root.ZywiolakZiemi.power, root.ZywiolakZiemi.name)
+                        on_release: root.add_card(root.ZywiolakZiemi)
                         background_color: color_kraina
 
                     Button:
@@ -297,13 +300,13 @@
                         background_color: color_kraina
 
                     Button:
-                        text: "{} {}".format(root.ZywiolakZiemi.power, root.ZywiolakZiemi.name)
-                        on_release: root.add_card(root.ZywiolakZiemi)
+                        text: "{} {}".format(root.Las.power, root.Las.name)
+                        on_release: root.add_card(root.Las)
                         background_color: color_kraina
 
                     Button:
-                        text: "{} {}".format(root.Las.power, root.Las.name)
-                        on_release: root.add_card(root.Las)
+                        text: "{} {}".format(root.Dzwonnica.power, root.Dzwonnica.name)
+                        on_release: root.add_card(root.Dzwonnica)
                         background_color: color_kraina
 
                     Button:
@@ -329,18 +332,13 @@
                     on_dismiss: grid5.size_hint = .99, .058
 
                     Button:
-                        text: "{} {}".format(root.Cesarzowa.power, root.Cesarzowa.name)
-                        on_release: root.add_card(root.Cesarzowa)
-                        background_color: color_przywodca
-
-                    Button:
-                        text: "{} {}".format(root.Krol.power, root.Krol.name)
-                        on_release: root.add_card(root.Krol)
-                        background_color: color_przywodca
-
-                    Button:
                         text: "{} {}".format(root.Ksiezniczka.power, root.Ksiezniczka.name)
                         on_release: root.add_card(root.Ksiezniczka)
+                        background_color: color_przywodca
+
+                    Button:
+                        text: "{} {}".format(root.WielkiWodz.power, root.WielkiWodz.name)
+                        on_release: root.add_card(root.WielkiWodz)
                         background_color: color_przywodca
 
                     Button:
@@ -349,8 +347,13 @@
                         background_color: color_przywodca
 
                     Button:
-                        text: "{} {}".format(root.WielkiWodz.power, root.WielkiWodz.name)
-                        on_release: root.add_card(root.WielkiWodz)
+                        text: "{} {}".format(root.Krol.power, root.Krol.name)
+                        on_release: root.add_card(root.Krol)
+                        background_color: color_przywodca
+
+                    Button:
+                        text: "{} {}".format(root.Cesarzowa.power, root.Cesarzowa.name)
+                        on_release: root.add_card(root.Cesarzowa)
                         background_color: color_przywodca
 
             GridLayout:
@@ -371,13 +374,13 @@
                     on_dismiss: grid6.size_hint = .99, .058
 
                     Button:
-                        text: "{} {}".format(root.ElfiDlugiLuk.power, root.ElfiDlugiLuk.name)
-                        on_release: root.add_card(root.ElfiDlugiLuk)
+                        text: "{} {}".format(root.MagicznaRozdzka.power, root.MagicznaRozdzka.name)
+                        on_release: root.add_card(root.MagicznaRozdzka)
                         background_color: color_bron
 
                     Button:
-                        text: "{} {}".format(root.MagicznaRozdzka.power, root.MagicznaRozdzka.name)
-                        on_release: root.add_card(root.MagicznaRozdzka)
+                        text: "{} {}".format(root.ElfiDlugiLuk.power, root.ElfiDlugiLuk.name)
+                        on_release: root.add_card(root.ElfiDlugiLuk)
                         background_color: color_bron
 
                     Button:
@@ -386,13 +389,13 @@
                         background_color: color_bron
 
                     Button:
-                        text: "{} {}".format(root.SterowiecWojenny.power, root.SterowiecWojenny.name)
-                        on_release: root.add_card(root.SterowiecWojenny)
+                        text: "{} {}".format(root.Okret.power, root.Okret.name)
+                        on_release: root.add_card(root.Okret)
                         background_color: color_bron
 
                     Button:
-                        text: "{} {}".format(root.Okret.power, root.Okret.name)
-                        on_release: root.add_card(root.Okret)
+                        text: "{} {}".format(root.SterowiecWojenny.power, root.SterowiecWojenny.name)
+                        on_release: root.add_card(root.SterowiecWojenny)
                         background_color: color_bron
 
             GridLayout:
@@ -418,13 +421,13 @@
                         background_color: color_pogoda
 
                     Button:
-                        text: "{} {}".format(root.Sniezyca.power, root.Sniezyca.name)
-                        on_release: root.add_card(root.Sniezyca)
+                        text: "{} {}".format(root.Burza.power, root.Burza.name)
+                        on_release: root.add_card(root.Burza)
                         background_color: color_pogoda
 
                     Button:
-                        text: "{} {}".format(root.Burza.power, root.Burza.name)
-                        on_release: root.add_card(root.Burza)
+                        text: "{} {}".format(root.Tornado.power, root.Tornado.name)
+                        on_release: root.add_card(root.Tornado)
                         background_color: color_pogoda
 
                     Button:
@@ -433,8 +436,8 @@
                         background_color: color_pogoda
 
                     Button:
-                        text: "{} {}".format(root.Tornado.power, root.Tornado.name)
-                        on_release: root.add_card(root.Tornado)
+                        text: "{} {}".format(root.Sniezyca.power, root.Sniezyca.name)
+                        on_release: root.add_card(root.Sniezyca)
                         background_color: color_pogoda
 
             GridLayout:
@@ -455,6 +458,16 @@
                     on_dismiss: grid8.size_hint = .99, .058
 
                     Button:
+                        text: "{} {}".format(root.RunaOchrony.power, root.RunaOchrony.name)
+                        on_release: root.add_card(root.RunaOchrony)
+                        background_color: color_artefakt
+
+                    Button:
+                        text: "{} {}".format(root.DrzewoSwiata.power, root.DrzewoSwiata.name)
+                        on_release: root.add_card(root.DrzewoSwiata)
+                        background_color: color_artefakt
+
+                    Button:
                         text: "{} {}".format(root.KsiegaZmian.power, root.KsiegaZmian.name)
                         on_release: root.add_card(root.KsiegaZmian)
                         background_color: color_artefakt
@@ -467,16 +480,6 @@
                     Button:
                         text: "{} {}".format(root.KlejnotPorzadku.power, root.KlejnotPorzadku.name)
                         on_release: root.add_card(root.KlejnotPorzadku)
-                        background_color: color_artefakt
-
-                    Button:
-                        text: "{} {}".format(root.DrzewoSwiata.power, root.DrzewoSwiata.name)
-                        on_release: root.add_card(root.DrzewoSwiata)
-                        background_color: color_artefakt
-
-                    Button:
-                        text: "{} {}".format(root.RunaOchrony.power, root.RunaOchrony.name)
-                        on_release: root.add_card(root.RunaOchrony)
                         background_color: color_artefakt
 
             GridLayout:
@@ -497,18 +500,8 @@
                     on_dismiss: grid9.size_hint = .99, .058
 
                     Button:
-                        text: "{} {}".format(root.WladcaBestii.power, root.WladcaBestii.name)
-                        on_release: root.add_card(root.WladcaBestii)
-                        background_color: color_czarodziej
-
-                    Button:
-                        text: "{} {}".format(root.Kolekcjoner.power, root.Kolekcjoner.name)
-                        on_release: root.add_card(root.Kolekcjoner)
-                        background_color: color_czarodziej
-
-                    Button:
-                        text: "{} {}".format(root.Zaklinaczka.power, root.Zaklinaczka.name)
-                        on_release: root.add_card(root.Zaklinaczka)
+                        text: "{} {}".format(root.Blazen.power, root.Blazen.name)
+                        on_release: root.add_card(root.Blazen)
                         background_color: color_czarodziej
 
                     Button:
@@ -517,13 +510,23 @@
                         background_color: color_czarodziej
 
                     Button:
-                        text: "{} {}".format(root.Czarnoksieznik.power, root.Czarnoksieznik.name)
-                        on_release: root.add_card(root.Czarnoksieznik)
+                        text: "{} {}".format(root.Zaklinaczka.power, root.Zaklinaczka.name)
+                        on_release: root.add_card(root.Zaklinaczka)
                         background_color: color_czarodziej
 
                     Button:
-                        text: "{} {}".format(root.Blazen.power, root.Blazen.name)
-                        on_release: root.add_card(root.Blazen)
+                        text: "{} {}".format(root.Kolekcjoner.power, root.Kolekcjoner.name)
+                        on_release: root.add_card(root.Kolekcjoner)
+                        background_color: color_czarodziej
+
+                    Button:
+                        text: "{} {}".format(root.WladcaBestii.power, root.WladcaBestii.name)
+                        on_release: root.add_card(root.WladcaBestii)
+                        background_color: color_czarodziej
+
+                    Button:
+                        text: "{} {}".format(root.Czarnoksieznik.power, root.Czarnoksieznik.name)
+                        on_release: root.add_card(root.Czarnoksieznik)
                         background_color: color_czarodziej
 
             GridLayout:
@@ -557,19 +560,6 @@
                         text: "{} {}".format(root.Zmiennoksztaltny.power, root.Zmiennoksztaltny.name)
                         on_release: root.add_card(root.Zmiennoksztaltny)
                         background_color: color_specjalne
-
-
-        GridLayout:
-            cols: 2
-            rows: 1
-            size_hint_y: .04
-
-            Button:
-                text: "RESET"
-                on_release: root.reset()
-                background_color: [1, 0, 0, 1]
-
-
 
 <WyspaPopup>:
     title: "Wyspa"
@@ -751,18 +741,8 @@
                     on_dismiss: grid1.height = '26dp'
 
                     Button:
-                        text: "Bazyliszek"
-                        on_release: root.add_card("Bazyliszek", "Bestia"); dropdown1.dismiss()
-                        background_color: color_bestia
-
-                    Button:
-                        text: "Smok"
-                        on_release: root.add_card("Smok", "Bestia"); dropdown1.dismiss()
-                        background_color: color_bestia
-
-                    Button:
-                        text: "Hydra"
-                        on_release: root.add_card("Hydra", "Bestia"); dropdown1.dismiss()
+                        text: "Rumak"
+                        on_release: root.add_card("Rumak", "Bestia"); dropdown1.dismiss()
                         background_color: color_bestia
 
                     Button:
@@ -771,8 +751,18 @@
                         background_color: color_bestia
 
                     Button:
-                        text: "Rumak"
-                        on_release: root.add_card("Rumak", "Bestia"); dropdown1.dismiss()
+                        text: "Hydra"
+                        on_release: root.add_card("Hydra", "Bestia"); dropdown1.dismiss()
+                        background_color: color_bestia
+
+                    Button:
+                        text: "Smok"
+                        on_release: root.add_card("Smok", "Bestia"); dropdown1.dismiss()
+                        background_color: color_bestia
+
+                    Button:
+                        text: "Bazyliszek"
+                        on_release: root.add_card("Bazyliszek", "Bestia"); dropdown1.dismiss()
                         background_color: color_bestia
 
             GridLayout:
@@ -794,18 +784,13 @@
                     on_dismiss: grid5.height = '26dp'
 
                     Button:
-                        text: "Cesarzowa"
-                        on_release: root.add_card("Cesarzowa", "Przywódca"); dropdown5.dismiss()
-                        background_color: color_przywodca
-
-                    Button:
-                        text: "Król"
-                        on_release: root.add_card("Król", "Przywódca"); dropdown5.dismiss()
-                        background_color: color_przywodca
-
-                    Button:
                         text: "Księżniczka"
                         on_release: root.add_card("Księżniczka", "Przywódca"); dropdown5.dismiss()
+                        background_color: color_przywodca
+
+                    Button:
+                        text: "Wielki wódz"
+                        on_release: root.add_card("Wielki wódz", "Przywódca"); dropdown5.dismiss()
                         background_color: color_przywodca
 
                     Button:
@@ -814,8 +799,13 @@
                         background_color: color_przywodca
 
                     Button:
-                        text: "Wielki wódz"
-                        on_release: root.add_card("Wielki wódz", "Przywódca"); dropdown5.dismiss()
+                        text: "Król"
+                        on_release: root.add_card("Król", "Przywódca"); dropdown5.dismiss()
+                        background_color: color_przywodca
+
+                    Button:
+                        text: "Cesarzowa"
+                        on_release: root.add_card("Cesarzowa", "Przywódca"); dropdown5.dismiss()
                         background_color: color_przywodca
 
             GridLayout:
@@ -837,13 +827,13 @@
                     on_dismiss: grid6.height = '26dp'
 
                     Button:
-                        text: "Elfi długi łuk"
-                        on_release: root.add_card("Elfi długi łuk", "Broń"); dropdown6.dismiss()
+                        text: "Magiczna różdżka"
+                        on_release: root.add_card("Magiczna różdżka", "Broń"); dropdown6.dismiss()
                         background_color: color_bron
 
                     Button:
-                        text: "Magiczna różdżka"
-                        on_release: root.add_card("Magiczna różdżka", "Broń"); dropdown6.dismiss()
+                        text: "Elfi długi łuk"
+                        on_release: root.add_card("Elfi długi łuk", "Broń"); dropdown6.dismiss()
                         background_color: color_bron
 
                     Button:
@@ -852,13 +842,13 @@
                         background_color: color_bron
 
                     Button:
-                        text: "Sterowiec wojenny"
-                        on_release: root.add_card("Sterowiec wojenny", "Broń"); dropdown6.dismiss()
+                        text: "Okręt"
+                        on_release: root.add_card("Okręt", "Broń"); dropdown6.dismiss()
                         background_color: color_bron
 
                     Button:
-                        text: "Okręt"
-                        on_release: root.add_card("Okręt", "Broń"); dropdown6.dismiss()
+                        text: "Sterowiec wojenny"
+                        on_release: root.add_card("Sterowiec wojenny", "Broń"); dropdown6.dismiss()
                         background_color: color_bron
 
             GridLayout:
@@ -880,6 +870,16 @@
                     on_dismiss: grid8.height = '26dp'
 
                     Button:
+                        text: "Runa ochrony"
+                        on_release: root.add_card("Runa ochrony", "Artefakt"); dropdown8.dismiss()
+                        background_color: color_artefakt
+
+                    Button:
+                        text: "Drzewo świata"
+                        on_release: root.add_card("Drzewo świata", "Artefakt"); dropdown8.dismiss()
+                        background_color: color_artefakt
+
+                    Button:
                         text: "Księga zmian"
                         on_release: root.add_card("Księga zmian", "Artefakt"); dropdown8.dismiss()
                         background_color: color_artefakt
@@ -892,16 +892,6 @@
                     Button:
                         text: "Klejnot porządku"
                         on_release: root.add_card("Klejnot porządku", "Artefakt"); dropdown8.dismiss()
-                        background_color: color_artefakt
-
-                    Button:
-                        text: "Drzewo świata"
-                        on_release: root.add_card("Drzewo świata", "Artefakt"); dropdown8.dismiss()
-                        background_color: color_artefakt
-
-                    Button:
-                        text: "Runa ochrony"
-                        on_release: root.add_card("Runa ochrony", "Artefakt"); dropdown8.dismiss()
                         background_color: color_artefakt
 
             GridLayout:
@@ -923,18 +913,8 @@
                     on_dismiss: grid9.height = '26dp'
 
                     Button:
-                        text: "Władca bestii"
-                        on_release: root.add_card("Władca bestii", "Czarodziej"); dropdown9.dismiss()
-                        background_color: color_czarodziej
-
-                    Button:
-                        text: "Kolekcjoner"
-                        on_release: root.add_card("Kolekcjoner", "Czarodziej"); dropdown9.dismiss()
-                        background_color: color_czarodziej
-
-                    Button:
-                        text: "Zaklinaczka"
-                        on_release: root.add_card("Zaklinaczka", "Czarodziej"); dropdown9.dismiss()
+                        text: "Błazen"
+                        on_release: root.add_card("Błazen", "Czarodziej"); dropdown9.dismiss()
                         background_color: color_czarodziej
 
                     Button:
@@ -943,15 +923,24 @@
                         background_color: color_czarodziej
 
                     Button:
-                        text: "Czarnoksiężnik"
-                        on_release: root.add_card("Czarnoksiężnik", "Czarodziej"); dropdown9.dismiss()
+                        text: "Zaklinaczka"
+                        on_release: root.add_card("Zaklinaczka", "Czarodziej"); dropdown9.dismiss()
                         background_color: color_czarodziej
 
                     Button:
-                        text: "Błazen"
-                        on_release: root.add_card("Błazen", "Czarodziej"); dropdown9.dismiss()
+                        text: "Kolekcjoner"
+                        on_release: root.add_card("Kolekcjoner", "Czarodziej"); dropdown9.dismiss()
                         background_color: color_czarodziej
 
+                    Button:
+                        text: "Władca bestii"
+                        on_release: root.add_card("Władca bestii", "Czarodziej"); dropdown9.dismiss()
+                        background_color: color_czarodziej
+
+                    Button:
+                        text: "Czarnoksiężnik"
+                        on_release: root.add_card("Czarnoksiężnik", "Czarodziej"); dropdown9.dismiss()
+                        background_color: color_czarodziej
 
 <FatamorganaPopup>:
     __safe_id: [dropdown0.__self__, dropdown2.__self__, dropdown3.__self__, dropdown4.__self__, dropdown7.__self__]
@@ -990,19 +979,18 @@
                     on_dismiss: grid0.height = '26dp'
 
                     Button:
-                        text: "Krasnoludzka piechota"
-                        on_release: root.add_card("Krasnoludzka piechota", "Armia"); dropdown0.dismiss()
+                        text: "Zwiadowcy"
+                        on_release: root.add_card("Zwiadowcy", "Armia"); dropdown0.dismiss()
                         background_color: color_armia
 
                     Button:
-                        id: elfi_lucznicy
                         text: "Elfi łucznicy"
                         on_release: root.add_card("Elfi łucznicy", "Armia"); dropdown0.dismiss()
                         background_color: color_armia
 
                     Button:
-                        text: "Rycerze"
-                        on_release: root.add_card("Rycerze", "Armia"); dropdown0.dismiss()
+                        text: "Krasnoludzka piechota"
+                        on_release: root.add_card("Krasnoludzka piechota", "Armia"); dropdown0.dismiss()
                         background_color: color_armia
 
                     Button:
@@ -1011,8 +999,8 @@
                         background_color: color_armia
 
                     Button:
-                        text: "Zwiadowcy"
-                        on_release: root.add_card("Zwiadowcy", "Armia"); dropdown0.dismiss()
+                        text: "Rycerze"
+                        on_release: root.add_card("Rycerze", "Armia"); dropdown0.dismiss()
                         background_color: color_armia
 
             GridLayout:
@@ -1077,15 +1065,14 @@
                     id: dropdown3
                     on_dismiss: grid3.height = '26dp'
 
-
                     Button:
                         text: "Fontanna życia"
                         on_release: root.add_card("Fontanna życia", "Powódź"); dropdown3.dismiss()
                         background_color: color_powodz
 
                     Button:
-                        text: "Potop"
-                        on_release: root.add_card("Potop", "Powódź"); dropdown3.dismiss()
+                        text: "Żywiołak wody"
+                        on_release: root.add_card("Żywiołak wody", "Powódź"); dropdown3.dismiss()
                         background_color: color_powodz
 
                     Button:
@@ -1099,8 +1086,8 @@
                         background_color: color_powodz
 
                     Button:
-                        text: "Żywiołak wody"
-                        on_release: root.add_card("Żywiołak wody", "Powódź"); dropdown3.dismiss()
+                        text: "Potop"
+                        on_release: root.add_card("Potop", "Powódź"); dropdown3.dismiss()
                         background_color: color_powodz
 
             GridLayout:
@@ -1122,8 +1109,8 @@
                     on_dismiss: grid4.height = '26dp'
 
                     Button:
-                        text: "Dzwonnica"
-                        on_release: root.add_card("Dzwonnica", "Kraina"); dropdown4.dismiss()
+                        text: "Żywiołak ziemi"
+                        on_release: root.add_card("Żywiołak ziemi", "Kraina"); dropdown4.dismiss()
                         background_color: color_kraina
 
                     Button:
@@ -1132,13 +1119,13 @@
                         background_color: color_kraina
 
                     Button:
-                        text: "Żywiołak ziemi"
-                        on_release: root.add_card("Żywiołak ziemi", "Kraina"); dropdown4.dismiss()
+                        text: "Las"
+                        on_release: root.add_card("Las", "Kraina"); dropdown4.dismiss()
                         background_color: color_kraina
 
                     Button:
-                        text: "Las"
-                        on_release: root.add_card("Las", "Kraina"); dropdown4.dismiss()
+                        text: "Dzwonnica"
+                        on_release: root.add_card("Dzwonnica", "Kraina"); dropdown4.dismiss()
                         background_color: color_kraina
 
                     Button:
@@ -1170,13 +1157,13 @@
                         background_color: color_pogoda
 
                     Button:
-                        text: "Śnieżyca"
-                        on_release: root.add_card("Śnieżyca", "Pogoda"); dropdown7.dismiss()
+                        text: "Burza"
+                        on_release: root.add_card("Burza", "Pogoda"); dropdown7.dismiss()
                         background_color: color_pogoda
 
                     Button:
-                        text: "Burza"
-                        on_release: root.add_card("Burza", "Pogoda"); dropdown7.dismiss()
+                        text: "Tornado"
+                        on_release: root.add_card("Tornado", "Pogoda"); dropdown7.dismiss()
                         background_color: color_pogoda
 
                     Button:
@@ -1185,6 +1172,6 @@
                         background_color: color_pogoda
 
                     Button:
-                        text: "Tornado"
-                        on_release: root.add_card("Tornado", "Pogoda"); dropdown7.dismiss()
+                        text: "Śnieżyca"
+                        on_release: root.add_card("Śnieżyca", "Pogoda"); dropdown7.dismiss()
                         background_color: color_pogoda

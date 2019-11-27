@@ -512,9 +512,9 @@ class SelectCardWindow(Widget):
 
         def card_points(self, list_of_cards):
             bonus = 0
-            for card in list_of_cards:
-                if (card.set == "Bestia" or card.name == "Elfi łucznicy") and not card.canceled_card:
-                    bonus += 12
+            if any(card.name == "Dym" and not card.canceled_card for card in list_of_cards) \
+                    and any(card.name == "Pożar" and not card.canceled_card for card in list_of_cards):
+                bonus += 50
             return self.power + bonus
 
     class Cesarzowa:
