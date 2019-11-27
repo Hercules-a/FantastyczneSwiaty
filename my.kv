@@ -49,12 +49,15 @@
 
             MyLabel:
                 text: "Wybrano {}".format('0/7' if root.count_cards == '' else root.count_cards)
+
+            MyLabel:
+                text: "Punkty: [b]{}[/b]".format('0' if root.sum_to_display == '' else root.sum_to_display)
+                markup: True
+
             Button:
                 text: "RESET"
                 on_release: root.reset()
                 background_color: [1, 0, 0, 1]
-            MyLabel:
-                text: "Punkty: {}".format('0' if root.sum_to_display == '' else root.sum_to_display)
 
         # Display chosen cards
         GridLayout:
