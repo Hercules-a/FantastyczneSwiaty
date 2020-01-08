@@ -1,9 +1,30 @@
 from kivy.app import App
-from kivy.uix.widget import Widget
 from kivy.properties import StringProperty, ListProperty, ObjectProperty
 from operator import attrgetter
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
+from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
+import requests
+import json
+
+
+class GameWindow(Screen):
+    pass
+
+
+class GameListWindow(Screen):
+    data = ObjectProperty()
+    values = {'authorization': 'Token 448ac483f52c907ce8b10cca8085c90499c15029'}
+    response = requests.get('http://127.0.0.1:8000/main/game/', data=values, headers=values)
+
+    for element in response.json():
+        print(element['login'], element['id'])
+
+    data = str(response.json())
+
+
+class Manager(ScreenManager):
+    pass
 
 
 class ZmiennoksztaltnyPopup(Popup):
@@ -94,7 +115,7 @@ class KsiegaZmianPopup(MimikPopup):
         self.dismiss()
 
 
-class SelectCardWindow(Widget):
+class SelectCardWindow(Screen):
 
     list_of_cards = ListProperty()
     count_cards = StringProperty()
@@ -1115,10 +1136,10 @@ class SelectCardWindow(Widget):
         self.count_cards_function()
 
 
-class MyApp(App):
+class MainApp(App):
     def build(self):
-        return SelectCardWindow()
+        return Manager(transition=NoTransition())
 
 
 if __name__ == "__main__":
-    MyApp().run()
+    MainApp().run()

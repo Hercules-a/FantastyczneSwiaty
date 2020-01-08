@@ -61,7 +61,7 @@
 
         # Display chosen cards
         GridLayout:
-            size_hint: .99, .23
+            size_hint: .99, .19
             #height: '115dp'
             cols: 2
             rows: 4
@@ -100,7 +100,7 @@
 
         #List of all cards
         GridLayout:
-            size_hint: .99, .74
+            size_hint: .99, .7
             cols: 1
             #height: '442dp'
 
@@ -563,6 +563,23 @@
                         text: "{} {}".format(root.Zmiennoksztaltny.power, root.Zmiennoksztaltny.name)
                         on_release: root.add_card(root.Zmiennoksztaltny)
                         background_color: color_specjalne
+
+        GridLayout:
+            size_hint: .99, .04
+            rows: 1
+            Button:
+                text: "Kalkulator"
+
+
+            Button:
+                text: "Gra"
+                on_press:
+                    root.manager.current = 'screen2'
+
+            Button:
+                text: "Lista gier"
+                on_press:
+                    root.manager.current = 'screen3'
 
 <WyspaPopup>:
     title: "Wyspa"
@@ -1178,3 +1195,77 @@
                         text: "Śnieżyca"
                         on_release: root.add_card("Śnieżyca", "Pogoda"); dropdown7.dismiss()
                         background_color: color_pogoda
+
+<GameWindow>:
+    GridLayout:
+        cols: 1
+        anchor_y: 'top'
+        size: root.width, root.height
+        pos: 0, 0
+
+        GridLayout:
+            cols: 1
+            Label:
+                size_hint: .99, .95
+                text: 'this is screen 2'
+
+            GridLayout:
+                size_hint: .99, .04
+                rows: 1
+                Button:
+                    text: "Kalkulator"
+                    on_press:
+                        root.manager.current = 'screen1'
+
+                Button:
+                    text: "Gra"
+
+                Button:
+                    text: "Lista gier"
+                    on_press:
+                        root.manager.current = 'screen3'
+
+<GameListWindow>:
+    GridLayout:
+        cols: 1
+        anchor_y: 'top'
+        size: root.width, root.height
+        pos: 0, 0
+
+        GridLayout:
+            cols: 1
+            Label:
+                size_hint: .99, .95
+                text: root.data
+
+            GridLayout:
+                size_hint: .99, .04
+                rows: 1
+                Button:
+                    text: "Kalkulator"
+                    on_press:
+                        root.manager.current = 'screen1'
+
+                Button:
+                    text: "Gra"
+                    on_press:
+                        root.manager.current = 'screen2'
+
+                Button:
+                    text: "Lista gier"
+
+
+<Manager>:
+    id: screen_manager
+
+    SelectCardWindow:
+        name: 'screen1'
+        manager: screen_manager
+
+    GameWindow:
+        name: 'screen2'
+        manager: screen_manager
+
+    GameListWindow:
+        name: 'screen3'
+        manager: screen_manager
