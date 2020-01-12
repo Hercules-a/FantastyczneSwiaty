@@ -1,5 +1,4 @@
 from kivy.app import App
-from kivy.base import runTouchApp
 from kivy.properties import StringProperty, ListProperty, ObjectProperty
 from operator import attrgetter
 from kivy.uix.popup import Popup
@@ -9,14 +8,7 @@ from kivy.storage.dictstore import DictStore
 import requests
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.uix.widget import Widget
 from kivy.uix.scrollview import ScrollView
-from kivy.lang import Builder
-
-
-class Manager(ScreenManager):
-    pass
 
 
 class Scroll(ScrollView):
