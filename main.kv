@@ -1,4 +1,6 @@
 #:import Factory kivy.factory.Factory
+#:import Button kivy.uix.button
+#:import Label kivy.uix.label.Label
 
 #:set color_armia [0.5, 0.5, 0.5, 1]
 #:set color_artefakt [1, 0.39, 0.31, 1]
@@ -1207,7 +1209,7 @@
             cols: 1
             Label:
                 size_hint: .99, .95
-                text: 'this is screen 2'
+                text: root.data
 
             GridLayout:
                 size_hint: .99, .04
@@ -1226,46 +1228,42 @@
                         root.manager.current = 'screen3'
 
 <GameListWindow>:
+
+
     GridLayout:
-        cols: 1
-        anchor_y: 'top'
-        size: root.width, root.height
-        pos: 0, 0
+        size_hint: self.size_hint_x, .04
+        rows: 1
+        Button:
+            text: "Kalkulator"
+            on_press:
+                root.manager.current = 'screen1'
 
-        GridLayout:
-            cols: 1
-            Label:
-                size_hint: .99, .95
-                text: root.data
+        Button:
+            text: "Gra"
+            on_press:
+                root.manager.current = 'screen2'
 
-            GridLayout:
-                size_hint: .99, .04
-                rows: 1
-                Button:
-                    text: "Kalkulator"
-                    on_press:
-                        root.manager.current = 'screen1'
-
-                Button:
-                    text: "Gra"
-                    on_press:
-                        root.manager.current = 'screen2'
-
-                Button:
-                    text: "Lista gier"
+        Button:
+            text: "Lista gier"
 
 
 <Manager>:
+    screen1: screen1
+    screen2: screen2
+    screen3: screen3
     id: screen_manager
 
     SelectCardWindow:
         name: 'screen1'
+        id: screen1
         manager: screen_manager
 
     GameWindow:
         name: 'screen2'
+        id: screen2
         manager: screen_manager
 
     GameListWindow:
         name: 'screen3'
+        id: screen3
         manager: screen_manager

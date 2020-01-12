@@ -1,30 +1,53 @@
 from kivy.app import App
+from kivy.base import runTouchApp
 from kivy.properties import StringProperty, ListProperty, ObjectProperty
 from operator import attrgetter
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
 from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
+from kivy.storage.dictstore import DictStore
 import requests
-import json
-
-
-class GameWindow(Screen):
-    pass
-
-
-class GameListWindow(Screen):
-    data = ObjectProperty()
-    values = {'authorization': 'Token 448ac483f52c907ce8b10cca8085c90499c15029'}
-    response = requests.get('http://127.0.0.1:8000/main/game/', data=values, headers=values)
-
-    for element in response.json():
-        print(element['login'], element['id'])
-
-    data = str(response.json())
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.button import Button
+from kivy.uix.label import Label
+from kivy.uix.widget import Widget
+from kivy.uix.scrollview import ScrollView
+from kivy.lang import Builder
 
 
 class Manager(ScreenManager):
     pass
+
+
+class Scroll(ScrollView):
+    pass
+
+
+class GameWindow(Screen):
+    data = ObjectProperty()
+    values = {'username': 'janel', 'password': 'kowalski12'}
+    response = requests.post('http://127.0.0.1:8000/api-token-auth/', data=values)
+
+    store = DictStore('token')
+    store.put(key='token', values=response.json()['token'])
+    data = store.get('token')['values']
+
+
+class GameListWindow(Screen):
+    data = ListProperty()
+
+    values = {'authorization': 'Token 448ac483f52c907ce8b10cca8085c90499c15029'}
+    response = requests.get('http://127.0.0.1:8000/main/game/', data=values, headers=values)
+
+    def __init__(self, **kwargs):
+        super(GameListWindow, self).__init__(**kwargs)
+        grid = GridLayout(cols=1, pos=(0, 0))
+        for element in self.response.json():
+            grid.add_widget(Button(text=element['login']))
+
+        for element in range(50):
+            grid.add_widget(Button(text=str(element)))
+        self.add_widget(grid)
 
 
 class ZmiennoksztaltnyPopup(Popup):
