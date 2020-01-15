@@ -1199,6 +1199,8 @@
                         background_color: color_pogoda
 
 <GameWindow>:
+    on_enter: root.update(root)
+
     GridLayout:
         cols: 1
         anchor_y: 'top'
@@ -1221,6 +1223,8 @@
 
                 Button:
                     text: "Gra"
+                    on_press:
+                        root.update(root)
 
                 Button:
                     text: "Lista gier"
@@ -1228,9 +1232,10 @@
                         root.manager.current = 'screen3'
 
 <GameListWindow>:
-
+    menu_buttons: menu_buttons
 
     GridLayout:
+        id: menu_buttons
         size_hint: self.size_hint_x, .04
         rows: 1
         Button:
@@ -1245,6 +1250,8 @@
 
         Button:
             text: "Lista gier"
+            on_press:
+                root.__init__
 
 
 <Manager>:

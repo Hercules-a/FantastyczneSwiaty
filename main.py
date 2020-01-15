@@ -8,38 +8,82 @@ from kivy.storage.dictstore import DictStore
 import requests
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
-from kivy.uix.scrollview import ScrollView
 
 
-class Scroll(ScrollView):
+class Manager(ScreenManager):
     pass
 
 
 class GameWindow(Screen):
     data = ObjectProperty()
-    values = {'username': 'janel', 'password': 'kowalski12'}
-    response = requests.post('http://127.0.0.1:8000/api-token-auth/', data=values)
 
-    store = DictStore('token')
-    store.put(key='token', values=response.json()['token'])
-    data = store.get('token')['values']
+    def __init__(self, **kwargs):
+        super(GameWindow, self).__init__(**kwargs)
+        self.update()
+
+    def update(self, *args):
+        # values = {'username': 'janel', 'password': 'kowalski12'}
+        # response = requests.post('http://127.0.0.1:8000/api-token-auth/', data=values)
+
+        store = DictStore('store')
+        # store.put(key='token', values=response.json()['token'])
+        pk = store.get('active_game')['values']
+        values = {'authorization': 'Token 448ac483f52c907ce8b10cca8085c90499c15029'}
+        response = requests.get('http://127.0.0.1:8000/main/game/{}/'.format(str(pk)), headers=values)
+        self.data = str(response.json()['login'])
 
 
 class GameListWindow(Screen):
-    data = ListProperty()
-
+    http = StringProperty()
+    http = 'http://127.0.0.1:8000/main/game/'
     values = {'authorization': 'Token 448ac483f52c907ce8b10cca8085c90499c15029'}
-    response = requests.get('http://127.0.0.1:8000/main/game/', data=values, headers=values)
+
+    response = requests.get(http, headers=values)
 
     def __init__(self, **kwargs):
         super(GameListWindow, self).__init__(**kwargs)
-        grid = GridLayout(cols=1, pos=(0, 0))
-        for element in self.response.json():
-            grid.add_widget(Button(text=element['login']))
+        try:
+            self.remove_widget(self.children[1])
+        except IndexError:
+            pass
+        print(self.response.json())
 
-        for element in range(50):
-            grid.add_widget(Button(text=str(element)))
+        grid = GridLayout(cols=1, pos=(0, 0))
+        for element in self.response.json()['results']:
+            grid.add_widget(Button(text=element['login'], on_release=self.game_button))
+
+        if self.response.json()['previous'] is not None:
+            grid.add_widget(Button(id='previous_button', text='Poprzednie', on_press=self.previous_button))
+        else:
+            for element in grid.children:
+                if element.text == 'Poprzednie':
+                    grid.remove_widget(element)
+
+        if self.response.json()['next'] is not None:
+            grid.add_widget(Button(id='next_button', text='Następne', on_press=self.next_button))
+        else:
+            for element in grid.children:
+                if element.text == 'Następne':
+                    grid.remove_widget(element)
+
         self.add_widget(grid)
+
+    def game_button(self, instance):
+        for element in self.response.json()['results']:
+            if element['login'] == instance.text:
+                store = DictStore('store')
+                print(element['id'])
+                store.put(key='active_game', values=element['id'])
+
+    def previous_button(self, instance):
+        self.http = self.response.json()['previous']
+        self.response = requests.get(self.http, headers=self.values)
+        self.__init__()
+
+    def next_button(self, instance):
+        self.http = self.response.json()['next']
+        self.response = requests.get(self.http, headers=self.values)
+        self.__init__()
 
 
 class ZmiennoksztaltnyPopup(Popup):
