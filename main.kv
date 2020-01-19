@@ -48,6 +48,10 @@
             size_hint: .99, .04
             #height: '26dp'
 
+            Button:
+                text: "RESET"
+                on_release: root.reset()
+                background_color: [1, 0, 0, 1]
 
             MyLabel:
                 text: "Wybrano {}".format('0/7' if root.count_cards == '' else root.count_cards)
@@ -57,9 +61,9 @@
                 markup: True
 
             Button:
-                text: "RESET"
-                on_release: root.reset()
-                background_color: [1, 0, 0, 1]
+                text: "WYŚLIJ"
+                on_release: root.manager.current = 'screen2'
+                background_color: [0, 1, 0, 1]
 
         # Display chosen cards
         GridLayout:
@@ -571,7 +575,7 @@
             rows: 1
             Button:
                 text: "Kalkulator"
-
+                background_color: 0, 0, 0, 0
 
             Button:
                 text: "Gra"
@@ -1223,6 +1227,7 @@
 
                 Button:
                     text: "Gra"
+                    background_color: 0, 0, 0, 0
                     on_press:
                         root.update(root)
 
@@ -1233,26 +1238,53 @@
 
 <GameListWindow>:
     menu_buttons: menu_buttons
+    login_menu: login_menu
 
     GridLayout:
-        id: menu_buttons
-        size_hint: self.size_hint_x, .04
-        rows: 1
-        Button:
-            text: "Kalkulator"
-            on_press:
-                root.manager.current = 'screen1'
+        cols: 1
+        anchor_y: 'top'
+        size: root.width, root.height
+        pos: 0, 0
+        GridLayout:
+            id: login_menu
+            size_hint: self.size_hint_x, .04
+            rows: 1
 
-        Button:
-            text: "Gra"
-            on_press:
-                root.manager.current = 'screen2'
+            Label:
+                text: "Jesteś zalogowany jako: {}".format(root.username)
+            Button:
+                text: "Zmień"
+                size_hint: .25, None
+                on_release: root.login_as()
 
-        Button:
-            text: "Lista gier"
-            on_press:
-                root.__init__
+        Label:
+            size_hint: self.size_hint_x, .06
+            text: "Lista Twoich gier:"
+            background_color: 0.53, 0.8, 0.98, 1
 
+
+        GridLayout:
+            cols: 1
+            size_hint: self.size_hint_x, .86
+
+
+        GridLayout:
+            id: menu_buttons
+            size_hint: self.size_hint_x, .04
+            rows: 1
+            Button:
+                text: "Kalkulator"
+                on_press:
+                    root.manager.current = 'screen1'
+
+            Button:
+                text: "Gra"
+                on_press:
+                    root.manager.current = 'screen2'
+
+            Button:
+                text: "Lista gier"
+                background_color: 0, 0, 0, 0
 
 <Manager>:
     screen1: screen1
@@ -1274,3 +1306,35 @@
         name: 'screen3'
         id: screen3
         manager: screen_manager
+
+
+<LoginPopup>:
+    title: "Logowanie"
+    size: "300dp", "200dp"
+    size_hint: (None, None)
+    auto_dismiss: True
+
+    username: username
+    password: password
+
+    GridLayout:
+        cols: 2
+
+        Label:
+            text: "Login:"
+        TextInput:
+            id: username
+            multiline: False
+
+
+        Label:
+            text: "Hasło:"
+        TextInput:
+            id: password
+            multiline: False
+
+        Label:
+            text: ''
+        Button:
+            text: "Zaloguj"
+            on_press: root.do_login()
