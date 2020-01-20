@@ -8,6 +8,40 @@ from kivy.storage.dictstore import DictStore
 import requests
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
+from kivy.core.window import Window
+
+
+class NewGamePopup(Popup):
+    login = ObjectProperty()
+    password = ObjectProperty()
+    instance = ''
+
+    def __init__(self, instance, **kwargs):
+        super(NewGamePopup, self).__init__(**kwargs)
+        Window.bind(on_key_down=self._on_keyboard_down)
+        self.instance = instance
+
+    def join_game(self, *args):
+        values = {'login': self.login.text, 'password': self.password.text}
+        store = DictStore('store')
+        token = store.get('token')['values']
+        headers = {'authorization': 'Token {}'.format(token)}
+        response = requests.post('http://127.0.0.1:8000/main/game/join/', data=values, headers=headers)
+        print(response.json())
+        self.dismiss()
+
+    def create_new_game(self):
+        if self.password.text != '' and self.login.text != '':
+            values = {'login': self.login.text, 'password': self.password.text}
+            store = DictStore('store')
+            token = store.get('token')['values']
+            headers = {'authorization': 'Token {}'.format(token)}
+            requests.post('http://127.0.0.1:8000/main/game/', data=values, headers=headers)
+            self.join_game()
+
+    def _on_keyboard_down(self, instance, keyboard, keycode, text, modifiers):
+        if (self.password.focus or self.login.focus) and keycode == 40:  # 40 - Enter key pressed
+            self.do_login()
 
 
 class LoginPopup(Popup):
@@ -17,10 +51,10 @@ class LoginPopup(Popup):
 
     def __init__(self, instance, **kwargs):
         super(LoginPopup, self).__init__(**kwargs)
+        Window.bind(on_key_down=self._on_keyboard_down)
         self.instance = instance
 
     def do_login(self, *args):
-        # janel kowalski12
         values = {'username': self.username.text, 'password': self.password.text}
         response = requests.post('http://127.0.0.1:8000/api-token-auth/', data=values)
         print(response.json())
@@ -35,6 +69,16 @@ class LoginPopup(Popup):
         self.dismiss()
 
         GameListWindow.__init__(self.instance)
+
+    def create_account(self):
+        if self.password.text != '' and self.username.text != '':
+            values = {'username': self.username.text, 'password': self.password.text}
+            requests.post('http://127.0.0.1:8000/main/users/', data=values)
+            self.do_login()
+
+    def _on_keyboard_down(self, instance, keyboard, keycode, text, modifiers):
+        if (self.password.focus or self.username.focus) and keycode == 40:  # 40 - Enter key pressed
+            self.do_login()
 
 
 class Manager(ScreenManager):
@@ -55,7 +99,13 @@ class GameWindow(Screen):
 
         values = {'authorization': 'Token {}'.format(token)}
         response = requests.get('http://127.0.0.1:8000/main/game/{}/'.format(str(pk)), headers=values)
-        self.data = str(response.json())
+        try:
+            if response.json()['detail'] == 'Not found.':
+                self.data = 'Wybierz grę z listy gier.'
+            else:
+                self.data = str(response.json())
+        except KeyError:
+            self.data = str(response.json())
 
 
 class GameListWindow(Screen):
@@ -109,7 +159,9 @@ class GameListWindow(Screen):
     def login_as(self):
         self.http = 'http://127.0.0.1:8000/main/game/'
         LoginPopup(self).open()
-        self.__init__()
+
+    def new_game(self):
+        NewGamePopup(self).open()
 
 
 class ZmiennoksztaltnyPopup(Popup):

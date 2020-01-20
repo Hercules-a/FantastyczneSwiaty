@@ -1237,9 +1237,6 @@
                         root.manager.current = 'screen3'
 
 <GameListWindow>:
-    menu_buttons: menu_buttons
-    login_menu: login_menu
-
     GridLayout:
         cols: 1
         anchor_y: 'top'
@@ -1257,11 +1254,15 @@
                 size_hint: .25, None
                 on_release: root.login_as()
 
-        Label:
+        GridLayout:
+            rows: 1
             size_hint: self.size_hint_x, .06
-            text: "Lista Twoich gier:"
-            background_color: 0.53, 0.8, 0.98, 1
 
+            Label:
+                text: "Lista Twoich gier:"
+            Button:
+                text: 'Nowa gra'
+                on_release: root.new_game()
 
         GridLayout:
             cols: 1
@@ -1310,7 +1311,7 @@
 
 <LoginPopup>:
     title: "Logowanie"
-    size: "300dp", "200dp"
+    size: "300dp", "250dp"
     size_hint: (None, None)
     auto_dismiss: True
 
@@ -1325,16 +1326,71 @@
         TextInput:
             id: username
             multiline: False
-
+            write_tab: False
 
         Label:
             text: "Hasło:"
         TextInput:
             id: password
+            password: True
             multiline: False
+            write_tab: False
 
         Label:
             text: ''
         Button:
             text: "Zaloguj"
             on_press: root.do_login()
+        Label:
+            text: ''
+        Label:
+            text: ''
+        Label:
+            text: ''
+
+        Button:
+            text: "Nowe konto"
+            on_press: root.create_account()
+
+<NewGamePopup>:
+    title: "Nowa gra"
+    size: "300dp", "250dp"
+    size_hint: (None, None)
+    auto_dismiss: True
+
+    login: login
+    password: password
+
+    GridLayout:
+        cols: 2
+
+        Label:
+            text: "Login:"
+        TextInput:
+            id: login
+            multiline: False
+            write_tab: False
+
+        Label:
+            text: "Hasło:"
+        TextInput:
+            id: password
+            password: True
+            multiline: False
+            write_tab: False
+
+        Label:
+            text: ''
+        Button:
+            text: "Dołącz do gry"
+            on_press: root.join_game()
+        Label:
+            text: ''
+        Label:
+            text: ''
+        Label:
+            text: ''
+
+        Button:
+            text: "Stwórz nową grę"
+            on_press: root.create_new_game()
