@@ -62,7 +62,7 @@
 
             Button:
                 text: "WYŚLIJ"
-                on_release: root.manager.current = 'screen2'
+                on_release: root.send_points(); root.manager.current = 'screen2'
                 background_color: [0, 1, 0, 1]
 
         # Display chosen cards
@@ -1213,28 +1213,27 @@
 
         GridLayout:
             cols: 1
-            Label:
-                size_hint: .99, .95
-                text: root.data
+            size_hint: self.size_hint_x, .96
 
-            GridLayout:
-                size_hint: .99, .04
-                rows: 1
-                Button:
-                    text: "Kalkulator"
-                    on_press:
-                        root.manager.current = 'screen1'
 
-                Button:
-                    text: "Gra"
-                    background_color: 0, 0, 0, 0
-                    on_press:
-                        root.update(root)
+        GridLayout:
+            size_hint: .99, .04
+            rows: 1
+            Button:
+                text: "Kalkulator"
+                on_press:
+                    root.manager.current = 'screen1'
 
-                Button:
-                    text: "Lista gier"
-                    on_press:
-                        root.manager.current = 'screen3'
+            Button:
+                text: "Gra"
+                background_color: 0, 0, 0, 0
+                on_press:
+                    root.update(root)
+
+            Button:
+                text: "Lista gier"
+                on_press:
+                    root.manager.current = 'screen3'
 
 <GameListWindow>:
     GridLayout:
@@ -1243,7 +1242,6 @@
         size: root.width, root.height
         pos: 0, 0
         GridLayout:
-            id: login_menu
             size_hint: self.size_hint_x, .04
             rows: 1
 

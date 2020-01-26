@@ -8,6 +8,7 @@ from kivy.storage.dictstore import DictStore
 import requests
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
+from kivy.uix.label import Label
 from kivy.core.window import Window
 
 
@@ -27,8 +28,12 @@ class NewGamePopup(Popup):
         token = store.get('token')['values']
         headers = {'authorization': 'Token {}'.format(token)}
         response = requests.post('http://127.0.0.1:8000/main/game/join/', data=values, headers=headers)
-        print(response.json())
-        self.dismiss()
+        print(response)
+        GameListWindow.__init__(self.instance)
+        store = DictStore('store')
+        if str(response) == '<Response [200]>':
+            store.put(key='active_game', values=response.json()['id'])
+            self.dismiss()
 
     def create_new_game(self):
         if self.password.text != '' and self.login.text != '':
@@ -57,15 +62,13 @@ class LoginPopup(Popup):
     def do_login(self, *args):
         values = {'username': self.username.text, 'password': self.password.text}
         response = requests.post('http://127.0.0.1:8000/api-token-auth/', data=values)
-        print(response.json())
         store = DictStore('store')
-        print(response)
         try:
             store.put(key='token', values=response.json()['token'])
             store.put(key='username', values=self.username.text)
 
         except KeyError:
-            print('error')
+            pass
         self.dismiss()
 
         GameListWindow.__init__(self.instance)
@@ -86,26 +89,85 @@ class Manager(ScreenManager):
 
 
 class GameWindow(Screen):
-    data = ObjectProperty()
+    store = DictStore('store')
+    pk = 0
+    token = ''
+    values = {'authorization': 'Token {}'.format(token)}
+    response = ''
 
     def __init__(self, **kwargs):
         super(GameWindow, self).__init__(**kwargs)
         self.update()
 
     def update(self, *args):
-        store = DictStore('store')
-        pk = store.get('active_game')['values']
-        token = store.get('token')['values']
+        self.store = DictStore('store')
+        try:
+            self.pk = self.store.get('active_game')['values']
+            self.token = self.store.get('token')['values']
+        except KeyError:
+            pass
+        self.values = {'authorization': 'Token {}'.format(self.token)}
 
-        values = {'authorization': 'Token {}'.format(token)}
-        response = requests.get('http://127.0.0.1:8000/main/game/{}/'.format(str(pk)), headers=values)
+        # remove widgets to replace them by updates
+        for element in self.children:
+            if element.id is not None:
+                self.remove_widget(element)
+
+        response = requests.get('http://127.0.0.1:8000/main/game/{}/'.format(str(self.pk)), headers=self.values)
+        self.response = response.json()
         try:
             if response.json()['detail'] == 'Not found.':
-                self.data = 'Wybierz grę z listy gier.'
+                pass
             else:
-                self.data = str(response.json())
+                self.draw_ui()
         except KeyError:
-            self.data = str(response.json())
+            self.draw_ui()
+
+    def draw_ui(self):
+        grid = GridLayout(id='my_grid', anchor_y='top',
+                          cols=1, pos=(0, 0), size_hint=[self.size_hint_x, self.size_hint_y])
+
+        grid_scoreboard = GridLayout(cols=1, anchor_y='top', size_hint=[self.size_hint_x, .32])
+        grid_scoreboard.add_widget(Label(text='Tablica wyników:'))
+        for element in self.response['scoreboard']:
+            grid_scoreboard.add_widget(Label(text='{} {}'.format(element[1], element[0])))
+
+        grid_last_round = GridLayout(cols=1, anchor_y='top', size_hint=[self.size_hint_x, .32])
+        try:
+            grid_last_round.add_widget(Label(text='Runda nr {}:'.format(self.response['deals'][0]['count'])))
+            for element in self.response['deals'][0]['points']:
+                label = Label(text='{} {}'.format(element['points'], element['user']['username']))
+                grid_last_round.add_widget(label)
+        except IndexError:
+            pass
+
+        grid_all_rounds = GridLayout(cols=1, anchor_y='top', size_hint=[self.size_hint_x, .6])
+        for element in self.response['deals'][1:11]:
+            grid_all_rounds.add_widget(Button(text='Runda {}'.format(element['count']), on_release=self.display_round))
+
+        grid.add_widget(Label(pos=(0, 0), text=self.response['login'], size_hint=[self.size_hint_x, .04]))
+        grid.add_widget(grid_scoreboard)
+        grid.add_widget(grid_last_round)
+        grid.add_widget(grid_all_rounds)
+        self.add_widget(grid)
+
+    def display_round(self, instance):
+        count = int(instance.text[6:])
+        grid = GridLayout(anchor_y='top', cols=1, size_hint=[self.size_hint_x, self.size_hint_y])
+
+        try:
+            for element in self.response['deals']:
+                if element['count'] == count:
+                    for i in element['points']:
+                        label = Label(text='{} {}'.format(i['points'], i['user']['username']))
+                        grid.add_widget(label)
+        except IndexError:
+            pass
+
+        popup = Popup(content=grid, title=instance.text, size=("300dp", "250dp"),
+                      size_hint=(None, None), auto_dismiss=True)
+
+        popup.open()
 
 
 class GameListWindow(Screen):
@@ -122,10 +184,17 @@ class GameListWindow(Screen):
             pass
 
         store = DictStore('store')
-        token = store.get('token')['values']
+        try:
+            token = store.get('token')['values']
+        except KeyError:
+            token = ''
+
         values = {'authorization': 'Token {}'.format(token)}
         self.response = requests.get(self.http, headers=values)
-        self.username = store.get('username')['values']
+        try:
+            self.username = store.get('username')['values']
+        except KeyError:
+            self.username = ''
 
         grid = GridLayout(id='my_grid', cols=1, pos=(0, 0), size_hint=[self.size_hint_x, .9])
         for element in self.response.json()['results']:
@@ -161,7 +230,10 @@ class GameListWindow(Screen):
         LoginPopup(self).open()
 
     def new_game(self):
-        NewGamePopup(self).open()
+        if self.username != '':
+            NewGamePopup(self).open()
+        else:
+            pass
 
 
 class ZmiennoksztaltnyPopup(Popup):
@@ -253,7 +325,6 @@ class KsiegaZmianPopup(MimikPopup):
 
 
 class SelectCardWindow(Screen):
-
     list_of_cards = ListProperty()
     count_cards = StringProperty()
     sum_to_display = StringProperty()
@@ -561,7 +632,7 @@ class SelectCardWindow(Screen):
         extra_ability = ""
 
         def ability(self, list_of_cards):
-             WyspaPopup(list_of_cards).open()
+            WyspaPopup(list_of_cards).open()
 
         def card_points(self, list_of_cards):
             return self.power
@@ -708,7 +779,7 @@ class SelectCardWindow(Screen):
                     if card.set == "Armia" and not card.canceled_card:
                         bonus += 20
                 else:
-                    if card.set== "Armia" and not card.canceled_card:
+                    if card.set == "Armia" and not card.canceled_card:
                         bonus += 5
             return self.power + bonus
 
@@ -835,7 +906,6 @@ class SelectCardWindow(Screen):
                       "USUWA słowo Armia z wszystkich kar wszystkich kart powodzi."
 
         def penalty(self, list_of_cards):
-
             if not any((card.set == "Powódź" or card.name == "Runa ochrony") and not card.canceled_card
                        for card in list_of_cards):
                 self.canceled_card = True
@@ -990,9 +1060,9 @@ class SelectCardWindow(Screen):
             sorted_list = sorted(sorted_list, key=attrgetter("power"))
             try:
                 for i in range(9):
-                    if sorted_list[i+1].power - sorted_list[i].power == 1:
+                    if sorted_list[i + 1].power - sorted_list[i].power == 1:
                         count += 1
-                    elif sorted_list[i+1].power - sorted_list[i].power == 0:
+                    elif sorted_list[i + 1].power - sorted_list[i].power == 0:
                         pass
                     else:
                         score.append(count)
@@ -1029,7 +1099,7 @@ class SelectCardWindow(Screen):
             sorted_list = sorted(sorted_list, key=attrgetter("set"))
             try:
                 for i in range(9):
-                    if sorted_list[i+1].set == sorted_list[i].set:
+                    if sorted_list[i + 1].set == sorted_list[i].set:
                         return self.power
             except IndexError:
                 pass
@@ -1271,6 +1341,21 @@ class SelectCardWindow(Screen):
         self.list_of_cards = []
         self.sum_to_display = "0"
         self.count_cards_function()
+
+    def send_points(self):
+        store = DictStore('store')
+        try:
+            pk = store.get('active_game')['values']
+            token = store.get('token')['values']
+            values = {'authorization': 'Token {}'.format(token)}
+            points = {'points': self.sum_to_display}
+            requests.post('http://127.0.0.1:8000/main/game/{}/add_points/'.format(str(pk)), headers=values, data=points)
+
+            # try to create new round
+            requests.post('http://127.0.0.1:8000/main/game/{}/new_deal/'.format(str(pk)), headers=values)
+
+        except KeyError:
+            pass
 
 
 class MainApp(App):
