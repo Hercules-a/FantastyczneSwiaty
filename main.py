@@ -10,6 +10,12 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.core.window import Window
+from requests.exceptions import ConnectionError
+
+global host
+host = 'https://fantasy-realms-rest.herokuapp.com/'
+#host = 'http://127.0.0.1:8000/'
+print('start APP')
 
 
 class NewGamePopup(Popup):
@@ -27,7 +33,7 @@ class NewGamePopup(Popup):
         store = DictStore('store')
         token = store.get('token')['values']
         headers = {'authorization': 'Token {}'.format(token)}
-        response = requests.post('http://127.0.0.1:8000/main/game/join/', data=values, headers=headers)
+        response = requests.post(host+'main/game/join/', data=values, headers=headers)
         print(response)
         GameListWindow.__init__(self.instance)
         store = DictStore('store')
@@ -41,7 +47,7 @@ class NewGamePopup(Popup):
             store = DictStore('store')
             token = store.get('token')['values']
             headers = {'authorization': 'Token {}'.format(token)}
-            requests.post('http://127.0.0.1:8000/main/game/', data=values, headers=headers)
+            requests.post(host+'main/game/', data=values, headers=headers)
             self.join_game()
 
     def _on_keyboard_down(self, instance, keyboard, keycode, text, modifiers):
@@ -60,24 +66,30 @@ class LoginPopup(Popup):
         self.instance = instance
 
     def do_login(self, *args):
-        values = {'username': self.username.text, 'password': self.password.text}
-        response = requests.post('http://127.0.0.1:8000/api-token-auth/', data=values)
-        store = DictStore('store')
         try:
-            store.put(key='token', values=response.json()['token'])
-            store.put(key='username', values=self.username.text)
+            values = {'username': self.username.text, 'password': self.password.text}
+            response = requests.post(host+'api-token-auth/', data=values)
+            store = DictStore('store')
+            try:
+                store.put(key='token', values=response.json()['token'])
+                store.put(key='username', values=self.username.text)
 
-        except KeyError:
+            except KeyError:
+                pass
+            self.dismiss()
+
+            GameListWindow.__init__(self.instance)
+        except ConnectionError:
             pass
-        self.dismiss()
-
-        GameListWindow.__init__(self.instance)
 
     def create_account(self):
-        if self.password.text != '' and self.username.text != '':
-            values = {'username': self.username.text, 'password': self.password.text}
-            requests.post('http://127.0.0.1:8000/main/users/', data=values)
-            self.do_login()
+        try:
+            if self.password.text != '' and self.username.text != '':
+                values = {'username': self.username.text, 'password': self.password.text}
+                requests.post(host+'main/users/', data=values)
+                self.do_login()
+        except ConnectionError:
+            pass
 
     def _on_keyboard_down(self, instance, keyboard, keycode, text, modifiers):
         if (self.password.focus or self.username.focus) and keycode == 40:  # 40 - Enter key pressed
@@ -97,31 +109,38 @@ class GameWindow(Screen):
 
     def __init__(self, **kwargs):
         super(GameWindow, self).__init__(**kwargs)
-        self.update()
+        try:
+            self.update()
+        except ConnectionError:
+            pass
 
     def update(self, *args):
-        self.store = DictStore('store')
         try:
-            self.pk = self.store.get('active_game')['values']
-            self.token = self.store.get('token')['values']
-        except KeyError:
-            pass
-        self.values = {'authorization': 'Token {}'.format(self.token)}
-
-        # remove widgets to replace them by updates
-        for element in self.children:
-            if element.id is not None:
-                self.remove_widget(element)
-
-        response = requests.get('http://127.0.0.1:8000/main/game/{}/'.format(str(self.pk)), headers=self.values)
-        self.response = response.json()
-        try:
-            if response.json()['detail'] == 'Not found.':
+            self.store = DictStore('store')
+            try:
+                self.pk = self.store.get('active_game')['values']
+                self.token = self.store.get('token')['values']
+            except KeyError:
                 pass
-            else:
-                self.draw_ui()
-        except KeyError:
-            self.draw_ui()
+            self.values = {'authorization': 'Token {}'.format(self.token)}
+
+            # remove widgets to replace them by updates
+            for element in self.children:
+                if element.id is not None:
+                    self.remove_widget(element)
+
+            response = requests.get(host+'main/game/{}/'.format(str(self.pk)), headers=self.values)
+            if str(response) == '<Response [200]>':
+                self.response = response.json()
+                try:
+                    if self.response['detail'] == 'Not found.':
+                        pass
+                    else:
+                        self.draw_ui()
+                except KeyError:
+                    self.draw_ui()
+        except ConnectionError:
+            self.add_widget(Label(text='Brak połączenia z serwerem. Sprawdź połączenie z Internetem.'))
 
     def draw_ui(self):
         grid = GridLayout(id='my_grid', anchor_y='top',
@@ -173,43 +192,46 @@ class GameWindow(Screen):
 class GameListWindow(Screen):
     username = StringProperty()
     response = ObjectProperty()
-    http = 'http://127.0.0.1:8000/main/game/'
+    http = host+'main/game/'
 
     def __init__(self, **kwargs):
         super(GameListWindow, self).__init__(**kwargs)
         try:
-            self.remove_widget(self.children[-1])
-            self.remove_widget(self.children[1])
-        except IndexError:
-            pass
+            try:
+                self.remove_widget(self.children[-1])
+                self.remove_widget(self.children[1])
+            except IndexError:
+                pass
 
-        store = DictStore('store')
-        try:
-            token = store.get('token')['values']
-        except KeyError:
-            token = ''
+            store = DictStore('store')
+            try:
+                token = store.get('token')['values']
+            except KeyError:
+                token = ''
 
-        values = {'authorization': 'Token {}'.format(token)}
-        self.response = requests.get(self.http, headers=values)
-        try:
-            self.username = store.get('username')['values']
-        except KeyError:
-            self.username = ''
+            values = {'authorization': 'Token {}'.format(token)}
+            self.response = requests.get(self.http, headers=values)
+            try:
+                self.username = store.get('username')['values']
+            except KeyError:
+                self.username = ''
 
-        grid = GridLayout(id='my_grid', cols=1, pos=(0, 0), size_hint=[self.size_hint_x, .9])
-        for element in self.response.json()['results']:
-            grid.add_widget(Button(text=element['login'], on_release=self.game_button))
+            grid = GridLayout(id='my_grid', cols=1, pos=(0, 0), size_hint=[self.size_hint_x, .9])
+            for element in self.response.json()['results']:
+                grid.add_widget(Button(text=element['login'], on_release=self.game_button))
 
-        new_grid = GridLayout(rows=1)
+            new_grid = GridLayout(rows=1)
 
-        if self.response.json()['previous'] is not None:
-            new_grid.add_widget(Button(id='previous_button', text='Poprzednie', on_press=self.previous_button))
+            if self.response.json()['previous'] is not None:
+                new_grid.add_widget(Button(id='previous_button', text='Poprzednie', on_press=self.previous_button))
 
-        if self.response.json()['next'] is not None:
-            new_grid.add_widget(Button(id='next_button', text='Następne', on_press=self.next_button))
+            if self.response.json()['next'] is not None:
+                new_grid.add_widget(Button(id='next_button', text='Następne', on_press=self.next_button))
 
-        grid.add_widget(new_grid)
-        self.add_widget(grid)
+            grid.add_widget(new_grid)
+            self.add_widget(grid)
+        except ConnectionError:
+            self.add_widget(Label(text='Brak połączenia z serwerem. Sprawdź połączenie z Internetem.'))
 
     def game_button(self, instance):
         for element in self.response.json()['results']:
@@ -226,7 +248,7 @@ class GameListWindow(Screen):
         self.__init__()
 
     def login_as(self):
-        self.http = 'http://127.0.0.1:8000/main/game/'
+        self.http = host+'main/game/'
         LoginPopup(self).open()
 
     def new_game(self):
@@ -1343,18 +1365,21 @@ class SelectCardWindow(Screen):
         self.count_cards_function()
 
     def send_points(self):
-        store = DictStore('store')
         try:
-            pk = store.get('active_game')['values']
-            token = store.get('token')['values']
-            values = {'authorization': 'Token {}'.format(token)}
-            points = {'points': self.sum_to_display}
-            requests.post('http://127.0.0.1:8000/main/game/{}/add_points/'.format(str(pk)), headers=values, data=points)
+            store = DictStore('store')
+            try:
+                pk = store.get('active_game')['values']
+                token = store.get('token')['values']
+                values = {'authorization': 'Token {}'.format(token)}
+                points = {'points': self.sum_to_display}
+                requests.post(host+'main/game/{}/add_points/'.format(str(pk)), headers=values, data=points)
 
-            # try to create new round
-            requests.post('http://127.0.0.1:8000/main/game/{}/new_deal/'.format(str(pk)), headers=values)
+                # try to create new round
+                requests.post(host+'main/game/{}/new_deal/'.format(str(pk)), headers=values)
 
-        except KeyError:
+            except KeyError:
+                pass
+        except ConnectionError:
             pass
 
 
